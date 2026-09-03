@@ -99,6 +99,7 @@ function renderBrandingAndHero(settings) {
 function setupWhatsAppButtons(settings) {
   const number = settings?.whatsapp_number || '593987654321';
   const message = settings?.whatsapp_message || 'Hola CLINIDIAB, quisiera agendar una cita.';
+  window.currentWhatsAppNumber = number;
   const waUrl = window.Utils.getWhatsAppUrl(number, message);
 
   // Apply to all reserve buttons

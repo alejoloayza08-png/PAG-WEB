@@ -11,12 +11,17 @@ class SupabaseManager {
   }
 
   init() {
-    const url = window.CONFIG.SUPABASE_URL || localStorage.getItem('clinidiab_supabase_url');
-    const key = window.CONFIG.SUPABASE_ANON_KEY || localStorage.getItem('clinidiab_supabase_key');
+    const url = localStorage.getItem('clinidiab_supabase_url') || window.CONFIG.SUPABASE_URL;
+    const key = localStorage.getItem('clinidiab_supabase_key') || window.CONFIG.SUPABASE_ANON_KEY;
 
-    if (url && key && window.supabase && typeof window.supabase.createClient === 'function') {
+    if (url && key && typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function') {
       try {
-        this.client = window.supabase.createClient(url, key);
+        this.client = window.supabase.createClient(url, key, {
+          auth: {
+            autoRefreshToken: true,
+            persistSession: true
+          }
+        });
         this.isConfigured = true;
         console.log('✅ Supabase client initialized successfully.');
       } catch (err) {
@@ -25,7 +30,7 @@ class SupabaseManager {
         this.isConfigured = false;
       }
     } else {
-      console.log('ℹ️ Supabase credentials not set or SDK not loaded. Operating in Local Data Mode.');
+      console.log('ℹ️ Supabase credentials not set. Operating in Local Data Mode.');
       this.client = null;
       this.isConfigured = false;
     }
@@ -48,8 +53,9 @@ class SupabaseManager {
 
     window.CONFIG.SUPABASE_URL = url || '';
     window.CONFIG.SUPABASE_ANON_KEY = key || '';
-    
+
     this.init();
+    return this.isConfigured;
   }
 }
 
