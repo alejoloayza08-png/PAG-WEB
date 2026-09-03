@@ -5,6 +5,7 @@
 
 const INITIAL_SEED_DATA = {
   site_settings: {
+    id: '00000000-0000-0000-0000-000000000001',
     clinic_name: 'CLINIDIAB',
     hero_title: 'Especialistas en Diabetes y Salud Integral para tu Bienestar',
     hero_subtitle: 'Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, nutrición y medicina preventiva.',
@@ -57,7 +58,7 @@ const INITIAL_SEED_DATA = {
       price: 40.00,
       currency: '$',
       duration: '45 min',
-      image_url: '', // Sin foto para probar renderizado correcto sin huecos vacíos
+      image_url: '',
       is_active: true,
       display_order: 4
     }
@@ -86,7 +87,7 @@ const INITIAL_SEED_DATA = {
       patient_name: 'Roberto Gómez',
       comment: 'Llevo 2 años atendiéndome con ellos. Los controles periódicos y la orientación nutricional son impecables.',
       rating: 5,
-      avatar_url: '', // Sin foto para probar avatar fallback
+      avatar_url: '',
       is_active: true,
       display_order: 3
     }
@@ -112,6 +113,7 @@ const INITIAL_SEED_DATA = {
     { id: 'soc-3', platform: 'tiktok', label: 'TikTok', url: 'https://tiktok.com/@clinidiab_salud', is_active: true }
   ],
   location: {
+    id: '00000000-0000-0000-0000-000000000002',
     address: 'Av. República del Salvador E10-42 y Av. 6 de Diciembre, Edificio Médico Salud, Quito',
     latitude: -0.180653,
     longitude: -78.484252,
@@ -147,26 +149,47 @@ class DataStore {
   // --- SITE SETTINGS ---
   async getSettings() {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('site_settings')
-        .select('*')
-        .single();
-      if (!error && data) return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('site_settings')
+          .select('*')
+          .limit(1);
+        if (!error && data && data.length > 0) return data[0];
+      } catch (err) {
+        console.warn('Supabase getSettings error:', err);
+      }
     }
     return this.getLocalData().site_settings;
   }
 
   async updateSettings(newSettings) {
+    const current = await this.getSettings();
+    const payload = {
+      id: current?.id || '00000000-0000-0000-0000-000000000001',
+      clinic_name: 'CLINIDIAB',
+      ...newSettings,
+      updated_at: new Date().toISOString()
+    };
+
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('site_settings')
-        .upsert(newSettings)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('site_settings')
+          .upsert(payload)
+          .select();
+        if (error) throw error;
+        // Sync local
+        const store = this.getLocalData();
+        store.site_settings = { ...store.site_settings, ...payload };
+        this.saveLocalData(store);
+        return data ? data[0] : payload;
+      } catch (err) {
+        console.error('Error updating site_settings in Supabase:', err);
+      }
     }
+
     const store = this.getLocalData();
-    store.site_settings = { ...store.site_settings, ...newSettings };
+    store.site_settings = { ...store.site_settings, ...payload };
     this.saveLocalData(store);
     return store.site_settings;
   }
@@ -174,13 +197,17 @@ class DataStore {
   // --- SERVICES ---
   async getServices(onlyActive = false) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      let query = window.supabaseManager.getClient()
-        .from('services')
-        .select('*')
-        .order('display_order', { ascending: true });
-      if (onlyActive) query = query.eq('is_active', true);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        let query = window.supabaseManager.getClient()
+          .from('services')
+          .select('*')
+          .order('display_order', { ascending: true });
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        console.warn('Supabase getServices error:', err);
+      }
     }
     let list = this.getLocalData().services || [];
     if (onlyActive) list = list.filter(s => s.is_active);
@@ -189,14 +216,26 @@ class DataStore {
 
   async saveService(service) {
     if (!service.id) service.id = 'srv-' + Date.now();
+    
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('services')
-        .upsert(service)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('services')
+          .upsert(service)
+          .select();
+        if (error) throw error;
+        // Sync local
+        const store = this.getLocalData();
+        const index = store.services.findIndex(s => s.id === service.id);
+        if (index >= 0) store.services[index] = service;
+        else store.services.push(service);
+        this.saveLocalData(store);
+        return data;
+      } catch (err) {
+        console.error('Error saving service to Supabase:', err);
+      }
     }
+
     const store = this.getLocalData();
     const index = store.services.findIndex(s => s.id === service.id);
     if (index >= 0) store.services[index] = service;
@@ -207,12 +246,15 @@ class DataStore {
 
   async deleteService(id) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { error } = await window.supabaseManager.getClient()
-        .from('services')
-        .delete()
-        .eq('id', id);
-      if (error) throw error;
-      return true;
+      try {
+        const { error } = await window.supabaseManager.getClient()
+          .from('services')
+          .delete()
+          .eq('id', id);
+        if (error) throw error;
+      } catch (err) {
+        console.error('Error deleting service from Supabase:', err);
+      }
     }
     const store = this.getLocalData();
     store.services = store.services.filter(s => s.id !== id);
@@ -223,13 +265,17 @@ class DataStore {
   // --- TESTIMONIALS ---
   async getTestimonials(onlyActive = false) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      let query = window.supabaseManager.getClient()
-        .from('testimonials')
-        .select('*')
-        .order('display_order', { ascending: true });
-      if (onlyActive) query = query.eq('is_active', true);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        let query = window.supabaseManager.getClient()
+          .from('testimonials')
+          .select('*')
+          .order('display_order', { ascending: true });
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        console.warn('Supabase getTestimonials error:', err);
+      }
     }
     let list = this.getLocalData().testimonials || [];
     if (onlyActive) list = list.filter(t => t.is_active);
@@ -238,14 +284,26 @@ class DataStore {
 
   async saveTestimonial(testimonial) {
     if (!testimonial.id) testimonial.id = 'test-' + Date.now();
+
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('testimonials')
-        .upsert(testimonial)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('testimonials')
+          .upsert(testimonial)
+          .select();
+        if (error) throw error;
+        // Sync local
+        const store = this.getLocalData();
+        const index = store.testimonials.findIndex(t => t.id === testimonial.id);
+        if (index >= 0) store.testimonials[index] = testimonial;
+        else store.testimonials.push(testimonial);
+        this.saveLocalData(store);
+        return data;
+      } catch (err) {
+        console.error('Error saving testimonial to Supabase:', err);
+      }
     }
+
     const store = this.getLocalData();
     const index = store.testimonials.findIndex(t => t.id === testimonial.id);
     if (index >= 0) store.testimonials[index] = testimonial;
@@ -256,12 +314,15 @@ class DataStore {
 
   async deleteTestimonial(id) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { error } = await window.supabaseManager.getClient()
-        .from('testimonials')
-        .delete()
-        .eq('id', id);
-      if (error) throw error;
-      return true;
+      try {
+        const { error } = await window.supabaseManager.getClient()
+          .from('testimonials')
+          .delete()
+          .eq('id', id);
+        if (error) throw error;
+      } catch (err) {
+        console.error('Error deleting testimonial from Supabase:', err);
+      }
     }
     const store = this.getLocalData();
     store.testimonials = store.testimonials.filter(t => t.id !== id);
@@ -272,22 +333,34 @@ class DataStore {
   // --- BUSINESS HOURS ---
   async getBusinessHours() {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('business_hours')
-        .select('*');
-      if (!error && data && data.length > 0) return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('business_hours')
+          .select('*')
+          .order('display_order', { ascending: true });
+        if (!error && data && data.length > 0) return data;
+      } catch (err) {
+        console.warn('Supabase getBusinessHours error:', err);
+      }
     }
     return this.getLocalData().business_hours;
   }
 
   async saveBusinessHours(hoursList) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('business_hours')
-        .upsert(hoursList)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('business_hours')
+          .upsert(hoursList)
+          .select();
+        if (error) throw error;
+        const store = this.getLocalData();
+        store.business_hours = hoursList;
+        this.saveLocalData(store);
+        return data;
+      } catch (err) {
+        console.error('Error saving business hours to Supabase:', err);
+      }
     }
     const store = this.getLocalData();
     store.business_hours = hoursList;
@@ -298,10 +371,14 @@ class DataStore {
   // --- PAYMENT METHODS ---
   async getPaymentMethods(onlyActive = false) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      let query = window.supabaseManager.getClient().from('payment_methods').select('*');
-      if (onlyActive) query = query.eq('is_active', true);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        let query = window.supabaseManager.getClient().from('payment_methods').select('*');
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        console.warn('Supabase getPaymentMethods error:', err);
+      }
     }
     let list = this.getLocalData().payment_methods || [];
     if (onlyActive) list = list.filter(p => p.is_active);
@@ -310,12 +387,19 @@ class DataStore {
 
   async savePaymentMethods(methods) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('payment_methods')
-        .upsert(methods)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('payment_methods')
+          .upsert(methods)
+          .select();
+        if (error) throw error;
+        const store = this.getLocalData();
+        store.payment_methods = methods;
+        this.saveLocalData(store);
+        return data;
+      } catch (err) {
+        console.error('Error saving payment methods to Supabase:', err);
+      }
     }
     const store = this.getLocalData();
     store.payment_methods = methods;
@@ -326,10 +410,14 @@ class DataStore {
   // --- SOCIAL LINKS ---
   async getSocialLinks(onlyActive = false) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      let query = window.supabaseManager.getClient().from('social_links').select('*');
-      if (onlyActive) query = query.eq('is_active', true);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        let query = window.supabaseManager.getClient().from('social_links').select('*');
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data) return data;
+      } catch (err) {
+        console.warn('Supabase getSocialLinks error:', err);
+      }
     }
     let list = this.getLocalData().social_links || [];
     if (onlyActive) list = list.filter(s => s.is_active && s.url && s.url.trim().length > 0);
@@ -338,12 +426,19 @@ class DataStore {
 
   async saveSocialLinks(links) {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('social_links')
-        .upsert(links)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('social_links')
+          .upsert(links)
+          .select();
+        if (error) throw error;
+        const store = this.getLocalData();
+        store.social_links = links;
+        this.saveLocalData(store);
+        return data;
+      } catch (err) {
+        console.error('Error saving social links to Supabase:', err);
+      }
     }
     const store = this.getLocalData();
     store.social_links = links;
@@ -354,26 +449,45 @@ class DataStore {
   // --- LOCATION ---
   async getLocation() {
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('location')
-        .select('*')
-        .single();
-      if (!error && data) return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('location')
+          .select('*')
+          .limit(1);
+        if (!error && data && data.length > 0) return data[0];
+      } catch (err) {
+        console.warn('Supabase getLocation error:', err);
+      }
     }
     return this.getLocalData().location;
   }
 
   async saveLocation(locationData) {
+    const current = await this.getLocation();
+    const payload = {
+      id: current?.id || '00000000-0000-0000-0000-000000000002',
+      ...locationData,
+      updated_at: new Date().toISOString()
+    };
+
     if (window.supabaseManager.hasLiveSupabase()) {
-      const { data, error } = await window.supabaseManager.getClient()
-        .from('location')
-        .upsert(locationData)
-        .select();
-      if (error) throw error;
-      return data;
+      try {
+        const { data, error } = await window.supabaseManager.getClient()
+          .from('location')
+          .upsert(payload)
+          .select();
+        if (error) throw error;
+        const store = this.getLocalData();
+        store.location = { ...store.location, ...payload };
+        this.saveLocalData(store);
+        return data ? data[0] : payload;
+      } catch (err) {
+        console.error('Error saving location to Supabase:', err);
+      }
     }
+
     const store = this.getLocalData();
-    store.location = { ...store.location, ...locationData };
+    store.location = { ...store.location, ...payload };
     this.saveLocalData(store);
     return store.location;
   }
