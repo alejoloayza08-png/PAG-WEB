@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLINIDIAB - Consultorio Médico Especializado en Diabetes</title>
+  <meta name="description" content="CLINIDIAB: Consultorio médico especializado en atención integral de la diabetes, nutrición clínica, laboratorio metabólico y prevención. Tu salud, nuestra prioridad.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+            },
+            tealbrand: {
+              500: '#0d9488',
+              600: '#0f766e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-sky-800 to-teal-700 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+    <span class="bg-emerald-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Atención Prioritaria</span>
+    <span>Consultas de diabetología y control nutricional disponibles este mes.</span>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-effect border-b border-slate-200/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#inicio" class="flex items-center gap-3 group">
+        <img src="assets/logo.svg" alt="CLINIDIAB" class="h-11 w-auto brand-logo-img transition-transform group-hover:scale-105">
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-700">
+        <a href="#inicio" class="hover:text-sky-600 transition-colors">Inicio</a>
+        <a href="#servicios" class="hover:text-sky-600 transition-colors">Servicios</a>
+        <a href="#testimonios" class="hover:text-sky-600 transition-colors">Testimonios</a>
+        <a href="#contactos" class="hover:text-sky-600 transition-colors">Contactos</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="hidden md:flex items-center gap-4">
+        <a href="admin.html" class="text-xs text-slate-400 hover:text-slate-600 transition-colors px-2 py-1">Acceso Admin</a>
+        <!-- Destacado WhatsApp "Reservar ahora" -->
+        <a href="#" class="whatsapp-reserve-btn inline-flex items-center gap-2 bg.whatsapp bg-[#25d366] hover:bg-[#1da851] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all transform hover:-translate-y-0.5">
+          <!-- Official WhatsApp Icon -->
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          Reservar ahora
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-700 hover:text-sky-600 focus:outline-none" aria-label="Abrir menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3">
+      <a href="#inicio" class="block py-2 text-slate-700 hover:text-sky-600 font-medium">Inicio</a>
+      <a href="#servicios" class="block py-2 text-slate-700 hover:text-sky-600 font-medium">Servicios</a>
+      <a href="#testimonios" class="block py-2 text-slate-700 hover:text-sky-600 font-medium">Testimonios</a>
+      <a href="#contactos" class="block py-2 text-slate-700 hover:text-sky-600 font-medium">Contactos</a>
+      <div class="pt-2 flex flex-col gap-2">
+        <a href="#" class="whatsapp-reserve-btn w-full text-center flex items-center justify-center gap-2 bg-[#25d366] text-white py-3 rounded-xl font-bold">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Reservar cita por WhatsApp
+        </a>
+        <a href="admin.html" class="text-center text-xs text-slate-400 py-2">Acceso Administrativo</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SECTION 1: HERO (Inicio) -->
+    <section id="inicio" class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-b from-sky-50/60 via-white to-slate-50">
+      <!-- Background Decorative Blobs -->
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute top-1/2 -left-24 w-80 h-80 bg-teal-100/50 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Hero Text Content -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 bg-sky-100/80 text-sky-800 text-xs font-bold px-3.5 py-1.5 rounded-full border border-sky-200">
+              <span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+              Consultorio Médico Especializado
+            </div>
+            
+            <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              Especialistas en Diabetes y Salud Integral para tu Bienestar
+            </h1>
+            
+            <p id="hero-subtitle" class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, nutrición y medicina preventiva.
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <!-- Destacado WhatsApp -->
+              <a href="#" class="whatsapp-reserve-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#25d366] hover:bg-[#1da851] text-white px-8 py-4 rounded-xl font-bold text-base shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all transform hover:-translate-y-0.5">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                Reservar ahora
+              </a>
+
+              <a href="#servicios" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-bold px-7 py-4 rounded-xl border border-slate-200 shadow-sm transition-all">
+                Ver servicios
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </a>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="pt-6 border-t border-slate-200/60 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-left">
+              <div>
+                <span class="block text-xl font-extrabold text-sky-700">+10 años</span>
+                <span class="text-xs text-slate-500 font-medium">De experiencia</span>
+              </div>
+              <div>
+                <span class="block text-xl font-extrabold text-sky-700">100%</span>
+                <span class="text-xs text-slate-500 font-medium">Atención humana</span>
+              </div>
+              <div>
+                <span class="block text-xl font-extrabold text-sky-700">Control</span>
+                <span class="text-xs text-slate-500 font-medium">Glucémico integral</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Hero Image -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-md lg:max-w-none">
+              <div class="absolute -inset-2 bg-gradient-to-tr from-sky-400 to-teal-400 rounded-3xl blur-xl opacity-30"></div>
+              <div class="relative bg-white rounded-3xl p-3 shadow-2xl border border-slate-100 overflow-hidden">
+                <img id="hero-image" src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80" alt="Consultorio Médico CLINIDIAB" class="w-full h-80 sm:h-96 object-cover rounded-2xl">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SERVICIOS -->
+    <section id="servicios" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-sky-600 text-xs font-extrabold tracking-wider uppercase bg-sky-50 px-3.5 py-1 rounded-full border border-sky-100">Atención Especializada</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">Nuestros Servicios Médicos</h2>
+          <p class="text-slate-600 mt-3 text-base">Ofrecemos planes de tratamiento modernos y personalizados para mejorar tu calidad de vida.</p>
+        </div>
+
+        <!-- Services Dynamic Grid -->
+        <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Rendered via JS -->
+          <div class="col-span-full text-center py-12 text-slate-400">Cargando servicios médicos...</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: TESTIMONIOS -->
+    <section id="testimonios" class="py-20 bg-slate-50 border-y border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-emerald-600 text-xs font-extrabold tracking-wider uppercase bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-100">Experiencias Reales</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">Testimonios de Pacientes</h2>
+          <p class="text-slate-600 mt-3 text-base">La confianza y satisfacción de nuestros pacientes es nuestro mayor compromiso.</p>
+        </div>
+
+        <!-- Testimonials Dynamic Grid -->
+        <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Rendered via JS -->
+          <div class="col-span-full text-center py-12 text-slate-400">Cargando testimonios...</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: CONTACTOS & HORARIOS & FORMAS DE PAGO -->
+    <section id="contactos" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Info Contacto & Formas de Pago -->
+          <div class="lg:col-span-6 space-y-8">
+            <div>
+              <span class="text-sky-600 text-xs font-extrabold tracking-wider uppercase bg-sky-50 px-3 py-1 rounded-full border border-sky-100">Comunicación Directa</span>
+              <h2 class="text-3xl font-extrabold text-slate-900 mt-3">Información de Contacto</h2>
+              <p class="text-slate-600 mt-2 text-sm">Estamos para atenderte. Puedes comunicarte por teléfono, correo o directamente vía WhatsApp.</p>
+            </div>
+
+            <!-- Contact Cards -->
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200/60">
+                <div class="p-3 bg-sky-600 text-white rounded-lg shadow-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900 text-sm">Dirección del Consultorio</h4>
+                  <p id="contact-address" class="text-sm text-slate-600 mt-0.5 leading-relaxed">Cargando dirección...</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200/60">
+                  <div class="p-3 bg-sky-600 text-white rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-xs uppercase text-slate-400">Teléfono</h4>
+                    <a id="contact-phone" href="#" class="text-sm font-semibold text-slate-800 hover:text-sky-600">Cargando...</a>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200/60">
+                  <div class="p-3 bg-sky-600 text-white rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-xs uppercase text-slate-400">Correo Electrónico</h4>
+                    <a id="contact-email" href="#" class="text-xs font-semibold text-slate-800 hover:text-sky-600 truncate block">Cargando...</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formas de Pago Aceptadas -->
+            <div class="pt-6 border-t border-slate-100">
+              <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                💳 Formas de Pago Aceptadas
+              </h3>
+              <div id="payment-methods-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Rendered JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Business Hours -->
+          <div class="lg:col-span-6">
+            <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-64 h-64 bg-sky-600/20 rounded-full blur-2xl"></div>
+
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+                  <div>
+                    <span class="text-sky-400 text-xs font-bold uppercase tracking-wider block">Atención Presencial</span>
+                    <h3 class="text-2xl font-extrabold text-white mt-1">Horarios de Atención</h3>
+                  </div>
+                  <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sky-400">
+                    ⏱️
+                  </div>
+                </div>
+
+                <!-- Business hours list -->
+                <div id="business-hours-list" class="space-y-1 text-slate-200">
+                  <!-- Rendered via JS -->
+                  <p class="text-center text-slate-500 py-6 text-sm">Cargando horarios...</p>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-800 text-center">
+                  <a href="#" class="whatsapp-reserve-btn inline-flex items-center justify-center gap-2 w-full bg-[#25d366] hover:bg-[#1da851] text-white py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                    Consultar disponibilidad de turno
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: UBICACIÓN & GOOGLE MAPS -->
+    <section id="ubicacion" class="py-16 bg-slate-50 border-t border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div>
+            <span class="text-sky-600 text-xs font-extrabold tracking-wider uppercase bg-sky-50 px-3 py-1 rounded-full border border-sky-100">Ubicación Estratégica</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">¿Cómo llegar a CLINIDIAB?</h2>
+            <p id="map-address" class="text-slate-600 text-sm mt-1">Cargando mapa...</p>
+          </div>
+
+          <!-- Botón Destacado Google Maps "Cómo llegar" -->
+          <a id="directions-btn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-900 px-6 py-3.5 rounded-xl font-bold text-sm border border-slate-300 shadow-sm transition-all transform hover:-translate-y-0.5">
+            <!-- Official Google Maps Icon -->
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#EA4335"/>
+            </svg>
+            Cómo llegar (Google Maps)
+          </a>
+        </div>
+
+        <!-- Google Maps Frame Container -->
+        <div id="google-map-container" class="w-full bg-slate-200 rounded-2xl overflow-hidden shadow-lg border border-slate-200 h-[380px] flex items-center justify-center text-slate-400">
+          Cargando mapa de Google Maps...
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-sm border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="assets/logo.svg" alt="CLINIDIAB" class="h-10 w-auto brand-logo-img brightness-200">
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
+            CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y trastornos metabólicos.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-4">Navegación</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#inicio" class="hover:text-white transition-colors">Inicio</a></li>
+            <li><a href="#servicios" class="hover:text-white transition-colors">Servicios Médicos</a></li>
+            <li><a href="#testimonios" class="hover:text-white transition-colors">Testimonios</a></li>
+            <li><a href="#contactos" class="hover:text-white transition-colors">Contactos y Horarios</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-4">Síguenos</h4>
+          <!-- Social Icons Dynamic -->
+          <div id="social-links-container" class="flex items-center gap-3">
+            <!-- Rendered JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <p>&copy; 2026 CLINIDIAB. Todos los derechos reservados.</p>
+        <div class="flex items-center gap-4">
+          <a href="admin.html" class="text-slate-500 hover:text-sky-400 transition-colors">Panel Administrativo (/admin)</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a id="whatsapp-float-btn" href="#" target="_blank" rel="noopener noreferrer" class="whatsapp-float whatsapp-pulse" aria-label="Contactar por WhatsApp">
+    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+    </svg>
+  </a>
+
+  <!-- Application Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

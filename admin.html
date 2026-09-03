@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Control Administrativo - CLINIDIAB</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- AUTH SCREEN: Private Administrator Login Only -->
+  <div id="admin-auth-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950">
+    <div class="w-full max-w-md bg-white text-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-100 relative overflow-hidden">
+      
+      <div class="text-center mb-8">
+        <img src="assets/logo.svg" alt="CLINIDIAB" class="h-12 w-auto mx-auto mb-4">
+        <span class="bg-sky-100 text-sky-800 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Acceso Privado</span>
+        <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Panel Administrativo</h1>
+        <p class="text-xs text-slate-500 mt-1">Ingrese sus credenciales de administrador para gestionar CLINIDIAB.</p>
+      </div>
+
+      <!-- Login Error Alert -->
+      <div id="login-error-msg" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl"></div>
+
+      <!-- Single Admin Login Form -->
+      <form id="admin-login-form" class="space-y-5">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Correo Administrador</label>
+          <input type="email" id="login-email" required placeholder="admin@clinidiab.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Contraseña</label>
+          <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50">
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-sky-600/30">
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+        <a href="index.html" class="text-xs text-slate-400 hover:text-sky-600 font-medium">← Volver al sitio público</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN APP SCREEN -->
+  <div id="admin-app-screen" class="hidden min-h-screen flex flex-col md:flex-row bg-slate-100 text-slate-800">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between border-r border-slate-800">
+      <div>
+        <!-- Brand Header -->
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+          <a href="index.html" target="_blank" class="flex items-center gap-2">
+            <img src="assets/logo.svg" alt="CLINIDIAB" class="h-9 w-auto brightness-200">
+          </a>
+        </div>
+
+        <!-- Menu Navigation List -->
+        <nav class="p-4 space-y-1.5 text-sm font-semibold">
+          <button data-tab="dashboard" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>📊</span> Dashboard
+          </button>
+          <button data-tab="hero" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>🏠</span> Página de Inicio
+          </button>
+          <button data-tab="services" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>🩺</span> Servicios Médicos
+          </button>
+          <button data-tab="testimonials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>⭐</span> Testimonios
+          </button>
+          <button data-tab="contact-hours" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>📞</span> Contactos y Horarios
+          </button>
+          <button data-tab="payments" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>💳</span> Formas de Pago
+          </button>
+          <button data-tab="socials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>🌐</span> Redes Sociales
+          </button>
+          <button data-tab="location" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>📍</span> Ubicación & Mapa
+          </button>
+          <button data-tab="config" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>⚡</span> Supabase & Config
+          </button>
+        </nav>
+      </div>
+
+      <!-- Footer Logout -->
+      <div class="p-4 border-t border-slate-800">
+        <button id="admin-logout-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600/20 text-rose-400 hover:bg-rose-600 hover:text-white font-bold text-xs transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panels Container -->
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto max-w-6xl">
+      
+      <!-- TAB 1: DASHBOARD -->
+      <div id="panel-dashboard" class="admin-tab-panel space-y-8">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Resumen Administrativo</h2>
+          <p class="text-sm text-slate-500 mt-1">Gestión centralizada del consultorio médico CLINIDIAB.</p>
+        </div>
+
+        <!-- Connection status pill -->
+        <div id="stat-supabase-status"></div>
+
+        <!-- Metrics Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Servicios Registrados</span>
+            <span id="stat-services-count" class="text-3xl font-extrabold text-sky-600 mt-2 block">0</span>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Servicios Activos</span>
+            <span id="stat-active-services" class="text-3xl font-extrabold text-emerald-600 mt-2 block">0</span>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Testimonios</span>
+            <span id="stat-testimonials-count" class="text-3xl font-extrabold text-amber-500 mt-2 block">0</span>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">WhatsApp Reservas</span>
+            <span id="stat-whatsapp-num" class="text-sm font-bold text-slate-800 mt-2 block truncate">...</span>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-lg text-slate-900">Acciones Rápidas</h3>
+          <div class="flex flex-wrap gap-4">
+            <button onclick="window.adminApp.switchTab('services')" class="px-4 py-2.5 bg-sky-600 text-white rounded-xl text-xs font-bold hover:bg-sky-700">Gestionar Servicios</button>
+            <button onclick="window.adminApp.switchTab('hero')" class="px-4 py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900">Editar Inicio (Hero)</button>
+            <a href="index.html" target="_blank" class="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50">Ver Sitio Público ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: PÁGINA DE INICIO (HERO) -->
+      <div id="panel-hero" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Configuración de Sección Inicio (Hero)</h2>
+          <p class="text-sm text-slate-500 mt-1">Edite los textos principales, WhatsApp y las imágenes de portada.</p>
+        </div>
+
+        <form id="hero-settings-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título Principal (Hero Title)</label>
+            <input type="text" id="hero-field-title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Subtítulo / Descripción</label>
+            <textarea id="hero-field-subtitle" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm leading-relaxed"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Número de WhatsApp (con código de país sin +)</label>
+              <input type="text" id="hero-field-whatsapp" placeholder="593987654321" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL Foto Portada</label>
+              <input type="text" id="hero-field-image-url" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+            </div>
+          </div>
+
+          <!-- File Upload for Hero Image -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Subir Nueva Foto de Portada (Supabase Storage)</label>
+              <input type="file" id="hero-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Subir Nuevo Logo de CLINIDIAB</label>
+              <input type="file" id="logo-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
+              <input type="hidden" id="hero-field-logo-url">
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Cambios de Inicio
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 3: SERVICIOS -->
+      <div id="panel-services" class="admin-tab-panel hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Gestión de Servicios Médicos</h2>
+            <p class="text-sm text-slate-500 mt-1">Cree, edite, ordene y active los servicios prestados.</p>
+          </div>
+          <button id="btn-new-service" class="px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2">
+            <span>+</span> Nuevo Servicio
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
+                <tr>
+                  <th class="px-4 py-3">Servicio</th>
+                  <th class="px-4 py-3">Precio</th>
+                  <th class="px-4 py-3">Duración</th>
+                  <th class="px-4 py-3 text-center">Estado</th>
+                  <th class="px-4 py-3 text-center">Orden</th>
+                  <th class="px-4 py-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-services-tbody">
+                <!-- Rendered JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: TESTIMONIOS -->
+      <div id="panel-testimonials" class="admin-tab-panel hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Gestión de Testimonios</h2>
+            <p class="text-sm text-slate-500 mt-1">Administre las opiniones de pacientes de CLINIDIAB.</p>
+          </div>
+          <button id="btn-new-testimonial" class="px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2">
+            <span>+</span> Nuevo Testimonio
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
+                <tr>
+                  <th class="px-4 py-3">Paciente</th>
+                  <th class="px-4 py-3">Testimonio</th>
+                  <th class="px-4 py-3">Estrellas</th>
+                  <th class="px-4 py-3 text-center">Estado</th>
+                  <th class="px-4 py-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-testimonials-tbody">
+                <!-- Rendered JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: CONTACTOS Y HORARIOS -->
+      <div id="panel-contact-hours" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Horarios de Atención y Datos de Contacto</h2>
+          <p class="text-sm text-slate-500 mt-1">Configure los horarios de Lunes a Domingo y datos de comunicación.</p>
+        </div>
+
+        <form id="business-hours-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-8">
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-slate-200">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Teléfono Fijo / Celular</label>
+              <input type="text" id="contact-field-phone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Correo Electrónico</label>
+              <input type="email" id="contact-field-email" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Dirección del Consultorio</label>
+              <input type="text" id="contact-field-address" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-slate-900 text-base mb-4">Configuración de Horarios Semanales</h3>
+            <div id="admin-hours-rows" class="space-y-3">
+              <!-- Rendered JS -->
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Horarios y Contactos
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 6: FORMAS DE PAGO -->
+      <div id="panel-payments" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Formas de Pago Aceptadas</h2>
+          <p class="text-sm text-slate-500 mt-1">Seleccione y edite los métodos de pago habilitados para los pacientes.</p>
+        </div>
+
+        <form id="payments-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div id="admin-payments-list" class="space-y-3">
+            <!-- Rendered JS -->
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Formas de Pago
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 7: REDES SOCIALES -->
+      <div id="panel-socials" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Redes Sociales</h2>
+          <p class="text-sm text-slate-500 mt-1">Configure las URLs oficiales y estado de activación.</p>
+        </div>
+
+        <form id="socials-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          
+          <!-- Instagram -->
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 text-sm">Instagram</span>
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <input type="checkbox" id="soc-ig-active" class="rounded text-sky-600"> Activo
+              </label>
+            </div>
+            <input type="url" id="soc-ig-url" placeholder="https://instagram.com/clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+          </div>
+
+          <!-- Facebook -->
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 text-sm">Facebook</span>
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <input type="checkbox" id="soc-fb-active" class="rounded text-sky-600"> Activo
+              </label>
+            </div>
+            <input type="url" id="soc-fb-url" placeholder="https://facebook.com/clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+          </div>
+
+          <!-- TikTok -->
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 text-sm">TikTok</span>
+              <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <input type="checkbox" id="soc-tt-active" class="rounded text-sky-600"> Activo
+              </label>
+            </div>
+            <input type="url" id="soc-tt-url" placeholder="https://tiktok.com/@clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Redes Sociales
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 8: UBICACIÓN -->
+      <div id="panel-location" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Ubicación y Google Maps</h2>
+          <p class="text-sm text-slate-500 mt-1">Configure la dirección física, coordenadas y código iframe del mapa.</p>
+        </div>
+
+        <form id="location-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Dirección Completa</label>
+            <input type="text" id="loc-address" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Latitud</label>
+              <input type="text" id="loc-lat" placeholder="-0.180653" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Longitud</label>
+              <input type="text" id="loc-lng" placeholder="-78.484252" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL Directa de Google Maps (Botón "Cómo llegar")</label>
+            <input type="url" id="loc-maps-url" placeholder="https://maps.google.com/?q=..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Código Embed Iframe de Google Maps</label>
+            <textarea id="loc-embed-code" rows="4" placeholder='<iframe src="https://www.google.com/maps/embed?..." ...></iframe>' class="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs font-mono"></textarea>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Ubicación
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 9: SUPABASE & CONFIG -->
+      <div id="panel-config" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Conexión a Supabase DB</h2>
+          <p class="text-sm text-slate-500 mt-1">Conecte el backend en la nube con sus credenciales de Supabase.</p>
+        </div>
+
+        <form id="config-settings-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Project URL</label>
+            <input type="url" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-mono">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Anon Key (Pública)</label>
+            <input type="password" id="cfg-supabase-key" placeholder="eyJh..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-mono">
+          </div>
+
+          <div class="p-4 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 space-y-2">
+            <p class="font-bold">ℹ️ Guía de Conexión:</p>
+            <p>1. Ejecute el archivo <code class="bg-white px-1.5 py-0.5 rounded border border-sky-300 font-bold">supabase/schema.sql</code> en el Editor SQL de su proyecto en Supabase.</p>
+            <p>2. Copie la URL del Proyecto y la clave Anon pública desde la sección Project Settings → API.</p>
+            <p>3. Guarde los cambios aquí. La aplicación se sincronizará automáticamente con su base de datos.</p>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+              Guardar Credenciales Supabase
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL: SERVICIO MEDICAL FORM -->
+  <div id="service-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <h3 id="service-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Servicio</h3>
+        <button class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+      </div>
+
+      <form id="service-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nombre del Servicio</label>
+          <input type="text" id="srv-title" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Descripción</label>
+          <textarea id="srv-description" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Precio</label>
+            <input type="number" step="0.01" id="srv-price" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Moneda</label>
+            <input type="text" id="srv-currency" value="$" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Duración</label>
+            <input type="text" id="srv-duration" placeholder="45 min" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Orden de Despliegue</label>
+            <input type="number" id="srv-order" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div class="flex items-center pt-6">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
+              <input type="checkbox" id="srv-active" checked class="w-4 h-4 rounded text-sky-600"> Servicio Activo
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Fotografía del Servicio</label>
+          <input type="file" id="srv-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700">
+          <input type="hidden" id="srv-image-url">
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md">Guardar Servicio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: TESTIMONIAL FORM -->
+  <div id="testimonial-modal" class="modal-overlay">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <h3 id="tst-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Testimonio</h3>
+        <button class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+      </div>
+
+      <form id="testimonial-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nombre del Paciente</label>
+          <input type="text" id="tst-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Comentario del Testimonio</label>
+          <textarea id="tst-comment" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Calificación (1 a 5 Estrellas)</label>
+            <select id="tst-rating" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm font-semibold">
+              <option value="5">⭐⭐⭐⭐⭐ (5 Estrellas)</option>
+              <option value="4">⭐⭐⭐⭐ (4 Estrellas)</option>
+              <option value="3">⭐⭐⭐ (3 Estrellas)</option>
+              <option value="2">⭐⭐ (2 Estrellas)</option>
+              <option value="1">⭐ (1 Estrella)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Orden</label>
+            <input type="number" id="tst-order" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
+            <input type="checkbox" id="tst-active" checked class="w-4 h-4 rounded text-sky-600"> Testimonio Activo
+          </label>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Foto del Paciente (Opcional)</label>
+          <input type="file" id="tst-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700">
+          <input type="hidden" id="tst-avatar-url">
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md">Guardar Testimonio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
