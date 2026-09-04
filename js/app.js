@@ -77,7 +77,13 @@ function renderBrandingAndHero(settings) {
 
   // Hero fields
   const heroTitle = document.getElementById('hero-title');
-  if (heroTitle && settings.hero_title) heroTitle.textContent = settings.hero_title;
+  if (heroTitle && settings.hero_title) {
+    if (settings.hero_title.includes('Diabetes') && !settings.hero_title.includes('<span')) {
+      heroTitle.innerHTML = settings.hero_title.replace('Diabetes', '<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-teal-600 to-sky-700">Diabetes</span>');
+    } else {
+      heroTitle.innerHTML = settings.hero_title;
+    }
+  }
 
   const heroSubtitle = document.getElementById('hero-subtitle');
   if (heroSubtitle && settings.hero_subtitle) heroSubtitle.textContent = settings.hero_subtitle;

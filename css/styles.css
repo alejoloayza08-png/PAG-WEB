@@ -50,6 +50,33 @@ body {
     radial-gradient(at 50% 85%, rgba(2, 132, 199, 0.04) 0px, transparent 55%);
 }
 
+/* Floating Instagram Card Animation */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-card {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+@keyframes badge-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-badge-float {
+  animation: badge-float 4s ease-in-out infinite 0.5s;
+}
+
 /* Instagram Story Gradient Ring */
 .ig-story-ring {
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
@@ -68,8 +95,8 @@ body {
 
 .ig-gradient-btn:hover {
   opacity: 0.92;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(220, 39, 67, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(220, 39, 67, 0.40);
 }
 
 /* Shadows */
