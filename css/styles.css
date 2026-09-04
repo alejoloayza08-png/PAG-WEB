@@ -1,17 +1,16 @@
-/* CLINIDIAB Medical Website - Modern Clean Styles */
+/* CLINIDIAB Medical Website - Exact Design System */
 
 :root {
   --color-primary: #0284c7;
   --color-primary-hover: #0369a1;
-  --color-primary-light: #e0f2fe;
   --color-teal: #0d9488;
   --color-teal-hover: #0f766e;
   --color-whatsapp: #25d366;
   --color-whatsapp-hover: #1da851;
-  --color-dark: #0f172a;
+  --color-dark: #0b1523;
+  --color-dark-card: #112237;
   --color-muted: #64748b;
   --color-light: #f8fafc;
-  --color-border: #e2e8f0;
   --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -24,7 +23,7 @@
 html {
   scroll-behavior: smooth;
   font-family: var(--font-main);
-  color: var(--color-dark);
+  color: #0f172a;
   background-color: #ffffff;
 }
 
@@ -32,11 +31,12 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism & Header */
+/* Glassmorphism Header */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.90);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -45,9 +45,9 @@ body {
 .bg-mesh-subtle {
   background-color: #f8fafc;
   background-image: 
-    radial-gradient(at 10% 10%, rgba(2, 132, 199, 0.05) 0px, transparent 50%),
-    radial-gradient(at 90% 10%, rgba(13, 148, 136, 0.05) 0px, transparent 50%),
-    radial-gradient(at 50% 90%, rgba(2, 132, 199, 0.04) 0px, transparent 50%);
+    radial-gradient(at 15% 15%, rgba(2, 132, 199, 0.06) 0px, transparent 55%),
+    radial-gradient(at 85% 15%, rgba(13, 148, 136, 0.06) 0px, transparent 55%),
+    radial-gradient(at 50% 85%, rgba(2, 132, 199, 0.04) 0px, transparent 55%);
 }
 
 /* Instagram Story Gradient Ring */
@@ -69,7 +69,7 @@ body {
 .ig-gradient-btn:hover {
   opacity: 0.92;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(220, 39, 67, 0.35);
+  box-shadow: 0 6px 18px rgba(220, 39, 67, 0.35);
 }
 
 /* Shadows */
@@ -135,14 +135,9 @@ body {
   font-size: 1rem;
 }
 
-/* Pill badge active state */
+/* Nav Pill Active */
 .nav-pill-active {
-  background-color: #f0f9ff;
-  color: #0284c7;
+  background-color: #f0fdfa;
+  color: #0d9488;
   font-weight: 700;
-}
-
-/* Smooth transition */
-.transition-all-smooth {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
