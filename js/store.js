@@ -15,7 +15,7 @@ const INITIAL_SEED_DATA = {
     whatsapp_message: 'Hola CLINIDIAB, deseo reservar una cita médica.',
     phone_number: '+593 2 234 5678',
     email_address: 'contacto@clinidiab.com',
-    address_text: 'Av. República del Salvador E10-42 y Av. 6 de Diciembre, Edificio Médico Salud, Piso 4, Consultorio 402, Quito, Ecuador'
+    address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador'
   },
   services: [
     {
@@ -114,11 +114,11 @@ const INITIAL_SEED_DATA = {
   ],
   location: {
     id: '00000000-0000-0000-0000-000000000002',
-    address: 'Av. República del Salvador E10-42 y Av. 6 de Diciembre, Edificio Médico Salud, Quito',
-    latitude: -0.180653,
-    longitude: -78.484252,
-    google_maps_url: 'https://maps.google.com/?q=-0.180653,-78.484252',
-    map_embed_code: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.790445657805!2d-78.48682692415174!3d-0.18065299981754922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a7a0b5b5b5b%3A0x5b5b5b5b5b5b5b5b!2sAv.%20Rep%C3%BAblica%20del%20Salvador%2C%20Quito!5e0!3m2!1ses!2sec!4v1700000000000!5m2!1ses!2sec" width="100%" height="380" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+    address: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador',
+    latitude: -3.258824,
+    longitude: -79.955500,
+    google_maps_url: 'https://maps.google.com/?q=-3.258824,-79.955500',
+    map_embed_code: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15939.81452295627!2d-79.9654714!3d-3.2588241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x90330e6206019d55%3A0x1d441db1b7454941!2sMachala!5e0!3m2!1ses!2sec!4v1700000000000!5m2!1ses!2sec" width="100%" height="380" style="border:0; border-radius: 16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
   }
 };
 
