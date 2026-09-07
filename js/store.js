@@ -754,7 +754,8 @@ class DataStore {
         console.warn('Supabase getLocation:', err);
       }
     }
-    return this.getLocalData().location;
+    const localLoc = this.getLocalData().location;
+    return (localLoc && localLoc.map_embed_code) ? localLoc : INITIAL_SEED_DATA.location;
   }
 
   async saveLocation(locationData) {

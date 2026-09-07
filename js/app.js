@@ -318,63 +318,39 @@ function setupDirectAudioButton(btnId, iframeId, getPlayerFn) {
 
     const iframe = document.getElementById(iframeId);
     const player = getPlayerFn ? getPlayerFn() : null;
-    const isCurrentlyActive = btn.classList.contains('active');
 
-    if (!isCurrentlyActive) {
-      // Activar audio: Unmute, set volume to 100, seek to 0 and play with sound
-      if (player && typeof player.unMute === 'function') {
-        try {
-          player.seekTo(0, true);
-          player.unMute();
-          player.setVolume(100);
-          player.playVideo();
-        } catch (err) {
-          console.warn('YT.Player unMute error:', err);
-        }
+    // Activar audio: Unmute, set volume to 100, seek to 0 and play with sound
+    if (player && typeof player.unMute === 'function') {
+      try {
+        player.seekTo(0, true);
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+      } catch (err) {
+        console.warn('YT.Player unMute error:', err);
       }
-
-      if (iframe && iframe.contentWindow) {
-        try {
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
-          
-          iframe.contentWindow.postMessage('{"event":"command","func":"seekTo","args":[0,true]}', '*');
-          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-          iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
-          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        } catch (err) {
-          console.warn('postMessage unMute error:', err);
-        }
-      }
-
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
-      if (label) label.textContent = 'Silenciar audio';
-    } else {
-      // Silenciar audio
-      if (player && typeof player.mute === 'function') {
-        try {
-          player.mute();
-        } catch (err) {
-          console.warn('YT.Player mute error:', err);
-        }
-      }
-
-      if (iframe && iframe.contentWindow) {
-        try {
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
-          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-        } catch (err) {
-          console.warn('postMessage mute error:', err);
-        }
-      }
-
-      btn.classList.remove('active');
-      btn.setAttribute('aria-pressed', 'false');
-      if (label) label.textContent = 'Activar audio';
     }
+
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+        
+        iframe.contentWindow.postMessage('{"event":"command","func":"seekTo","args":[0,true]}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      } catch (err) {
+        console.warn('postMessage unMute error:', err);
+      }
+    }
+
+    // Immediately hide button so it disappears and does not obstruct the video controls
+    btn.classList.add('active', 'hidden');
+    btn.setAttribute('aria-pressed', 'true');
+    if (label) label.textContent = 'Audio activado';
   });
 }
 
@@ -769,21 +745,25 @@ function renderSocialLinks(socials) {
 }
 
 function renderLocation(location) {
-  if (!location) return;
+  const loc = (location && location.map_embed_code) ? location : (window.INITIAL_SEED_DATA?.location || {
+    address: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador',
+    google_maps_url: 'https://maps.google.com/?q=Kleber+Franco+entre+Juan+Montalvo+y+P%C3%A1ez,+Machala',
+    map_embed_code: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.5627!2d-79.9588!3d-3.2586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x90330e6206019d55%3A0x1d441db1b7454941!2sMachala%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1700000000000!5m2!1ses!2sec" width="100%" height="380" style="border:0; border-radius: 16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+  });
 
   const mapContainer = document.getElementById('google-map-container');
-  if (mapContainer && location.map_embed_code) {
-    mapContainer.innerHTML = location.map_embed_code;
+  if (mapContainer && loc.map_embed_code) {
+    mapContainer.innerHTML = loc.map_embed_code;
   }
 
   const mapAddress = document.getElementById('map-address');
-  if (mapAddress && location.address) {
-    mapAddress.textContent = location.address;
+  if (mapAddress && loc.address) {
+    mapAddress.textContent = loc.address;
   }
 
   const directionsBtn = document.getElementById('directions-btn');
-  if (directionsBtn && location.google_maps_url) {
-    directionsBtn.href = location.google_maps_url;
+  if (directionsBtn && loc.google_maps_url) {
+    directionsBtn.href = loc.google_maps_url;
   }
 }
 
