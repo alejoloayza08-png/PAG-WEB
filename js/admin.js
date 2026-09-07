@@ -405,12 +405,14 @@ class AdminApp {
 
       const heroPreview = document.getElementById('hero-image-preview');
       if (heroPreview) {
-        if (settings?.hero_image_url) {
-          heroPreview.src = settings.hero_image_url;
-          heroPreview.classList.remove('hidden');
-        } else {
-          heroPreview.classList.add('hidden');
-        }
+        heroPreview.src = settings?.hero_image_url || 'assets/dr-fabricio-loayza.jpg';
+        heroPreview.classList.remove('hidden');
+        heroPreview.onerror = function() {
+          if (!this.dataset.triedFallback) {
+            this.dataset.triedFallback = '1';
+            this.src = 'assets/dr-fabricio-loayza.jpg';
+          }
+        };
       }
 
       const logoPreview = document.getElementById('logo-image-preview');

@@ -120,9 +120,17 @@ function renderBrandingAndHero(settings) {
 
   // Hero Image
   const heroImg = document.getElementById('hero-image');
-  if (heroImg && settings.hero_image_url) {
-    heroImg.src = settings.hero_image_url;
-    heroImg.alt = clinicName;
+  if (heroImg) {
+    if (settings.hero_image_url) {
+      heroImg.src = settings.hero_image_url;
+    }
+    heroImg.alt = 'Dr. Fabricio Loayza';
+    heroImg.onerror = function() {
+      if (!this.dataset.triedFallback) {
+        this.dataset.triedFallback = '1';
+        this.src = 'assets/dr-fabricio-loayza.jpg';
+      }
+    };
   }
 
   // Logo
