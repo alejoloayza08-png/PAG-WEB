@@ -196,6 +196,7 @@ div.modal-overlay.hidden,
 
 .modal-content {
   background-color: #ffffff;
+  color: #0f172a;
   border-radius: 1.25rem;
   width: 100%;
   max-width: 32rem;
@@ -204,4 +205,43 @@ div.modal-overlay.hidden,
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
   border: 1px solid #e2e8f0;
 }
+
+/* Form Controls in Modals & Admin Panels */
+.modal-content input,
+.modal-content textarea,
+.modal-content select,
+.admin-tab-panel input,
+.admin-tab-panel textarea,
+.admin-tab-panel select {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 500 !important;
+}
+
+.modal-content select option,
+.admin-tab-panel select option {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus,
+.admin-tab-panel input:focus,
+.admin-tab-panel textarea:focus,
+.admin-tab-panel select:focus {
+  border-color: #0d9488 !important;
+  outline: 2px solid rgba(13, 148, 136, 0.2) !important;
+}
+
+.modal-content input::placeholder,
+.modal-content textarea::placeholder,
+.admin-tab-panel input::placeholder,
+.admin-tab-panel textarea::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 400 !important;
+}
+
+
 
