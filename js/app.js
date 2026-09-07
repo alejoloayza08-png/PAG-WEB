@@ -105,11 +105,14 @@ function renderBrandingAndHero(settings) {
   // Hero Title
   const heroTitle = document.getElementById('hero-title');
   if (heroTitle && settings.hero_title) {
-    if (settings.hero_title.includes('Diabetes') && !settings.hero_title.includes('<span')) {
-      heroTitle.innerHTML = settings.hero_title.replace('Diabetes', '<span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-teal-600 to-sky-700">Diabetes</span>');
-    } else {
-      heroTitle.innerHTML = settings.hero_title;
+    let titleHtml = settings.hero_title;
+    if (titleHtml.includes('Diabetes') && !titleHtml.includes('text-teal-600')) {
+      titleHtml = titleHtml.replace('Diabetes', '<span class="text-teal-600 font-extrabold">Diabetes</span>');
     }
+    if (titleHtml.includes('Bienestar') && !titleHtml.includes('font-serif')) {
+      titleHtml = titleHtml.replace('Bienestar', '<span class="italic font-serif font-normal text-slate-800">Bienestar</span>');
+    }
+    heroTitle.innerHTML = titleHtml;
   }
 
   // Hero Subtitle

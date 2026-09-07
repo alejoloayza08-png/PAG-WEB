@@ -10,10 +10,10 @@
   <!-- Meta Facebook Domain Verification -->
   <meta name="facebook-domain-verification" content="jy2wtswvgwpxkvb3w23lmg2rflc0o5" />
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans & Newsreader -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +23,7 @@
         extend: {
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
           },
           colors: {
             brand: {
@@ -147,42 +148,47 @@
               <span>Consultorio médico especializado · Machala</span>
             </div>
             
-            <!-- Headline (Plus Jakarta Sans) -->
+            <!-- Headline (Plus Jakarta Sans with Serif Accent) -->
             <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
-              Especialistas en <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-teal-600 to-sky-700">Diabetes</span> y Salud Integral para tu Bienestar
+              Especialistas en <span class="text-teal-600 font-extrabold">Diabetes</span> y Salud Integral para tu <span class="italic font-serif font-normal text-slate-800">Bienestar</span>
             </h1>
             
             <!-- Subtitle -->
             <p id="hero-subtitle" class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, tiroides, nutrición y medicina preventiva.
+              Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, nutrición y medicina preventiva.
             </p>
 
             <!-- Dual Action CTAs -->
             <div class="pt-3 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <a href="#" class="whatsapp-reserve-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#25d366] hover:bg-[#1da851] text-white px-7 py-4 rounded-xl font-bold text-base shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all transform hover:-translate-y-0.5">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                Agendar Cita
+              <a href="#" class="whatsapp-reserve-btn w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white px-7 py-3.5 rounded-2xl font-bold text-base shadow-lg shadow-teal-600/20 hover:shadow-teal-600/35 transition-all transform hover:-translate-y-0.5">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Reservar ahora
               </a>
 
-              <a href="#servicios" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold px-6 py-4 rounded-xl border border-slate-200 shadow-sm transition-all hover:border-slate-300">
-                Ver Servicios
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <a href="#servicios" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold px-6 py-3.5 rounded-2xl border border-slate-200 shadow-sm transition-all hover:border-slate-300">
+                Ver servicios
+                <span class="text-slate-500 font-normal">↓</span>
               </a>
             </div>
 
             <!-- Trust badges grid -->
             <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-left">
               <div>
-                <span class="block text-xl font-extrabold text-slate-900">+10 Años</span>
-                <span class="text-xs text-slate-500 font-medium">Experiencia médica</span>
+                <span class="block text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">+10 años</span>
+                <span class="text-xs text-slate-500 font-medium">De experiencia</span>
               </div>
               <div>
-                <span class="block text-xl font-extrabold text-teal-600">100%</span>
-                <span class="text-xs text-slate-500 font-medium">Atención personalizada</span>
+                <span class="block text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">14,4 <span class="text-teal-600">mil</span></span>
+                <span class="text-xs text-slate-500 font-medium">Comunidad en Instagram</span>
               </div>
               <div>
-                <span class="block text-xl font-extrabold text-sky-700">Machala</span>
-                <span class="text-xs text-slate-500 font-medium">Ubicación céntrica</span>
+                <span class="block text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">100%</span>
+                <span class="text-xs text-slate-500 font-medium">Atención humana</span>
               </div>
             </div>
 
@@ -262,11 +268,11 @@
                     👨‍⚕️ | Obesidad, sobrepeso, alimentación saludable, hábitos sanos, Diabetes, Prediabetes, colesterol, triglicéridos, Tiroides, hormonas.<br>Hábitos sanos
                   </p>
                   <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold pt-0.5">
-                    <a href="https://wa.me/593987654321" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1 text-slate-900 font-bold">
+                    <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1 text-slate-900 font-bold">
                       <span>🔗</span> walink.co/4ce476
                     </a>
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">Clinidiab en Facebook</a>
-                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">YouTube</a>
+                    <a href="https://www.facebook.com/119541705083687" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">Clinidiab en Facebook</a>
+                    <a href="https://youtube.com/@fabricio19212" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">YouTube</a>
                   </div>
                 </div>
 
@@ -326,6 +332,46 @@
         </div>
       </div>
     </section>
+
+    <!-- INFINITE MARQUEE TICKER BANNER -->
+    <div class="w-full bg-slate-50 border-y border-slate-200/80 py-4 overflow-hidden relative">
+      <!-- Gradient fade edges -->
+      <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+      
+      <div class="animate-marquee flex items-center gap-8 whitespace-nowrap text-sm sm:text-base font-bold text-slate-700 select-none">
+        <!-- Sequence 1 -->
+        <div class="flex items-center gap-8">
+          <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
+          <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
+          <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>
+          <span>Hábitos sanos</span> <span class="text-teal-500 font-black">•</span>
+          <span>Ejercicio</span> <span class="text-teal-500 font-black">•</span>
+          <span>Transformación metabólica</span> <span class="text-teal-500 font-black">•</span>
+          <span>Sobrepeso</span> <span class="text-teal-500 font-black">•</span>
+          <span>Obesidad</span> <span class="text-teal-500 font-black">•</span>
+          <span>Diabetes</span> <span class="text-teal-500 font-black">•</span>
+          <span>Prediabetes</span> <span class="text-teal-500 font-black">•</span>
+          <span>Tiroides</span> <span class="text-teal-500 font-black">•</span>
+          <span>Nutrición</span> <span class="text-teal-500 font-black">•</span>
+        </div>
+        <!-- Sequence 2 (Duplicate for infinite seamless loop) -->
+        <div class="flex items-center gap-8">
+          <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
+          <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
+          <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>
+          <span>Hábitos sanos</span> <span class="text-teal-500 font-black">•</span>
+          <span>Ejercicio</span> <span class="text-teal-500 font-black">•</span>
+          <span>Transformación metabólica</span> <span class="text-teal-500 font-black">•</span>
+          <span>Sobrepeso</span> <span class="text-teal-500 font-black">•</span>
+          <span>Obesidad</span> <span class="text-teal-500 font-black">•</span>
+          <span>Diabetes</span> <span class="text-teal-500 font-black">•</span>
+          <span>Prediabetes</span> <span class="text-teal-500 font-black">•</span>
+          <span>Tiroides</span> <span class="text-teal-500 font-black">•</span>
+          <span>Nutrición</span> <span class="text-teal-500 font-black">•</span>
+        </div>
+      </div>
+    </div>
 
     <!-- SECTION 2: DR. LOAYZA / TU MÉDICO -->
     <section id="dr-loayza" class="bg-white py-20 border-y border-slate-200/70">
@@ -907,11 +953,11 @@
   </a>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=3.1"></script>
-  <script src="js/supabaseClient.js?v=3.1"></script>
-  <script src="js/utils.js?v=3.1"></script>
-  <script src="js/store.js?v=3.1"></script>
-  <script src="js/app.js?v=3.1"></script>
+  <script src="js/config.js?v=3.3"></script>
+  <script src="js/supabaseClient.js?v=3.3"></script>
+  <script src="js/utils.js?v=3.3"></script>
+  <script src="js/store.js?v=3.3"></script>
+  <script src="js/app.js?v=3.3"></script>
 </body>
 </html>
 
