@@ -214,7 +214,7 @@ const INITIAL_SEED_DATA = {
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v5';
+    this.storageKey = 'clinidiab_local_db_v6';
     this.ensureLocalStore();
   }
 
