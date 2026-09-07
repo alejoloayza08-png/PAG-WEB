@@ -354,15 +354,15 @@
       </div>
     </section>
 
-    <!-- INFINITE MARQUEE TICKER BANNER -->
-    <div class="w-full bg-slate-50 border-y border-slate-200/80 py-4 overflow-hidden relative">
+    <!-- INFINITE MARQUEE TICKER BANNER (HIGH IMPACT) -->
+    <div class="w-full bg-white border-y border-slate-200/80 py-5 sm:py-6 overflow-hidden relative shadow-xs">
       <!-- Gradient fade edges -->
-      <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
-      <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute left-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-24 sm:w-36 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
       
-      <div class="animate-marquee-track flex items-center gap-8 whitespace-nowrap text-sm sm:text-base font-bold text-slate-700 select-none">
+      <div class="animate-marquee-track flex items-center gap-10 sm:gap-12 whitespace-nowrap text-base sm:text-lg lg:text-xl font-extrabold text-slate-800 select-none">
         <!-- Sequence 1 -->
-        <div class="flex items-center gap-8 flex-shrink-0">
+        <div class="flex items-center gap-10 sm:gap-12 flex-shrink-0">
           <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
           <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
           <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>
@@ -377,7 +377,7 @@
           <span>Nutrición</span> <span class="text-teal-500 font-black">•</span>
         </div>
         <!-- Sequence 2 (Duplicate for infinite seamless loop) -->
-        <div class="flex items-center gap-8 flex-shrink-0">
+        <div class="flex items-center gap-10 sm:gap-12 flex-shrink-0">
           <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
           <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
           <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>
@@ -395,27 +395,44 @@
     </div>
 
     <!-- SECTION 2: DR. LOAYZA / TU MÉDICO -->
-    <section id="dr-loayza" class="bg-white py-20 border-y border-slate-200/70">
+    <section id="dr-loayza" class="bg-white py-20 md:py-24 border-y border-slate-200/70">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
-          <!-- LEFT COLUMN -->
-          <div class="relative flex justify-center">
-            <!-- Decorative dot grid -->
-            <div class="absolute -top-6 -left-6 w-24 h-24 bg-[radial-gradient(#14b8a6_2px,transparent_2px)] [background-size:12px_12px] opacity-30 z-0"></div>
-            <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white w-full max-w-md aspect-[3/4]">
-              <img id="doctor-bio-photo" src="assets/dr-fabricio-loayza-hq.jpg" alt="Dr. Fabricio Loayza" class="w-full h-full object-cover">
+          <!-- LEFT COLUMN: DOCTOR PHOTO WITH OVERLAY & DECORATIVE FRAME -->
+          <div class="relative flex justify-center group">
+            <!-- Decorative teal dot matrix pattern -->
+            <div class="absolute -top-6 -left-6 w-28 h-28 bg-[radial-gradient(#0d9488_2.5px,transparent_2.5px)] [background-size:14px_14px] opacity-30 z-0 pointer-events-none"></div>
+            
+            <!-- Outer decorative curved outline -->
+            <div class="relative z-10 w-full max-w-md">
+              <div class="absolute -inset-2 rounded-[32px] border-2 border-teal-500/25 -z-10 translate-x-2.5 translate-y-2.5 transition-transform duration-500 group-hover:translate-x-3.5 group-hover:translate-y-3.5 pointer-events-none"></div>
+
+              <!-- Main Photo Card with shadow -->
+              <div class="relative rounded-[28px] overflow-hidden shadow-2xl border-4 border-white bg-slate-900 aspect-[3/4] transition-all duration-500 group-hover:shadow-teal-900/15">
+                <img id="doctor-bio-photo" src="assets/dr-fabricio-loayza-hq.jpg" alt="Dr. Fabricio Loayza T." class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                
+                <!-- Bottom Gradient Text Overlay -->
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent p-6 pt-16 text-left z-20">
+                  <h3 class="text-white font-serif font-bold text-2xl sm:text-[26px] leading-tight tracking-tight drop-shadow-sm">
+                    Dr. Fabricio Loayza T.
+                  </h3>
+                  <p class="text-slate-300 text-xs sm:text-[13px] font-medium mt-1 tracking-wide">
+                    Diabetes · Tiroides · Obesidad · Endocrinología
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- RIGHT COLUMN -->
           <div class="space-y-6">
-            <div class="inline-flex items-center gap-3">
+            <div class="inline-flex items-center gap-2.5">
               <span class="w-8 h-[2px] bg-teal-500"></span>
               <span class="text-teal-700 text-xs font-extrabold tracking-widest uppercase">Tu Médico</span>
             </div>
-            <h2 id="doctor-bio-headline" class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-tight">
-              Medicina que <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-teal-700">transforma</span>, hábitos que liberan
+            <h2 id="doctor-bio-headline" class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              Medicina que <span class="text-teal-600 font-extrabold">transforma</span>, hábitos que liberan
             </h2>
             <p id="doctor-bio-description" class="text-slate-600 text-base leading-relaxed">
               CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.
@@ -423,7 +440,7 @@
 
             <!-- Credential cards -->
             <div class="space-y-3 pt-2">
-              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4">
+              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4 hover:border-teal-200 transition-colors">
                 <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/80">
                   <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/>
@@ -436,7 +453,7 @@
                   <p class="text-xs text-slate-500 mt-0.5">Diagnóstico, control glucémico y manejo de insulinas</p>
                 </div>
               </div>
-              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4">
+              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4 hover:border-teal-200 transition-colors">
                 <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/80">
                   <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="8" r="6"/>
@@ -448,7 +465,7 @@
                   <p class="text-xs text-slate-500 mt-0.5">Tiroides, hormonas y trastornos metabólicos</p>
                 </div>
               </div>
-              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4">
+              <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center gap-4 hover:border-teal-200 transition-colors">
                 <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/80">
                   <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
@@ -462,17 +479,17 @@
             </div>
 
             <!-- Tag pills -->
-            <div class="flex flex-wrap gap-2 pt-3">
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Obesidad</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Sobrepeso</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Alimentación saludable</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Hábitos sanos</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Diabetes</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Prediabetes</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Colesterol</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Triglicéridos</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Tiroides</span>
-              <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full">Hormonas</span>
+            <div class="flex flex-wrap gap-2.5 pt-3">
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Obesidad</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Sobrepeso</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Alimentación saludable</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Hábitos sanos</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Diabetes</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Prediabetes</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Colesterol</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Triglicéridos</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Tiroides</span>
+              <span class="bg-white border border-slate-200 text-slate-700 text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-xs hover:border-teal-500 hover:text-teal-700 transition-colors">Hormonas</span>
             </div>
 
           </div>

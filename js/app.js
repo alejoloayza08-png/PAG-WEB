@@ -150,7 +150,7 @@ function renderDoctorBio(bio) {
   const doctorHeadline = document.getElementById('doctor-bio-headline');
   if (doctorHeadline && bio.headline) {
     if (bio.headline.includes('transforma') && !bio.headline.includes('<span')) {
-      doctorHeadline.innerHTML = bio.headline.replace('transforma', '<span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-teal-700">transforma</span>');
+      doctorHeadline.innerHTML = bio.headline.replace('transforma', '<span class="text-teal-600 font-extrabold">transforma</span>');
     } else {
       doctorHeadline.innerHTML = bio.headline;
     }
