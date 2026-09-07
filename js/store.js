@@ -19,7 +19,7 @@ const INITIAL_SEED_DATA = {
     clinic_name: 'CLINIDIAB',
     hero_title: 'Medicina que transforma, hábitos que liberan',
     hero_subtitle: 'CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.',
-    hero_image_url: 'assets/dr-fabricio-loayza-hq.jpg',
+    hero_image_url: 'assets/dr-fabricio-loayza.jpg',
     logo_url: 'assets/logo.svg',
     whatsapp_number: '593987654321',
     whatsapp_message: 'Hola CLINIDIAB, quisiera agendar una cita médica.',
@@ -214,9 +214,10 @@ const INITIAL_SEED_DATA = {
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v6';
+    this.storageKey = 'clinidiab_local_db_v7';
     this.ensureLocalStore();
   }
+
 
   ensureLocalStore() {
     if (!localStorage.getItem(this.storageKey)) {
