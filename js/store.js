@@ -223,7 +223,7 @@ const INITIAL_SEED_DATA = {
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v9';
+    this.storageKey = 'clinidiab_local_db_v10';
     this.ensureLocalStore();
   }
 
@@ -698,24 +698,39 @@ class DataStore {
 
   // --- SOCIAL LINKS ---
   async getSocialLinks(onlyActive = false) {
+    let list = [];
     if (this.hasSupabase()) {
       try {
-        let query = this.sb().from('social_links').select('*');
+        let query = this.sb().from('social_links').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
         const { data, error } = await query;
         if (!error && data && data.length > 0) {
-          const store = this.getLocalData();
-          store.social_links = data;
-          this.saveLocalData(store);
-          return data;
+          list = data;
         }
       } catch (err) {
         console.warn('Supabase getSocialLinks:', err);
       }
     }
-    let list = this.getLocalData().social_links || [];
-    if (onlyActive) list = list.filter(s => s.is_active && s.url && s.url.trim().length > 0);
-    return list;
+    if (!list || list.length === 0) {
+      list = this.getLocalData().social_links || INITIAL_SEED_DATA.social_links;
+    }
+
+    const seen = new Set();
+    const deduped = list.filter(s => {
+      const p = (s.platform || '').toLowerCase();
+      if (!p || seen.has(p)) return false;
+      seen.add(p);
+      return true;
+    });
+
+    const store = this.getLocalData();
+    store.social_links = deduped;
+    this.saveLocalData(store);
+
+    if (onlyActive) {
+      return deduped.filter(s => s.is_active && s.url && s.url.trim().length > 0);
+    }
+    return deduped;
   }
 
   async saveSocialLinks(links) {

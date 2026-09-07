@@ -706,9 +706,20 @@ function renderSocialLinks(socials) {
   const container = document.getElementById('social-links-container');
   if (!container || !socials) return;
 
-  const validSocials = socials.filter(s => s.is_active && s.url && (s.platform || '').toLowerCase() !== 'whatsapp');
+  const validSocials = socials.filter(s => s && s.is_active && s.url && (s.platform || '').toLowerCase() !== 'whatsapp');
 
-  container.innerHTML = validSocials.map(s => {
+  // Deduplicate by platform
+  const seenPlatforms = new Set();
+  const uniqueSocials = [];
+  for (const s of validSocials) {
+    const p = (s.platform || '').toLowerCase();
+    if (!seenPlatforms.has(p)) {
+      seenPlatforms.add(p);
+      uniqueSocials.push(s);
+    }
+  }
+
+  container.innerHTML = uniqueSocials.map(s => {
     let iconSvg = '';
     let hoverColor = 'hover:bg-teal-600';
     const platform = (s.platform || '').toLowerCase();
