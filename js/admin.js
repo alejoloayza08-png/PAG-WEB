@@ -398,7 +398,6 @@ class AdminApp {
       const settings = await window.dataStore.getSettings();
       document.getElementById('hero-field-title').value = settings?.hero_title || '';
       document.getElementById('hero-field-subtitle').value = settings?.hero_subtitle || '';
-      document.getElementById('hero-field-whatsapp').value = settings?.whatsapp_number || '';
       document.getElementById('hero-field-clinic-name').value = settings?.clinic_name || 'CLINIDIAB';
       document.getElementById('hero-hidden-image-url').value = settings?.hero_image_url || '';
       document.getElementById('logo-hidden-image-url').value = settings?.logo_url || '';
@@ -520,7 +519,6 @@ class AdminApp {
         clinic_name: document.getElementById('hero-field-clinic-name').value.trim(),
         hero_title: document.getElementById('hero-field-title').value.trim(),
         hero_subtitle: document.getElementById('hero-field-subtitle').value.trim(),
-        whatsapp_number: document.getElementById('hero-field-whatsapp').value.trim(),
         hero_image_url: heroImageUrl,
         logo_url: logoUrl,
         hero_media_type: selectedMediaType,
@@ -1258,6 +1256,12 @@ class AdminApp {
       document.getElementById('soc-fb-url').value = fb.url || '';
       document.getElementById('soc-fb-active').checked = fb.is_active;
 
+      const yt = getSocial('youtube');
+      const ytUrlInput = document.getElementById('soc-yt-url');
+      const ytActiveInput = document.getElementById('soc-yt-active');
+      if (ytUrlInput) ytUrlInput.value = yt.url || '';
+      if (ytActiveInput) ytActiveInput.checked = yt.is_active;
+
       const tt = getSocial('tiktok');
       document.getElementById('soc-tt-url').value = tt.url || '';
       document.getElementById('soc-tt-active').checked = tt.is_active;
@@ -1277,7 +1281,8 @@ class AdminApp {
       const links = [
         { id: getExistingId('instagram') || '55555555-5555-5555-5555-555555555555', platform: 'instagram', label: 'Instagram', url: document.getElementById('soc-ig-url').value.trim(), is_active: document.getElementById('soc-ig-active').checked },
         { id: getExistingId('facebook') || '66666666-6666-6666-6666-666666666666', platform: 'facebook', label: 'Facebook', url: document.getElementById('soc-fb-url').value.trim(), is_active: document.getElementById('soc-fb-active').checked },
-        { id: getExistingId('tiktok') || '77777777-7777-7777-7777-777777777777', platform: 'tiktok', label: 'TikTok', url: document.getElementById('soc-tt-url').value.trim(), is_active: document.getElementById('soc-tt-active').checked }
+        { id: getExistingId('youtube') || '77777777-7777-7777-7777-777777777777', platform: 'youtube', label: 'YouTube', url: document.getElementById('soc-yt-url')?.value.trim() || '', is_active: document.getElementById('soc-yt-active')?.checked ?? false },
+        { id: getExistingId('tiktok') || '88888888-8888-8888-8888-888888888888', platform: 'tiktok', label: 'TikTok', url: document.getElementById('soc-tt-url').value.trim(), is_active: document.getElementById('soc-tt-active').checked }
       ];
 
       await window.dataStore.saveSocialLinks(links);

@@ -200,7 +200,9 @@ const INITIAL_SEED_DATA = {
   ],
   social_links: [
     { id: '55555555-5555-5555-5555-555555555555', platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/drfabricioloayza/', is_active: true },
-    { id: '66666666-6666-6666-6666-666666666666', platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/593987654321', is_active: true }
+    { id: '66666666-6666-6666-6666-666666666666', platform: 'facebook', label: 'Clinidiab en Facebook', url: 'https://www.facebook.com/119541705083687', is_active: true },
+    { id: '77777777-7777-7777-7777-777777777777', platform: 'youtube', label: 'Doctor Loayza en YouTube', url: 'https://youtube.com/@fabricio19212', is_active: true },
+    { id: '88888888-8888-8888-8888-888888888888', platform: 'tiktok', label: 'TikTok', url: 'https://tiktok.com/@clinidiab', is_active: false }
   ],
   location: {
     id: '00000000-0000-0000-0000-000000000002',

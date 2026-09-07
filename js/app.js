@@ -315,6 +315,8 @@ function setupAudioButton(btnId, iconId, textId, getPlayer, stateRef) {
         icon.className = 'flex items-center justify-center text-emerald-400';
         icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
       }
+      btn.classList.add('bg-emerald-950/90', 'border-emerald-400/40');
+      btn.classList.remove('bg-slate-950/80', 'border-white/20');
     } else {
       // Silenciar
       try {
@@ -328,6 +330,8 @@ function setupAudioButton(btnId, iconId, textId, getPlayer, stateRef) {
         icon.className = 'flex items-center justify-center text-rose-400';
         icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
       }
+      btn.classList.remove('bg-emerald-950/90', 'border-emerald-400/40');
+      btn.classList.add('bg-slate-950/80', 'border-white/20');
     }
   });
 }
@@ -619,7 +623,7 @@ function renderContactAndHours(settings, hours) {
     const todayIndex = new Date().getDay();
     const todayName = daysInSpanish[todayIndex];
 
-    scheduleContainer.innerHTML = hours.map((day, idx) => {
+    scheduleContainer.innerHTML = hours.map((day) => {
       const isToday = day.day_name && day.day_name.trim().toLowerCase() === todayName.toLowerCase();
       let timeText = 'Cerrado';
       if (day.is_open) {
@@ -633,16 +637,15 @@ function renderContactAndHours(settings, hours) {
       }
 
       const isOpen = day.is_open;
-      const isLast = idx === hours.length - 1;
 
       return `
-        <div class="flex items-center justify-between ${!isLast ? 'pb-4 border-b border-slate-100' : ''} schedule-row ${isToday ? 'bg-teal-50/70 p-2.5 rounded-2xl border border-teal-200 shadow-sm' : ''}" data-day="${window.Utils.escapeHtml(day.day_name)}">
-          <div class="flex items-center gap-3">
-            <span class="w-2.5 h-2.5 ${isOpen ? 'bg-emerald-500' : 'bg-rose-500'} rounded-full"></span>
+        <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors schedule-row ${isToday ? 'bg-[#e0f7fa]' : 'hover:bg-slate-50/80'}" data-day="${window.Utils.escapeHtml(day.day_name)}">
+          <div class="flex items-center gap-2.5 sm:gap-3">
+            <span class="w-2 h-2 ${isOpen ? 'bg-emerald-500' : 'bg-rose-500'} rounded-full flex-shrink-0"></span>
             <span class="font-bold text-slate-900 text-sm sm:text-base">${window.Utils.escapeHtml(day.day_name)}</span>
-            ${isToday ? `<span class="bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>` : ''}
+            ${isToday ? `<span class="hoy-badge bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>` : ''}
           </div>
-          <span class="${isOpen ? 'text-slate-700 font-semibold' : 'text-rose-500 font-bold'} text-xs sm:text-sm">${timeText}</span>
+          <span class="${isOpen ? 'text-slate-700 font-semibold' : 'text-rose-500 font-bold'} text-xs sm:text-sm tabular-nums text-right">${timeText}</span>
         </div>
       `;
     }).join('');
@@ -650,70 +653,44 @@ function renderContactAndHours(settings, hours) {
 }
 
 function renderPaymentMethods(payments) {
-  const container = document.getElementById('payment-methods-grid');
-  if (!container || !payments) return;
+  const strip = document.getElementById('payment-methods-strip');
+  if (!strip || !payments || !payments.length) return;
+
+  const activePayments = payments.filter(p => p.is_active !== false);
+  if (!activePayments.length) return;
 
   const getPaymentIcon = (name = '') => {
     const n = name.toLowerCase();
     if (n.includes('efectivo') || n.includes('cash')) {
-      return `
-        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 border border-emerald-100">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="12" x="2" y="6" rx="2"/>
-            <circle cx="12" cy="12" r="2"/>
-            <path d="M6 12h.01M18 12h.01"/>
-          </svg>
-        </div>
-      `;
+      return `<svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>`;
     }
     if (n.includes('transferencia') || n.includes('banco') || n.includes('bancaria')) {
-      return `
-        <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center flex-shrink-0 border border-sky-100">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20L12 2z"/>
-          </svg>
-        </div>
-      `;
+      return `<svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20L12 2z"/></svg>`;
     }
     if (n.includes('crédito') || n.includes('credito')) {
-      return `
-        <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0 border border-purple-100">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="14" x="2" y="5" rx="2"/>
-            <line x1="2" x2="22" y1="10" y2="10"/>
-          </svg>
-        </div>
-      `;
+      return `<svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>`;
     }
-    // Débito / default
-    return `
-      <div class="w-11 h-11 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="20" height="14" x="2" y="5" rx="2"/>
-          <path d="M6 14h2"/>
-          <path d="M10 14h.01"/>
-          <path d="M14 14h.01"/>
-        </svg>
-      </div>
-    `;
+    return `<svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M6 14h2"/><path d="M10 14h.01"/><path d="M14 14h.01"/></svg>`;
   };
 
-  container.innerHTML = payments.map(p => `
-    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5 hover:border-slate-300 transition-colors">
-      ${getPaymentIcon(p.name)}
-      <div class="min-w-0">
-        <h4 class="font-extrabold text-slate-900 text-sm leading-tight">${window.Utils.escapeHtml(p.name)}</h4>
-        ${p.description ? `<p class="text-xs text-slate-500 mt-0.5 leading-snug">${window.Utils.escapeHtml(p.description)}</p>` : ''}
+  strip.innerHTML = `
+    <span class="font-semibold text-slate-500 text-sm mr-1">Formas de pago:</span>
+    ${activePayments.map(p => `
+      <div class="bg-white border border-slate-200/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-xs text-sm font-semibold text-slate-700">
+        ${getPaymentIcon(p.name)}
+        <span>${window.Utils.escapeHtml(p.name)}</span>
       </div>
-    </div>
-  `).join('');
+    `).join('')}
+  `;
 }
 
 function renderSocialLinks(socials) {
   const container = document.getElementById('social-links-container');
   if (!container || !socials) return;
 
-  container.innerHTML = socials.map(s => {
+  const validSocials = socials.filter(s => s.is_active && s.url && (s.platform || '').toLowerCase() !== 'whatsapp');
+
+  container.innerHTML = validSocials.map(s => {
     let iconSvg = '';
     const platform = (s.platform || '').toLowerCase();
 
@@ -723,8 +700,8 @@ function renderSocialLinks(socials) {
       iconSvg = '<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
     } else if (platform === 'youtube') {
       iconSvg = '<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>';
-    } else if (platform === 'whatsapp') {
-      iconSvg = '<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>';
+    } else if (platform === 'tiktok') {
+      iconSvg = '<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>';
     } else {
       iconSvg = '<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>';
     }
