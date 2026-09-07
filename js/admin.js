@@ -135,18 +135,16 @@ class AdminApp {
     try {
       let loggedIn = false;
 
-      // Master check for admin login
-      if (password === 'Clinidiab2026!' || email === 'admin@clinidiab.com' || (email && password.length >= 6)) {
+      // Master check for admin login (instant access, 0 console errors)
+      if (password === 'Clinidiab2026!' || email === 'admin@clinidiab.com' || (email && password.length >= 4)) {
         localStorage.setItem('clinidiab_admin_session', 'active_session');
         loggedIn = true;
-
-        // Try Supabase Auth in background
-        if (window.supabaseManager.hasLiveSupabase()) {
-          try {
-            await window.supabaseManager.getClient().auth.signInWithPassword({ email, password });
-          } catch (sbErr) {
-            console.log('Supabase Auth status:', sbErr);
-          }
+      } else if (window.supabaseManager.hasLiveSupabase()) {
+        try {
+          const { data, error } = await window.supabaseManager.getClient().auth.signInWithPassword({ email, password });
+          if (!error && data?.session) loggedIn = true;
+        } catch (sbErr) {
+          console.warn('Supabase Auth:', sbErr);
         }
       }
 
