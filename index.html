@@ -47,7 +47,28 @@
   </script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=3.4">
+
+  <!-- Inline critical animations: Marquee -->
+  <style>
+    @keyframes marqueeScroll {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+    .animate-marquee-track {
+      display: flex !important;
+      width: max-content !important;
+      animation: marqueeScroll 25s linear infinite !important;
+      will-change: transform;
+    }
+    .animate-marquee-track:hover {
+      animation-play-state: paused;
+    }
+  </style>
 
   <!-- Supabase JS Client CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -339,9 +360,9 @@
       <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
       <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
       
-      <div class="animate-marquee flex items-center gap-8 whitespace-nowrap text-sm sm:text-base font-bold text-slate-700 select-none">
+      <div class="animate-marquee-track flex items-center gap-8 whitespace-nowrap text-sm sm:text-base font-bold text-slate-700 select-none">
         <!-- Sequence 1 -->
-        <div class="flex items-center gap-8">
+        <div class="flex items-center gap-8 flex-shrink-0">
           <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
           <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
           <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>
@@ -356,7 +377,7 @@
           <span>Nutrición</span> <span class="text-teal-500 font-black">•</span>
         </div>
         <!-- Sequence 2 (Duplicate for infinite seamless loop) -->
-        <div class="flex items-center gap-8">
+        <div class="flex items-center gap-8 flex-shrink-0">
           <span>Hormonas</span> <span class="text-teal-500 font-black">•</span>
           <span>Colesterol</span> <span class="text-teal-500 font-black">•</span>
           <span>Triglicéridos</span> <span class="text-teal-500 font-black">•</span>

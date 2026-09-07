@@ -99,24 +99,27 @@ body {
   box-shadow: 0 8px 22px rgba(220, 39, 67, 0.40);
 }
 
-/* Infinite Marquee Ticker */
-@keyframes marquee {
+/* Infinite Marquee Ticker (Right to Left) */
+@keyframes marqueeScroll {
   0% {
-    transform: translateX(0%);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
+.animate-marquee-track,
 .animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 30s linear infinite;
+  display: flex !important;
+  width: max-content !important;
+  animation: marqueeScroll 25s linear infinite !important;
+  will-change: transform;
 }
 
+.animate-marquee-track:hover,
 .animate-marquee:hover {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
 /* Shadows */
