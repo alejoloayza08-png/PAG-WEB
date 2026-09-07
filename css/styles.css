@@ -266,5 +266,114 @@ div.modal-overlay.hidden,
   font-weight: 400 !important;
 }
 
+/* ============================================================
+   LAFESANA-STYLE FLOATING AUDIO TOGGLE BUTTON (YOUTUBE AUTOPLAY)
+   ============================================================ */
+.audio-toggle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(3, 16, 31, 0.75);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 40;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transition: background 0.25s ease, transform 0.2s ease, border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.audio-toggle:hover {
+  transform: translateY(-1px) scale(1.03);
+  background: rgba(3, 16, 31, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.audio-toggle.active {
+  background: rgba(37, 211, 102, 0.95);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+}
+
+.audio-toggle.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+}
+
+.audio-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  position: relative;
+}
+
+.audio-mute-line {
+  position: absolute;
+  width: 20px;
+  height: 2.5px;
+  background: #ff4b4b;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(35deg);
+  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(255, 75, 75, 0.8);
+  animation: mutePulse 1.2s ease-in-out infinite;
+}
+
+.audio-toggle.active .audio-mute-line {
+  opacity: 0;
+  animation: none;
+  display: none;
+}
+
+.audio-wave {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  animation: audioPulse 1.2s ease-in-out infinite;
+}
+
+.audio-wave.delay {
+  animation-delay: 0.4s;
+}
+
+.audio-toggle.active .audio-wave {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+@keyframes mutePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(35deg) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(35deg) scale(1.18);
+  }
+}
+
+@keyframes audioPulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+}
+
 
 

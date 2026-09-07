@@ -213,7 +213,7 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 function renderHeroMedia(settings) {
-  const mediaType = settings?.hero_media_type || 'video'; // 'card' or 'video'
+  const mediaType = settings?.hero_media_type || 'card'; // 'card' (default) or 'video'
   const youtubeUrl = settings?.hero_youtube_url || 'https://www.youtube.com/watch?v=qEnvCBBya-s&t=41s';
   const autoplay = settings?.hero_video_autoplay !== false;
 
@@ -250,7 +250,7 @@ function renderHeroMedia(settings) {
         setTimeout(initYTPlayers, 150);
       }
 
-      setupDirectAudioButton('hero-toggle-audio-btn', 'hero-audio-icon', 'hero-audio-text', 'hero-yt-iframe', heroAudioState, () => heroYTPlayer);
+      setupDirectAudioButton('hero-toggle-audio-btn', 'hero-yt-iframe', () => heroYTPlayer);
     }
   } else {
     // Show Instagram Profile Card
@@ -299,18 +299,18 @@ function renderVideoSection(settings) {
       setTimeout(initYTPlayers, 150);
     }
 
-    setupDirectAudioButton('section-toggle-audio-btn', 'section-audio-icon', 'section-audio-text', 'section-yt-iframe', sectionAudioState, () => sectionYTPlayer);
+    setupDirectAudioButton('section-toggle-audio-btn', 'section-yt-iframe', () => sectionYTPlayer);
   } else {
     videoSection.classList.add('hidden');
   }
 }
 
-function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef, getPlayerFn) {
+function setupDirectAudioButton(btnId, iframeId, getPlayerFn) {
   const btn = document.getElementById(btnId);
-  const icon = document.getElementById(iconId);
-  const text = document.getElementById(textId);
   if (!btn || btn.dataset.bound) return;
   btn.dataset.bound = 'true';
+
+  const label = btn.querySelector('.audio-label');
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -318,8 +318,9 @@ function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef, getPl
 
     const iframe = document.getElementById(iframeId);
     const player = getPlayerFn ? getPlayerFn() : null;
+    const isCurrentlyActive = btn.classList.contains('active');
 
-    if (stateRef.isMuted) {
+    if (!isCurrentlyActive) {
       // Activar audio: Unmute, set volume to 100, seek to 0 and play with sound
       if (player && typeof player.unMute === 'function') {
         try {
@@ -348,14 +349,9 @@ function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef, getPl
         }
       }
 
-      stateRef.isMuted = false;
-      if (text) text.textContent = 'Silenciar audio';
-      if (icon) {
-        icon.className = 'flex items-center justify-center text-emerald-400';
-        icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-      }
-      btn.classList.add('bg-emerald-950/90', 'border-emerald-400/40');
-      btn.classList.remove('bg-slate-950/80', 'border-white/20');
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      if (label) label.textContent = 'Silenciar audio';
     } else {
       // Silenciar audio
       if (player && typeof player.mute === 'function') {
@@ -375,14 +371,9 @@ function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef, getPl
         }
       }
 
-      stateRef.isMuted = true;
-      if (text) text.textContent = 'Activar audio';
-      if (icon) {
-        icon.className = 'flex items-center justify-center text-rose-400';
-        icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-      }
-      btn.classList.remove('bg-emerald-950/90', 'border-emerald-400/40');
-      btn.classList.add('bg-slate-950/80', 'border-white/20');
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
+      if (label) label.textContent = 'Activar audio';
     }
   });
 }

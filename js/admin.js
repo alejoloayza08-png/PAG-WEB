@@ -413,7 +413,7 @@ class AdminApp {
       if (logoHidden) logoHidden.value = settings?.logo_url || '';
 
       // Media Type (Card vs Video)
-      const mediaType = settings?.hero_media_type || 'video';
+      const mediaType = settings?.hero_media_type || 'card';
       const cardRadio = document.getElementById('hero-media-type-card');
       const videoRadio = document.getElementById('hero-media-type-video');
       if (mediaType === 'video' && videoRadio) {
@@ -525,7 +525,7 @@ class AdminApp {
         logoUrl = await window.Utils.uploadImage(logoImgFile, 'brand');
       }
 
-      const selectedMediaType = document.querySelector('input[name="hero-media-type"]:checked')?.value || 'video';
+      const selectedMediaType = document.querySelector('input[name="hero-media-type"]:checked')?.value || 'card';
 
       const updated = {
         clinic_name: document.getElementById('hero-field-clinic-name')?.value?.trim() || 'CLINIDIAB',
@@ -535,8 +535,8 @@ class AdminApp {
         logo_url: logoUrl,
         hero_media_type: selectedMediaType,
         hero_youtube_url: document.getElementById('hero-field-youtube-url')?.value?.trim() || 'https://www.youtube.com/watch?v=qEnvCBBya-s&t=41s',
-        hero_video_autoplay: document.getElementById('hero-field-video-autoplay')?.checked ?? true,
-        show_video_section: document.getElementById('field-show-video-section')?.checked ?? true,
+        hero_video_autoplay: Boolean(document.getElementById('hero-field-video-autoplay')?.checked),
+        show_video_section: Boolean(document.getElementById('field-show-video-section')?.checked),
         video_section_title: document.getElementById('field-video-section-title')?.value?.trim() || 'Conoce al Dr. Fabricio Loayza y CLINIDIAB',
         video_section_subtitle: document.getElementById('field-video-section-subtitle')?.value?.trim() || 'Atención médica especializada, oportuna y humana en Machala.',
         video_section_youtube_url: document.getElementById('field-video-section-url')?.value?.trim() || ''
