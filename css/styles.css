@@ -171,29 +171,37 @@ body {
 
 /* Modal Overlay & Card Popups */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(15, 23, 42, 0.70);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 9999;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(15, 23, 42, 0.80) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 99999 !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
-.modal-overlay.hidden {
+.modal-overlay.hidden,
+div.modal-overlay.hidden,
+.modal-overlay[style*="display: none"] {
   display: none !important;
 }
 
 .modal-content {
   background-color: #ffffff;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   width: 100%;
   max-width: 32rem;
-  max-height: 90vh;
+  max-height: 88vh;
   overflow-y: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
   border: 1px solid #e2e8f0;
 }
+

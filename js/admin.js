@@ -40,7 +40,7 @@ class AdminApp {
       }
     }
 
-    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location'];
     
     // Priority 1: URL Hash
     const hash = window.location.hash.replace('#', '');
@@ -87,7 +87,7 @@ class AdminApp {
 
     // Hash Change listener for URL back/forward or direct hash links
     window.addEventListener('hashchange', () => {
-      const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+      const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location'];
       const hash = window.location.hash.replace('#', '');
       if (hash && validTabs.includes(hash) && hash !== this.currentTab) {
         this.switchTab(hash);
@@ -313,7 +313,7 @@ class AdminApp {
   }
 
   switchTab(tabName) {
-    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location'];
     if (!validTabs.includes(tabName)) tabName = 'dashboard';
     
     this.currentTab = tabName;
@@ -355,7 +355,6 @@ class AdminApp {
       case 'payments': await this.loadPaymentsForm(); break;
       case 'socials': await this.loadSocialsForm(); break;
       case 'location': await this.loadLocationForm(); break;
-      case 'config': await this.loadConfigForm(); break;
     }
   }
 
@@ -587,8 +586,13 @@ class AdminApp {
       if (placeholder) placeholder.classList.remove('hidden');
     }
 
-    document.getElementById('service-modal').classList.remove('hidden');
+    const modal = document.getElementById('service-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
   }
+
 
   async editService(id) {
     const services = await window.dataStore.getServices();
@@ -712,8 +716,13 @@ class AdminApp {
       if (placeholder) placeholder.classList.remove('hidden');
     }
 
-    document.getElementById('academic-modal').classList.remove('hidden');
+    const modal = document.getElementById('academic-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
   }
+
 
   async editAcademicEvent(id) {
     const list = await window.dataStore.getAcademicEvents();
@@ -840,8 +849,13 @@ class AdminApp {
       if (placeholder) placeholder.classList.remove('hidden');
     }
 
-    document.getElementById('case-modal').classList.remove('hidden');
+    const modal = document.getElementById('case-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
   }
+
 
   async editCase(id) {
     const list = await window.dataStore.getCases();
@@ -955,8 +969,13 @@ class AdminApp {
       if (placeholder) placeholder.classList.remove('hidden');
     }
 
-    document.getElementById('testimonial-modal').classList.remove('hidden');
+    const modal = document.getElementById('testimonial-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.style.setProperty('display', 'flex', 'important');
+    }
   }
+
 
   async editTestimonial(id) {
     const list = await window.dataStore.getTestimonials();
@@ -1265,10 +1284,14 @@ class AdminApp {
   }
 
   closeModals() {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.classList.add('hidden');
+      m.style.setProperty('display', 'none', 'important');
+    });
     this.editingServiceId = null;
     this.editingAcademicId = null;
     this.editingCaseId = null;
     this.editingTestimonialId = null;
   }
 }
+

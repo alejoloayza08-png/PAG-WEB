@@ -15,7 +15,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=2.6">
 
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -121,10 +121,8 @@
           <button data-tab="location" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>📍</span> Ubicación & Mapa
           </button>
-          <button data-tab="config" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
-            <span>⚡</span> Supabase & Config
-          </button>
         </nav>
+
       </div>
 
       <!-- Footer Logout -->
@@ -590,44 +588,13 @@
         </form>
       </div>
 
-      <!-- TAB 12: SUPABASE & CONFIG -->
-      <div id="panel-config" class="admin-tab-panel hidden space-y-6">
-        <div>
-          <h2 class="text-2xl font-extrabold text-slate-900">Conexión a Supabase DB</h2>
-          <p class="text-sm text-slate-500 mt-1">Conecte el backend en la nube con sus credenciales de Supabase.</p>
-        </div>
-
-        <form id="config-settings-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Project URL</label>
-            <input type="url" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-mono">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Anon Key (Pública)</label>
-            <input type="password" id="cfg-supabase-key" placeholder="eyJh..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-mono">
-          </div>
-
-          <div class="p-4 bg-teal-50 rounded-xl border border-teal-200 text-xs text-teal-900 space-y-2">
-            <p class="font-bold">ℹ️ Guía de Conexión:</p>
-            <p>1. Su base de datos Supabase ya se encuentra configurada y sincronizada automáticamente.</p>
-            <p>2. Todos los cambios realizados desde este panel se reflejan inmediatamente en la web pública.</p>
-          </div>
-
-          <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
-              Guardar Credenciales Supabase
-            </button>
-          </div>
-        </form>
-      </div>
-
     </main>
   </div>
 
+
   <!-- MODAL: SERVICIO MEDICAL FORM -->
-  <div id="service-modal" class="modal-overlay hidden">
-    <div class="modal-content p-6">
+  <div id="service-modal" class="modal-overlay fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden" style="display: none !important;">
+    <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="service-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Servicio</h3>
         <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -699,8 +666,8 @@
   </div>
 
   <!-- MODAL: ACADEMIC EVENT FORM -->
-  <div id="academic-modal" class="modal-overlay hidden">
-    <div class="modal-content p-6">
+  <div id="academic-modal" class="modal-overlay fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden" style="display: none !important;">
+    <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="acad-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Evento Académico</h3>
         <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -768,8 +735,8 @@
   </div>
 
   <!-- MODAL: CASE FORM (INSTAGRAM) -->
-  <div id="case-modal" class="modal-overlay hidden">
-    <div class="modal-content p-6">
+  <div id="case-modal" class="modal-overlay fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden" style="display: none !important;">
+    <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="case-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Caso Clínico</h3>
         <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -837,8 +804,8 @@
   </div>
 
   <!-- MODAL: TESTIMONIAL FORM -->
-  <div id="testimonial-modal" class="modal-overlay hidden">
-    <div class="modal-content p-6">
+  <div id="testimonial-modal" class="modal-overlay fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden" style="display: none !important;">
+    <div class="modal-content bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="tst-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Testimonio</h3>
         <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
@@ -906,10 +873,11 @@
   </div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=2.5"></script>
-  <script src="js/supabaseClient.js?v=2.5"></script>
-  <script src="js/utils.js?v=2.5"></script>
-  <script src="js/store.js?v=2.5"></script>
-  <script src="js/admin.js?v=2.5"></script>
+  <script src="js/config.js?v=2.6"></script>
+  <script src="js/supabaseClient.js?v=2.6"></script>
+  <script src="js/utils.js?v=2.6"></script>
+  <script src="js/store.js?v=2.6"></script>
+  <script src="js/admin.js?v=2.6"></script>
 </body>
 </html>
+
