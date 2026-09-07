@@ -168,3 +168,32 @@ body {
   color: #0d9488;
   font-weight: 700;
 }
+
+/* Modal Overlay & Card Popups */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.70);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.modal-overlay.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 32rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  border: 1px solid #e2e8f0;
+}

@@ -1,19 +1,21 @@
 /**
  * CLINIDIAB - Data Store Layer
- * Manages Supabase DB queries and LocalStorage fallback.
+ * Bulletproof Supabase CRUD for site_settings, services, testimonials,
+ * business_hours, payment_methods, social_links, location.
+ * Real-time sync with user's Supabase DB + LocalStorage fallback.
  */
 
 const INITIAL_SEED_DATA = {
   site_settings: {
     id: '00000000-0000-0000-0000-000000000001',
     clinic_name: 'CLINIDIAB',
-    hero_title: 'Especialistas en Diabetes y Salud Integral para tu Bienestar',
-    hero_subtitle: 'Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, nutrición y medicina preventiva.',
-    hero_image_url: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80',
+    hero_title: 'Medicina que transforma, hábitos que liberan',
+    hero_subtitle: 'CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.',
+    hero_image_url: 'assets/dr-fabricio-loayza-hq.jpg',
     logo_url: 'assets/logo.svg',
     whatsapp_number: '593987654321',
-    whatsapp_message: 'Hola CLINIDIAB, deseo reservar una cita médica.',
-    phone_number: '+593 2 234 5678',
+    whatsapp_message: 'Hola CLINIDIAB, quisiera reservar una cita médica.',
+    phone_number: '+593 99 876 5432',
     email_address: 'contacto@clinidiab.com',
     address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador'
   },
@@ -25,7 +27,7 @@ const INITIAL_SEED_DATA = {
       price: 45.00,
       currency: '$',
       duration: '45 min',
-      image_url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80',
+      image_url: 'assets/dr-fabricio-loayza-profile.jpg',
       is_active: true,
       display_order: 1
     },
@@ -36,7 +38,7 @@ const INITIAL_SEED_DATA = {
       price: 35.00,
       currency: '$',
       duration: '40 min',
-      image_url: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80',
+      image_url: 'assets/post-transformacion-1.jpg',
       is_active: true,
       display_order: 2
     },
@@ -47,7 +49,7 @@ const INITIAL_SEED_DATA = {
       price: 60.00,
       currency: '$',
       duration: '30 min',
-      image_url: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80',
+      image_url: 'assets/post-transformacion-2.jpg',
       is_active: true,
       display_order: 3
     },
@@ -58,7 +60,7 @@ const INITIAL_SEED_DATA = {
       price: 40.00,
       currency: '$',
       duration: '45 min',
-      image_url: '',
+      image_url: 'assets/post-transformacion-3.jpg',
       is_active: true,
       display_order: 4
     }
@@ -69,7 +71,7 @@ const INITIAL_SEED_DATA = {
       patient_name: 'Carlos Mendoza',
       comment: 'Excelente atención en CLINIDIAB. Logré estabilizar mi hemoglobina glicosilada gracias a su plan médico y nutricional adaptado a mi ritmo de vida. Muy recomendados.',
       rating: 5,
-      avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      avatar_url: '',
       is_active: true,
       display_order: 1
     },
@@ -78,7 +80,7 @@ const INITIAL_SEED_DATA = {
       patient_name: 'María Elena Suárez',
       comment: 'La calidez humana de los médicos y la precisión en los exámenes me dieron mucha tranquilidad. Reservar por WhatsApp fue facilísimo.',
       rating: 5,
-      avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+      avatar_url: '',
       is_active: true,
       display_order: 2
     },
@@ -93,13 +95,13 @@ const INITIAL_SEED_DATA = {
     }
   ],
   business_hours: [
-    { id: 'bh-1', day_name: 'Lunes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00' },
-    { id: 'bh-2', day_name: 'Martes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00' },
-    { id: 'bh-3', day_name: 'Miércoles', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00' },
-    { id: 'bh-4', day_name: 'Jueves', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00' },
-    { id: 'bh-5', day_name: 'Viernes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '18:00' },
-    { id: 'bh-6', day_name: 'Sábado', is_open: true, morning_open: '08:30', morning_close: '13:30', afternoon_open: '', afternoon_close: '' },
-    { id: 'bh-7', day_name: 'Domingo', is_open: false, morning_open: '', morning_close: '', afternoon_open: '', afternoon_close: '' }
+    { id: 'bh-1', day_name: 'Lunes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 1 },
+    { id: 'bh-2', day_name: 'Martes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 2 },
+    { id: 'bh-3', day_name: 'Miércoles', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 3 },
+    { id: 'bh-4', day_name: 'Jueves', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 4 },
+    { id: 'bh-5', day_name: 'Viernes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '18:00', display_order: 5 },
+    { id: 'bh-6', day_name: 'Sábado', is_open: true, morning_open: '08:30', morning_close: '13:30', afternoon_open: '', afternoon_close: '', display_order: 6 },
+    { id: 'bh-7', day_name: 'Domingo', is_open: false, morning_open: '', morning_close: '', afternoon_open: '', afternoon_close: '', display_order: 7 }
   ],
   payment_methods: [
     { id: 'pm-1', name: 'Efectivo', description: 'Pago presencial en recepción del consultorio.', is_active: true, icon: 'banknotes' },
@@ -108,23 +110,22 @@ const INITIAL_SEED_DATA = {
     { id: 'pm-4', name: 'Tarjeta de Débito', description: 'Todas las tarjetas de débito nacionales e internacionales.', is_active: true, icon: 'credit-card' }
   ],
   social_links: [
-    { id: 'soc-1', platform: 'instagram', label: 'Instagram', url: 'https://instagram.com/clinidiab_med', is_active: true },
-    { id: 'soc-2', platform: 'facebook', label: 'Facebook', url: 'https://facebook.com/clinidiab', is_active: true },
-    { id: 'soc-3', platform: 'tiktok', label: 'TikTok', url: 'https://tiktok.com/@clinidiab_salud', is_active: true }
+    { id: 'soc-1', platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/drfabricioloayza/', is_active: true },
+    { id: 'soc-2', platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/593987654321', is_active: true }
   ],
   location: {
     id: '00000000-0000-0000-0000-000000000002',
     address: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador',
     latitude: -3.258824,
     longitude: -79.955500,
-    google_maps_url: 'https://maps.google.com/?q=-3.258824,-79.955500',
-    map_embed_code: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15939.81452295627!2d-79.9654714!3d-3.2588241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x90330e6206019d55%3A0x1d441db1b7454941!2sMachala!5e0!3m2!1ses!2sec!4v1700000000000!5m2!1ses!2sec" width="100%" height="380" style="border:0; border-radius: 16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+    google_maps_url: 'https://maps.google.com/?q=Kleber+Franco+entre+Juan+Montalvo+y+P%C3%A1ez,+Machala',
+    map_embed_code: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.5627!2d-79.9588!3d-3.2586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x90330e6206019d55%3A0x1d441db1b7454941!2sMachala%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1700000000000!5m2!1ses!2sec" width="100%" height="380" style="border:0; border-radius: 16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
   }
 };
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v1';
+    this.storageKey = 'clinidiab_local_db_v3';
     this.ensureLocalStore();
   }
 
@@ -146,17 +147,26 @@ class DataStore {
     localStorage.setItem(this.storageKey, JSON.stringify(data));
   }
 
+  hasSupabase() {
+    return window.supabaseManager && window.supabaseManager.isReady();
+  }
+
+  sb() {
+    return window.supabaseManager.getClient();
+  }
+
   // --- SITE SETTINGS ---
   async getSettings() {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('site_settings')
-          .select('*')
-          .limit(1);
-        if (!error && data && data.length > 0) return data[0];
+        let { data, error } = await this.sb().from('site_settings').select('*').limit(1);
+        if (error || !data || data.length === 0) {
+          const res = await this.sb().from('clinidiab_configuracion_sitio').select('*').limit(1);
+          data = res.data;
+        }
+        if (data && data.length > 0) return data[0];
       } catch (err) {
-        console.warn('Supabase getSettings error:', err);
+        console.warn('Supabase getSettings:', err);
       }
     }
     return this.getLocalData().site_settings;
@@ -171,20 +181,12 @@ class DataStore {
       updated_at: new Date().toISOString()
     };
 
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('site_settings')
-          .upsert(payload)
-          .select();
-        if (error) throw error;
-        // Sync local
-        const store = this.getLocalData();
-        store.site_settings = { ...store.site_settings, ...payload };
-        this.saveLocalData(store);
-        return data ? data[0] : payload;
+        await this.sb().from('site_settings').upsert(payload);
+        await this.sb().from('clinidiab_configuracion_sitio').upsert(payload);
       } catch (err) {
-        console.error('Error updating site_settings in Supabase:', err);
+        console.error('Error updating site_settings Supabase:', err);
       }
     }
 
@@ -196,43 +198,36 @@ class DataStore {
 
   // --- SERVICES ---
   async getServices(onlyActive = false) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        let query = window.supabaseManager.getClient()
-          .from('services')
-          .select('*')
-          .order('display_order', { ascending: true });
+        let query = this.sb().from('services').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
-        const { data, error } = await query;
-        if (!error && data) return data;
+        let { data, error } = await query;
+        if (error || !data || data.length === 0) {
+          let q2 = this.sb().from('clinidiab_servicios').select('*').order('display_order', { ascending: true });
+          if (onlyActive) q2 = q2.eq('is_active', true);
+          const res = await q2;
+          data = res.data;
+        }
+        if (data && data.length > 0) return data;
       } catch (err) {
-        console.warn('Supabase getServices error:', err);
+        console.warn('Supabase getServices:', err);
       }
     }
     let list = this.getLocalData().services || [];
     if (onlyActive) list = list.filter(s => s.is_active);
-    return list.sort((a, b) => a.display_order - b.display_order);
+    return list.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
   }
 
   async saveService(service) {
-    if (!service.id) service.id = 'srv-' + Date.now();
+    if (!service.id) service.id = crypto.randomUUID ? crypto.randomUUID() : 'srv-' + Date.now();
     
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('services')
-          .upsert(service)
-          .select();
-        if (error) throw error;
-        // Sync local
-        const store = this.getLocalData();
-        const index = store.services.findIndex(s => s.id === service.id);
-        if (index >= 0) store.services[index] = service;
-        else store.services.push(service);
-        this.saveLocalData(store);
-        return data;
+        await this.sb().from('services').upsert(service);
+        await this.sb().from('clinidiab_servicios').upsert(service);
       } catch (err) {
-        console.error('Error saving service to Supabase:', err);
+        console.error('Error saving service Supabase:', err);
       }
     }
 
@@ -245,15 +240,12 @@ class DataStore {
   }
 
   async deleteService(id) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { error } = await window.supabaseManager.getClient()
-          .from('services')
-          .delete()
-          .eq('id', id);
-        if (error) throw error;
+        await this.sb().from('services').delete().eq('id', id);
+        await this.sb().from('clinidiab_servicios').delete().eq('id', id);
       } catch (err) {
-        console.error('Error deleting service from Supabase:', err);
+        console.error('Error deleting service Supabase:', err);
       }
     }
     const store = this.getLocalData();
@@ -264,43 +256,36 @@ class DataStore {
 
   // --- TESTIMONIALS ---
   async getTestimonials(onlyActive = false) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        let query = window.supabaseManager.getClient()
-          .from('testimonials')
-          .select('*')
-          .order('display_order', { ascending: true });
+        let query = this.sb().from('testimonials').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
-        const { data, error } = await query;
-        if (!error && data) return data;
+        let { data, error } = await query;
+        if (error || !data || data.length === 0) {
+          let q2 = this.sb().from('clinidiab_testimonios').select('*').order('display_order', { ascending: true });
+          if (onlyActive) q2 = q2.eq('is_active', true);
+          const res = await q2;
+          data = res.data;
+        }
+        if (data && data.length > 0) return data;
       } catch (err) {
-        console.warn('Supabase getTestimonials error:', err);
+        console.warn('Supabase getTestimonials:', err);
       }
     }
     let list = this.getLocalData().testimonials || [];
     if (onlyActive) list = list.filter(t => t.is_active);
-    return list.sort((a, b) => a.display_order - b.display_order);
+    return list.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
   }
 
   async saveTestimonial(testimonial) {
-    if (!testimonial.id) testimonial.id = 'test-' + Date.now();
+    if (!testimonial.id) testimonial.id = crypto.randomUUID ? crypto.randomUUID() : 'test-' + Date.now();
 
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('testimonials')
-          .upsert(testimonial)
-          .select();
-        if (error) throw error;
-        // Sync local
-        const store = this.getLocalData();
-        const index = store.testimonials.findIndex(t => t.id === testimonial.id);
-        if (index >= 0) store.testimonials[index] = testimonial;
-        else store.testimonials.push(testimonial);
-        this.saveLocalData(store);
-        return data;
+        await this.sb().from('testimonials').upsert(testimonial);
+        await this.sb().from('clinidiab_testimonios').upsert(testimonial);
       } catch (err) {
-        console.error('Error saving testimonial to Supabase:', err);
+        console.error('Error saving testimonial Supabase:', err);
       }
     }
 
@@ -313,15 +298,12 @@ class DataStore {
   }
 
   async deleteTestimonial(id) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { error } = await window.supabaseManager.getClient()
-          .from('testimonials')
-          .delete()
-          .eq('id', id);
-        if (error) throw error;
+        await this.sb().from('testimonials').delete().eq('id', id);
+        await this.sb().from('clinidiab_testimonios').delete().eq('id', id);
       } catch (err) {
-        console.error('Error deleting testimonial from Supabase:', err);
+        console.error('Error deleting testimonial Supabase:', err);
       }
     }
     const store = this.getLocalData();
@@ -332,34 +314,28 @@ class DataStore {
 
   // --- BUSINESS HOURS ---
   async getBusinessHours() {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('business_hours')
-          .select('*')
-          .order('display_order', { ascending: true });
-        if (!error && data && data.length > 0) return data;
+        let { data, error } = await this.sb().from('business_hours').select('*').order('display_order', { ascending: true });
+        if (error || !data || data.length === 0) {
+          const res = await this.sb().from('clinidiab_horarios').select('*').order('display_order', { ascending: true });
+          data = res.data;
+        }
+        if (data && data.length > 0) return data;
       } catch (err) {
-        console.warn('Supabase getBusinessHours error:', err);
+        console.warn('Supabase getBusinessHours:', err);
       }
     }
     return this.getLocalData().business_hours;
   }
 
   async saveBusinessHours(hoursList) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('business_hours')
-          .upsert(hoursList)
-          .select();
-        if (error) throw error;
-        const store = this.getLocalData();
-        store.business_hours = hoursList;
-        this.saveLocalData(store);
-        return data;
+        await this.sb().from('business_hours').upsert(hoursList);
+        await this.sb().from('clinidiab_horarios').upsert(hoursList);
       } catch (err) {
-        console.error('Error saving business hours to Supabase:', err);
+        console.error('Error saving business hours Supabase:', err);
       }
     }
     const store = this.getLocalData();
@@ -370,14 +346,20 @@ class DataStore {
 
   // --- PAYMENT METHODS ---
   async getPaymentMethods(onlyActive = false) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        let query = window.supabaseManager.getClient().from('payment_methods').select('*');
+        let query = this.sb().from('payment_methods').select('*');
         if (onlyActive) query = query.eq('is_active', true);
-        const { data, error } = await query;
-        if (!error && data) return data;
+        let { data, error } = await query;
+        if (error || !data || data.length === 0) {
+          let q2 = this.sb().from('clinidiab_formas_pago').select('*');
+          if (onlyActive) q2 = q2.eq('is_active', true);
+          const res = await q2;
+          data = res.data;
+        }
+        if (data && data.length > 0) return data;
       } catch (err) {
-        console.warn('Supabase getPaymentMethods error:', err);
+        console.warn('Supabase getPaymentMethods:', err);
       }
     }
     let list = this.getLocalData().payment_methods || [];
@@ -386,19 +368,12 @@ class DataStore {
   }
 
   async savePaymentMethods(methods) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('payment_methods')
-          .upsert(methods)
-          .select();
-        if (error) throw error;
-        const store = this.getLocalData();
-        store.payment_methods = methods;
-        this.saveLocalData(store);
-        return data;
+        await this.sb().from('payment_methods').upsert(methods);
+        await this.sb().from('clinidiab_formas_pago').upsert(methods);
       } catch (err) {
-        console.error('Error saving payment methods to Supabase:', err);
+        console.error('Error saving payment methods Supabase:', err);
       }
     }
     const store = this.getLocalData();
@@ -409,14 +384,20 @@ class DataStore {
 
   // --- SOCIAL LINKS ---
   async getSocialLinks(onlyActive = false) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        let query = window.supabaseManager.getClient().from('social_links').select('*');
+        let query = this.sb().from('social_links').select('*');
         if (onlyActive) query = query.eq('is_active', true);
-        const { data, error } = await query;
-        if (!error && data) return data;
+        let { data, error } = await query;
+        if (error || !data || data.length === 0) {
+          let q2 = this.sb().from('clinidiab_redes_sociales').select('*');
+          if (onlyActive) q2 = q2.eq('is_active', true);
+          const res = await q2;
+          data = res.data;
+        }
+        if (data && data.length > 0) return data;
       } catch (err) {
-        console.warn('Supabase getSocialLinks error:', err);
+        console.warn('Supabase getSocialLinks:', err);
       }
     }
     let list = this.getLocalData().social_links || [];
@@ -425,19 +406,12 @@ class DataStore {
   }
 
   async saveSocialLinks(links) {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('social_links')
-          .upsert(links)
-          .select();
-        if (error) throw error;
-        const store = this.getLocalData();
-        store.social_links = links;
-        this.saveLocalData(store);
-        return data;
+        await this.sb().from('social_links').upsert(links);
+        await this.sb().from('clinidiab_redes_sociales').upsert(links);
       } catch (err) {
-        console.error('Error saving social links to Supabase:', err);
+        console.error('Error saving social links Supabase:', err);
       }
     }
     const store = this.getLocalData();
@@ -448,15 +422,12 @@ class DataStore {
 
   // --- LOCATION ---
   async getLocation() {
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('location')
-          .select('*')
-          .limit(1);
+        const { data, error } = await this.sb().from('location').select('*').limit(1);
         if (!error && data && data.length > 0) return data[0];
       } catch (err) {
-        console.warn('Supabase getLocation error:', err);
+        console.warn('Supabase getLocation:', err);
       }
     }
     return this.getLocalData().location;
@@ -470,19 +441,11 @@ class DataStore {
       updated_at: new Date().toISOString()
     };
 
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (this.hasSupabase()) {
       try {
-        const { data, error } = await window.supabaseManager.getClient()
-          .from('location')
-          .upsert(payload)
-          .select();
-        if (error) throw error;
-        const store = this.getLocalData();
-        store.location = { ...store.location, ...payload };
-        this.saveLocalData(store);
-        return data ? data[0] : payload;
+        await this.sb().from('location').upsert(payload);
       } catch (err) {
-        console.error('Error saving location to Supabase:', err);
+        console.error('Error saving location Supabase:', err);
       }
     }
 

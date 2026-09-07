@@ -35,6 +35,15 @@ class AdminApp {
         console.warn('Auth session check failed:', e);
       }
     }
+
+    // Restore active tab from hash or localStorage
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['dashboard', 'hero', 'services', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'].includes(hash)) {
+      this.currentTab = hash;
+    } else {
+      this.currentTab = localStorage.getItem('clinidiab_admin_tab') || 'dashboard';
+    }
+
     this.renderAuthView();
   }
 
@@ -179,7 +188,10 @@ class AdminApp {
   }
 
   switchTab(tabName) {
+    if (!tabName) tabName = 'dashboard';
     this.currentTab = tabName;
+    window.location.hash = tabName;
+    localStorage.setItem('clinidiab_admin_tab', tabName);
 
     document.querySelectorAll('.admin-nav-item').forEach(btn => {
       if (btn.getAttribute('data-tab') === tabName) {
@@ -358,7 +370,7 @@ class AdminApp {
     document.getElementById('srv-active').checked = service ? service.is_active : true;
     document.getElementById('srv-image-url').value = service?.image_url || '';
     document.getElementById('srv-file-input').value = '';
-    document.getElementById('service-modal').classList.add('active');
+    document.getElementById('service-modal').classList.remove('hidden');
   }
 
   async editService(id) {
@@ -456,7 +468,7 @@ class AdminApp {
     document.getElementById('tst-active').checked = testimonial ? testimonial.is_active : true;
     document.getElementById('tst-avatar-url').value = testimonial?.avatar_url || '';
     document.getElementById('tst-file-input').value = '';
-    document.getElementById('testimonial-modal').classList.add('active');
+    document.getElementById('testimonial-modal').classList.remove('hidden');
   }
 
   async editTestimonial(id) {
@@ -761,7 +773,7 @@ class AdminApp {
   }
 
   closeModals() {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
     this.editingServiceId = null;
     this.editingTestimonialId = null;
   }
