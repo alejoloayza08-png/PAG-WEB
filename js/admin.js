@@ -396,14 +396,24 @@ class AdminApp {
   async loadHeroForm() {
     try {
       const settings = await window.dataStore.getSettings();
-      document.getElementById('hero-field-title').value = settings?.hero_title || '';
-      document.getElementById('hero-field-subtitle').value = settings?.hero_subtitle || '';
-      document.getElementById('hero-field-clinic-name').value = settings?.clinic_name || 'CLINIDIAB';
-      document.getElementById('hero-hidden-image-url').value = settings?.hero_image_url || '';
-      document.getElementById('logo-hidden-image-url').value = settings?.logo_url || '';
+      
+      const titleEl = document.getElementById('hero-field-title');
+      if (titleEl) titleEl.value = settings?.hero_title || '';
+      
+      const subEl = document.getElementById('hero-field-subtitle');
+      if (subEl) subEl.value = settings?.hero_subtitle || '';
+      
+      const clinicEl = document.getElementById('hero-field-clinic-name');
+      if (clinicEl) clinicEl.value = settings?.clinic_name || 'CLINIDIAB';
+      
+      const heroHidden = document.getElementById('hero-hidden-image-url');
+      if (heroHidden) heroHidden.value = settings?.hero_image_url || '';
+      
+      const logoHidden = document.getElementById('logo-hidden-image-url');
+      if (logoHidden) logoHidden.value = settings?.logo_url || '';
 
       // Media Type (Card vs Video)
-      const mediaType = settings?.hero_media_type || 'card';
+      const mediaType = settings?.hero_media_type || 'video';
       const cardRadio = document.getElementById('hero-media-type-card');
       const videoRadio = document.getElementById('hero-media-type-video');
       if (mediaType === 'video' && videoRadio) {
@@ -447,7 +457,7 @@ class AdminApp {
       if (vidTitle) vidTitle.value = settings?.video_section_title || 'Conoce al Dr. Fabricio Loayza y CLINIDIAB';
 
       const vidSub = document.getElementById('field-video-section-subtitle');
-      if (vidSub) vidSub.value = settings?.video_section_subtitle || 'Atención médica integral, humana y especializada en Machala.';
+      if (vidSub) vidSub.value = settings?.video_section_subtitle || 'Atención médica especializada, oportuna y humana en Machala.';
 
       const vidUrl = document.getElementById('field-video-section-url');
       if (vidUrl) vidUrl.value = settings?.video_section_youtube_url || '';
@@ -495,14 +505,16 @@ class AdminApp {
 
   async saveHeroSettings(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('[type="submit"]');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const btn = e.target.querySelector('[type="submit"]') || e.target;
+    const origText = btn.textContent;
+    btn.textContent = 'Guardando...'; 
+    btn.disabled = true;
     try {
-      const heroImgFile = document.getElementById('hero-file-input').files[0];
-      const logoImgFile = document.getElementById('logo-file-input').files[0];
+      const heroImgFile = document.getElementById('hero-file-input')?.files?.[0];
+      const logoImgFile = document.getElementById('logo-file-input')?.files?.[0];
 
-      let heroImageUrl = document.getElementById('hero-hidden-image-url').value.trim();
-      let logoUrl = document.getElementById('logo-hidden-image-url').value.trim();
+      let heroImageUrl = document.getElementById('hero-hidden-image-url')?.value?.trim() || '';
+      let logoUrl = document.getElementById('logo-hidden-image-url')?.value?.trim() || '';
 
       if (heroImgFile) {
         window.Utils.showToast('Subiendo foto de portada...', 'info');
@@ -513,30 +525,32 @@ class AdminApp {
         logoUrl = await window.Utils.uploadImage(logoImgFile, 'brand');
       }
 
-      const selectedMediaType = document.querySelector('input[name="hero-media-type"]:checked')?.value || 'card';
+      const selectedMediaType = document.querySelector('input[name="hero-media-type"]:checked')?.value || 'video';
 
       const updated = {
-        clinic_name: document.getElementById('hero-field-clinic-name').value.trim(),
-        hero_title: document.getElementById('hero-field-title').value.trim(),
-        hero_subtitle: document.getElementById('hero-field-subtitle').value.trim(),
+        clinic_name: document.getElementById('hero-field-clinic-name')?.value?.trim() || 'CLINIDIAB',
+        hero_title: document.getElementById('hero-field-title')?.value?.trim() || 'Especialistas en Diabetes y Salud Integral para tu Bienestar',
+        hero_subtitle: document.getElementById('hero-field-subtitle')?.value?.trim() || '',
         hero_image_url: heroImageUrl,
         logo_url: logoUrl,
         hero_media_type: selectedMediaType,
-        hero_youtube_url: document.getElementById('hero-field-youtube-url')?.value.trim() || '',
+        hero_youtube_url: document.getElementById('hero-field-youtube-url')?.value?.trim() || 'https://www.youtube.com/watch?v=qEnvCBBya-s&t=41s',
         hero_video_autoplay: document.getElementById('hero-field-video-autoplay')?.checked ?? true,
-        show_video_section: document.getElementById('field-show-video-section')?.checked ?? false,
-        video_section_title: document.getElementById('field-video-section-title')?.value.trim() || '',
-        video_section_subtitle: document.getElementById('field-video-section-subtitle')?.value.trim() || '',
-        video_section_youtube_url: document.getElementById('field-video-section-url')?.value.trim() || ''
+        show_video_section: document.getElementById('field-show-video-section')?.checked ?? true,
+        video_section_title: document.getElementById('field-video-section-title')?.value?.trim() || 'Conoce al Dr. Fabricio Loayza y CLINIDIAB',
+        video_section_subtitle: document.getElementById('field-video-section-subtitle')?.value?.trim() || 'Atención médica especializada, oportuna y humana en Machala.',
+        video_section_youtube_url: document.getElementById('field-video-section-url')?.value?.trim() || ''
       };
 
       await window.dataStore.updateSettings(updated);
       window.Utils.showToast('✅ Cambios de Inicio y Portada guardados correctamente', 'success');
       await this.loadHeroForm();
     } catch (err) {
+      console.error('Error in saveHeroSettings:', err);
       window.Utils.showToast('❌ Error al guardar: ' + err.message, 'error');
     } finally {
-      btn.textContent = 'Guardar Cambios de Inicio'; btn.disabled = false;
+      btn.textContent = origText; 
+      btn.disabled = false;
     }
   }
 
@@ -546,9 +560,14 @@ class AdminApp {
   async loadDoctorBioForm() {
     try {
       const bio = await window.dataStore.getDoctorBio();
-      document.getElementById('doc-headline').value = bio?.headline || 'Medicina que transforma, hábitos que liberan';
-      document.getElementById('doc-description').value = bio?.description || '';
-      document.getElementById('doc-hidden-image-url').value = bio?.image_url || 'assets/dr-fabricio-loayza-hq.jpg';
+      const hl = document.getElementById('doc-headline');
+      if (hl) hl.value = bio?.headline || 'Medicina que transforma, hábitos que liberan';
+      
+      const desc = document.getElementById('doc-description');
+      if (desc) desc.value = bio?.description || '';
+      
+      const imgHidden = document.getElementById('doc-hidden-image-url');
+      if (imgHidden) imgHidden.value = bio?.image_url || 'assets/dr-fabricio-loayza-hq.jpg';
 
       const photoPreview = document.getElementById('doc-photo-preview');
       if (photoPreview) {
@@ -566,11 +585,13 @@ class AdminApp {
 
   async saveDoctorBio(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('[type="submit"]');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const btn = e.target.querySelector('[type="submit"]') || e.target;
+    const origText = btn.textContent;
+    btn.textContent = 'Guardando...'; 
+    btn.disabled = true;
     try {
-      const docImgFile = document.getElementById('doc-file-input').files[0];
-      let imageUrl = document.getElementById('doc-hidden-image-url').value.trim();
+      const docImgFile = document.getElementById('doc-file-input')?.files?.[0];
+      let imageUrl = document.getElementById('doc-hidden-image-url')?.value?.trim() || '';
 
       if (docImgFile) {
         window.Utils.showToast('Subiendo foto del Dr. Loayza...', 'info');
@@ -578,18 +599,20 @@ class AdminApp {
       }
 
       const bioData = {
-        headline: document.getElementById('doc-headline').value.trim(),
-        description: document.getElementById('doc-description').value.trim(),
+        headline: document.getElementById('doc-headline')?.value?.trim() || 'Medicina que transforma, hábitos que liberan',
+        description: document.getElementById('doc-description')?.value?.trim() || '',
         image_url: imageUrl
       };
 
       await window.dataStore.saveDoctorBio(bioData);
-      window.Utils.showToast('✅ Sección Tu Médico guardada correctamente', 'success');
+      window.Utils.showToast('✅ Información del Dr. Loayza actualizada correctamente', 'success');
       await this.loadDoctorBioForm();
     } catch (err) {
-      window.Utils.showToast('❌ Error al guardar: ' + err.message, 'error');
+      console.error('Error saving doctor bio:', err);
+      window.Utils.showToast('❌ Error: ' + err.message, 'error');
     } finally {
-      btn.textContent = 'Guardar Sección Tu Médico'; btn.disabled = false;
+      btn.textContent = origText; 
+      btn.disabled = false;
     }
   }
 
@@ -1157,26 +1180,28 @@ class AdminApp {
 
   async saveHoursAndContact(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('[type="submit"]');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const btn = e.target.querySelector('[type="submit"]') || e.target;
+    const origText = btn.textContent;
+    btn.textContent = 'Guardando...'; 
+    btn.disabled = true;
     try {
       const updatedSettings = {
-        address_text: document.getElementById('contact-field-address').value.trim(),
-        phone_number: document.getElementById('contact-field-phone').value.trim(),
-        email_address: document.getElementById('contact-field-email').value.trim(),
-        whatsapp_message: document.getElementById('contact-field-whatsapp-msg').value.trim()
+        address_text: document.getElementById('contact-field-address')?.value?.trim() || '',
+        phone_number: document.getElementById('contact-field-phone')?.value?.trim() || '',
+        email_address: document.getElementById('contact-field-email')?.value?.trim() || '',
+        whatsapp_message: document.getElementById('contact-field-whatsapp-msg')?.value?.trim() || 'Hola, quiero agendar una cita médica.'
       };
       await window.dataStore.updateSettings(updatedSettings);
 
       const rows = document.querySelectorAll('#admin-hours-rows > .hour-row');
       const updatedHours = Array.from(rows).map((row, index) => ({
-        id: row.getAttribute('data-day-id'),
-        day_name: row.querySelector('.day-name-label')?.textContent.trim() || '',
-        is_open: row.querySelector('.day-is-open').checked,
-        morning_open: row.querySelector('.day-morning-open').value || '',
-        morning_close: row.querySelector('.day-morning-close').value || '',
-        afternoon_open: row.querySelector('.day-afternoon-open').value || '',
-        afternoon_close: row.querySelector('.day-afternoon-close').value || '',
+        id: row.getAttribute('data-day-id') || window.dataStore.ensureUUID(),
+        day_name: row.querySelector('.day-name-label')?.textContent?.trim() || '',
+        is_open: row.querySelector('.day-is-open')?.checked ?? true,
+        morning_open: row.querySelector('.day-morning-open')?.value || '',
+        morning_close: row.querySelector('.day-morning-close')?.value || '',
+        afternoon_open: row.querySelector('.day-afternoon-open')?.value || '',
+        afternoon_close: row.querySelector('.day-afternoon-close')?.value || '',
         display_order: parseInt(row.getAttribute('data-day-order')) || (index + 1)
       }));
 
@@ -1199,15 +1224,19 @@ class AdminApp {
       const container = document.getElementById('admin-payments-list');
       if (!container) return;
 
-      container.innerHTML = list.map(item => `
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-          <div class="flex items-center justify-between">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="pm-chk-${item.id}" class="pm-is-active rounded text-teal-600 w-5 h-5" ${item.is_active ? 'checked' : ''} data-pm-id="${item.id}">
-              <span class="font-bold text-slate-900">${window.Utils.escapeHtml(item.name)}</span>
+      container.innerHTML = list.map((item, index) => `
+        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 payment-item-row" data-pm-id="${item.id}">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2 flex-1">
+              <span class="text-xs font-bold text-slate-400">#${index + 1}</span>
+              <input type="text" class="pm-name w-full text-sm font-bold text-slate-900 px-3.5 py-2.5 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-teal-500" value="${window.Utils.escapeHtml(item.name || '')}" placeholder="Nombre de la forma de pago (ej: Efectivo, Transferencia...)">
+            </div>
+            <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 select-none flex-shrink-0 bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 shadow-xs">
+              <input type="checkbox" class="pm-is-active rounded text-teal-600 w-4 h-4" ${item.is_active !== false ? 'checked' : ''}>
+              <span>Activo</span>
             </label>
           </div>
-          <input type="text" class="pm-desc w-full text-xs text-slate-700 p-2 border border-slate-200 rounded-lg" value="${window.Utils.escapeHtml(item.description || '')}" placeholder="Descripción (opcional)">
+          <input type="text" class="pm-desc w-full text-xs text-slate-600 px-3.5 py-2 border border-slate-200 rounded-xl bg-white" value="${window.Utils.escapeHtml(item.description || '')}" placeholder="Detalle o marcas aceptadas (ej: Visa, Mastercard, Diners, American Express...)">
         </div>
       `).join('');
     } catch (err) {
@@ -1217,26 +1246,35 @@ class AdminApp {
 
   async savePayments(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('[type="submit"]');
-    btn.textContent = 'Guardando...'; btn.disabled = true;
+    const btn = e.target.querySelector('[type="submit"]') || e.target;
+    const origText = btn.textContent;
+    btn.textContent = 'Guardando...'; 
+    btn.disabled = true;
     try {
-      const existing = await window.dataStore.getPaymentMethods();
-      const updated = existing.map(item => {
-        const chk = document.querySelector(`.pm-is-active[data-pm-id="${item.id}"]`);
-        const descInput = chk?.closest('div.p-4')?.querySelector('.pm-desc');
+      const rows = document.querySelectorAll('.payment-item-row');
+      const updated = Array.from(rows).map((row, idx) => {
+        const id = row.dataset.pmId;
+        const nameInput = row.querySelector('.pm-name');
+        const descInput = row.querySelector('.pm-desc');
+        const chk = row.querySelector('.pm-is-active');
         return {
-          ...item,
-          is_active: chk ? chk.checked : item.is_active,
-          description: descInput ? descInput.value.trim() : item.description
+          id: id || window.dataStore.ensureUUID(),
+          name: nameInput ? nameInput.value.trim() : 'Forma de Pago',
+          description: descInput ? descInput.value.trim() : '',
+          is_active: chk ? chk.checked : true,
+          display_order: idx + 1
         };
       });
 
       await window.dataStore.savePaymentMethods(updated);
-      window.Utils.showToast('✅ Formas de pago actualizadas', 'success');
+      window.Utils.showToast('✅ Formas de pago actualizadas correctamente', 'success');
+      await this.loadPaymentsForm();
     } catch (err) {
+      console.error('Error saving payment methods:', err);
       window.Utils.showToast('❌ Error: ' + err.message, 'error');
     } finally {
-      btn.textContent = 'Guardar Formas de Pago'; btn.disabled = false;
+      btn.textContent = origText; 
+      btn.disabled = false;
     }
   }
 

@@ -21,11 +21,18 @@ const INITIAL_SEED_DATA = {
     hero_subtitle: 'Brindamos atención médica especializada, oportuna y humana para el control efectivo de la diabetes, tiroides, nutrición y medicina preventiva.',
     hero_image_url: 'assets/dr-fabricio-loayza.jpg',
     logo_url: 'assets/logo.svg',
-    whatsapp_number: '593987654321',
-    whatsapp_message: 'Hola CLINIDIAB, quisiera agendar una cita médica.',
-    phone_number: '+593 99 876 5432',
-    email_address: 'contacto@clinidiab.com',
-    address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador'
+    whatsapp_number: '593983258127',
+    whatsapp_message: 'Hola, quiero agendar una cita médica.',
+    phone_number: '+593983258127',
+    email_address: 'consultorio@clinidiab.com',
+    address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador',
+    hero_media_type: 'video',
+    hero_youtube_url: 'https://www.youtube.com/watch?v=qEnvCBBya-s&t=41s',
+    hero_video_autoplay: true,
+    show_video_section: true,
+    video_section_title: 'Conoce al Dr. Fabricio Loayza y CLINIDIAB',
+    video_section_subtitle: 'Atención médica especializada, oportuna y humana en Machala.',
+    video_section_youtube_url: 'https://www.youtube.com/watch?v=qEnvCBBya-s&t=41s'
   },
   doctor_bio: {
     id: '00000000-0000-0000-0000-000000000003',

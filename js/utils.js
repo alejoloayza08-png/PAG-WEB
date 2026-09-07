@@ -156,13 +156,34 @@ const Utils = {
   extractYouTubeId(url) {
     if (!url || typeof url !== 'string') return null;
     const cleanUrl = url.trim();
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = cleanUrl.match(regExp);
-    if (match && match[2] && match[2].length === 11) {
-      return match[2];
-    }
     if (/^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
       return cleanUrl;
+    }
+    try {
+      if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) {
+        const u = new URL(cleanUrl);
+        if (u.searchParams.has('v')) {
+          const v = u.searchParams.get('v');
+          if (v && v.length === 11) return v;
+        }
+        if (u.hostname.includes('youtu.be')) {
+          const pathId = u.pathname.replace(/^\/+/, '').split('/')[0];
+          if (pathId && pathId.length === 11) return pathId;
+        }
+        if (u.pathname.includes('/embed/') || u.pathname.includes('/v/') || u.pathname.includes('/shorts/')) {
+          const parts = u.pathname.split('/');
+          const idx = parts.findIndex(p => ['embed', 'v', 'shorts'].includes(p));
+          if (idx !== -1 && parts[idx + 1] && parts[idx + 1].length === 11) {
+            return parts[idx + 1];
+          }
+        }
+      }
+    } catch (e) {}
+
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const match = cleanUrl.match(regExp);
+    if (match && match[1] && match[1].length === 11) {
+      return match[1];
     }
     return null;
   },
