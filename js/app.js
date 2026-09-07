@@ -16,6 +16,24 @@
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('🩺 CLINIDIAB Public App Initialized');
   setupMobileMenu();
+
+  // Instant synchronous paint from local cache to prevent ANY visual flicker
+  try {
+    if (window.dataStore) {
+      const cached = window.dataStore.getLocalData();
+      if (cached?.site_settings) {
+        renderBrandingAndHero(cached.site_settings);
+        renderHeroMedia(cached.site_settings);
+        setupWhatsAppButtons(cached.site_settings);
+      }
+      if (cached?.doctor_bio) {
+        renderDoctorBio(cached.doctor_bio);
+      }
+    }
+  } catch (e) {
+    console.warn('Initial cache render:', e);
+  }
+
   await loadPublicContent();
 });
 
