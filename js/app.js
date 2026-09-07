@@ -844,7 +844,7 @@ window.addEventListener('clinidiab:data-updated', (event) => {
 });
 
 window.addEventListener('storage', (event) => {
-  if (event.key === 'clinidiab_local_db_v8' && event.newValue) {
+  if (event.key && event.key.startsWith('clinidiab_local_db_') && event.newValue) {
     try {
       const data = JSON.parse(event.newValue);
       applyLiveSettingsSync(data);

@@ -379,6 +379,8 @@ class AdminApp {
       if (tstEl) tstEl.textContent = testimonials.length;
       if (waEl) waEl.textContent = settings?.whatsapp_number || 'No configurado';
 
+      this.updateAdminBranding(settings);
+
       const liveBadge = document.getElementById('stat-supabase-status');
       if (liveBadge) {
         liveBadge.innerHTML = (window.supabaseManager && window.supabaseManager.hasLiveSupabase())
@@ -390,12 +392,21 @@ class AdminApp {
     }
   }
 
+  updateAdminBranding(settings) {
+    if (!settings) return;
+    const clinicName = settings.clinic_name || 'CLINIDIAB';
+    document.querySelectorAll('.brand-name').forEach(el => {
+      el.textContent = clinicName;
+    });
+  }
+
   // =====================
   // HERO / INICIO
   // =====================
   async loadHeroForm() {
     try {
       const settings = await window.dataStore.getSettings();
+      this.updateAdminBranding(settings);
       
       const titleEl = document.getElementById('hero-field-title');
       if (titleEl) titleEl.value = settings?.hero_title || '';
