@@ -1,15 +1,25 @@
 /**
  * CLINIDIAB - Configuration File
- * Supabase: proyecto "pagina-web" en tu cuenta
+ * Contains Supabase connection credentials and application constants.
+ * Apunta a: proyecto "pagina-web" (Supabase propio de Carlos)
  */
 
 const CONFIG = {
-  SUPABASE_URL:      'https://rksgmwrpjtkgwfarbkho.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrc2dtd3JwanRrZ3dmYXJia2hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNTM3NjIsImV4cCI6MjA3OTgyOTc2Mn0.FK5cbeeue8VOH-TDzz7qJBNs8c_9VTsQTwZZA_dbRZY',
-  STORAGE_BUCKET:    'clinidiab-assets',
+  // Supabase Configuration — TU proyecto pagina-web
+  SUPABASE_URL: window.localStorage.getItem('clinidiab_supabase_url') || 'https://rksgmwrpjtkgwfarbkho.supabase.co',
+  SUPABASE_ANON_KEY: window.localStorage.getItem('clinidiab_supabase_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrc2dtd3JwanRrZ3dmYXJia2hvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyNTM3NjIsImV4cCI6MjA3OTgyOTc2Mn0.FK5cbeeue8VOH-TDzz7qJBNs8c_9VTsQTwZZA_dbRZY',
+  
+  // Storage Bucket
+  STORAGE_BUCKET: 'clinidiab-media',
 
-  // Tabla prefix
-  TABLE_PREFIX: 'clinidiab_',
+  // Image upload limits
+  MAX_IMAGE_SIZE_MB: 5,
+  ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'],
+
+  // App Metadata
+  APP_NAME: 'CLINIDIAB',
+  ADMIN_EMAIL_DEFAULT: 'admin@clinidiab.com'
 };
 
+// Expose globally
 window.CONFIG = CONFIG;

@@ -1,5 +1,6 @@
 /**
  * CLINIDIAB - Supabase Client Manager
+ * Handles Supabase SDK initialization and fallback detection.
  */
 
 class SupabaseManager {
@@ -10,26 +11,52 @@ class SupabaseManager {
   }
 
   init() {
-    const url = window.CONFIG.SUPABASE_URL;
-    const key = window.CONFIG.SUPABASE_ANON_KEY;
+    const url = localStorage.getItem('clinidiab_supabase_url') || window.CONFIG.SUPABASE_URL;
+    const key = localStorage.getItem('clinidiab_supabase_key') || window.CONFIG.SUPABASE_ANON_KEY;
 
     if (url && key && typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function') {
       try {
         this.client = window.supabase.createClient(url, key, {
-          auth: { autoRefreshToken: true, persistSession: true }
+          auth: {
+            autoRefreshToken: true,
+            persistSession: true
+          }
         });
         this.isConfigured = true;
-        console.log('✅ Supabase CLINIDIAB conectado:', url);
-      } catch (e) {
-        console.error('❌ Error iniciando Supabase:', e);
+        console.log('✅ Supabase client initialized successfully.');
+      } catch (err) {
+        console.warn('⚠️ Error initializing Supabase client:', err);
+        this.client = null;
+        this.isConfigured = false;
       }
     } else {
-      console.warn('⚠️ Supabase no disponible — usando datos locales');
+      console.log('ℹ️ Supabase credentials not set. Operating in Local Data Mode.');
+      this.client = null;
+      this.isConfigured = false;
     }
   }
 
-  getClient() { return this.client; }
-  isReady()   { return this.isConfigured && this.client !== null; }
+  getClient() {
+    return this.client;
+  }
+
+  hasLiveSupabase() {
+    return this.isConfigured && this.client !== null;
+  }
+
+  updateCredentials(url, key) {
+    if (url) localStorage.setItem('clinidiab_supabase_url', url);
+    else localStorage.removeItem('clinidiab_supabase_url');
+
+    if (key) localStorage.setItem('clinidiab_supabase_key', key);
+    else localStorage.removeItem('clinidiab_supabase_key');
+
+    window.CONFIG.SUPABASE_URL = url || '';
+    window.CONFIG.SUPABASE_ANON_KEY = key || '';
+
+    this.init();
+    return this.isConfigured;
+  }
 }
 
 window.supabaseManager = new SupabaseManager();
