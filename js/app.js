@@ -118,19 +118,14 @@ function renderBrandingAndHero(settings) {
     heroSubtitle.textContent = settings.hero_subtitle;
   }
 
-  // Hero Image
+  // Hero Image (instant load, zero flicker)
   const heroImg = document.getElementById('hero-image');
   if (heroImg) {
-    if (settings.hero_image_url) {
-      heroImg.src = settings.hero_image_url;
+    const targetUrl = settings?.hero_image_url || 'assets/dr-fabricio-loayza.jpg';
+    const currentSrc = heroImg.getAttribute('src');
+    if (currentSrc !== targetUrl && !heroImg.src.endsWith(targetUrl)) {
+      heroImg.src = targetUrl;
     }
-    heroImg.alt = 'Dr. Fabricio Loayza';
-    heroImg.onerror = function() {
-      if (!this.dataset.triedFallback) {
-        this.dataset.triedFallback = '1';
-        this.src = 'assets/dr-fabricio-loayza.jpg';
-      }
-    };
   }
 
   // Logo
