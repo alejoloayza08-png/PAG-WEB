@@ -212,14 +212,17 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100">
             <!-- Portada Hero Photo -->
             <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
-              <label class="block text-xs font-bold uppercase text-slate-800">Foto de Portada</label>
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-800">Foto de Perfil de Portada (Tarjeta Instagram)</label>
+                <p class="text-[11px] text-slate-500 mt-0.5">Esta foto es la que aparece dentro del círculo estilo Instagram en la parte superior derecha de la página de inicio.</p>
+              </div>
               <div class="flex items-center gap-4">
-                <div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+                <div class="w-24 h-24 rounded-full overflow-hidden bg-slate-200 border-2 border-slate-300 flex-shrink-0 flex items-center justify-center">
                   <img id="hero-image-preview" src="assets/dr-fabricio-loayza.jpg" alt="Portada" class="w-full h-full object-cover">
                 </div>
                 <div class="space-y-2 flex-1">
                   <label class="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm">
-                    <span>📁 Seleccionar Foto</span>
+                    <span>📁 Subir Nueva Foto</span>
                     <input type="file" id="hero-file-input" accept="image/*" class="hidden">
                   </label>
                   <button type="button" id="hero-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
@@ -228,6 +231,7 @@
               </div>
               <input type="hidden" id="hero-hidden-image-url">
             </div>
+
 
             <!-- Logo Photo -->
             <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
