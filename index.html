@@ -285,7 +285,7 @@
             <!-- Decorative dot grid -->
             <div class="absolute -top-6 -left-6 w-24 h-24 bg-[radial-gradient(#14b8a6_2px,transparent_2px)] [background-size:12px_12px] opacity-30 z-0"></div>
             <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white w-full max-w-md aspect-[3/4]">
-              <img src="assets/dr-fabricio-loayza-hq.jpg" alt="Dr. Fabricio Loayza" class="w-full h-full object-cover">
+              <img id="doctor-bio-photo" src="assets/dr-fabricio-loayza-hq.jpg" alt="Dr. Fabricio Loayza" class="w-full h-full object-cover">
             </div>
           </div>
 
@@ -295,10 +295,10 @@
               <span class="w-8 h-[2px] bg-teal-500"></span>
               <span class="text-teal-700 text-xs font-extrabold tracking-widest uppercase">Tu Médico</span>
             </div>
-            <h2 class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h2 id="doctor-bio-headline" class="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-slate-900 tracking-tight leading-tight">
               Medicina que <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-teal-700">transforma</span>, hábitos que liberan
             </h2>
-            <p class="text-slate-600 text-base leading-relaxed">
+            <p id="doctor-bio-description" class="text-slate-600 text-base leading-relaxed">
               CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.
             </p>
 
@@ -412,7 +412,7 @@
         </div>
 
         <!-- 3 Transformation Posts Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div id="cases-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           <!-- Post Card 1 -->
           <div class="bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-800 flex flex-col group hover:-translate-y-1 transition-all duration-300">
@@ -520,12 +520,12 @@
         </div>
 
         <!-- 3 Academic Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div id="academic-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           <!-- Academic Card 1 -->
           <div class="bg-slate-800/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-slate-700/80 flex flex-col group hover:border-teal-500/50 transition-all duration-300">
             <div class="relative overflow-hidden aspect-[4/3] bg-slate-950">
-              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Congresos Médicos Nacionales" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="assets/congreso-1.jpg" alt="Congresos Médicos Nacionales" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
               <span class="absolute top-3 left-3 bg-teal-500 text-slate-950 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-sm">
                 Conferencista

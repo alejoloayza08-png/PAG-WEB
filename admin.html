@@ -20,7 +20,7 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased">
 
   <!-- Toast Notification Container -->
   <div id="toast-container"></div>
@@ -30,8 +30,12 @@
     <div class="w-full max-w-md bg-white text-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-100 relative overflow-hidden">
       
       <div class="text-center mb-8">
-        <img src="assets/logo.svg" alt="CLINIDIAB" class="h-12 w-auto mx-auto mb-4">
-        <span class="bg-sky-100 text-sky-800 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Acceso Privado</span>
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-teal-500 flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-sky-500/30">
+          <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+            <path d="M19 10.5h-4.5V6a1.5 1.5 0 00-3 0v4.5H7a1.5 1.5 0 000 3h4.5V18a1.5 1.5 0 003 0v-4.5H19a1.5 1.5 0 000-3z"/>
+          </svg>
+        </div>
+        <span class="bg-teal-100 text-teal-800 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Acceso Privado</span>
         <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Panel Administrativo</h1>
         <p class="text-xs text-slate-500 mt-1">Ingrese sus credenciales de administrador para gestionar CLINIDIAB.</p>
       </div>
@@ -51,13 +55,13 @@
           <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50">
         </div>
 
-        <button type="submit" id="login-submit-btn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-sky-600/30">
+        <button type="submit" id="login-submit-btn" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-teal-600/30">
           Iniciar Sesión
         </button>
       </form>
 
       <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-        <a href="index.html" class="text-xs text-slate-400 hover:text-sky-600 font-medium">← Volver al sitio público</a>
+        <a href="index.html" class="text-xs text-slate-400 hover:text-teal-600 font-medium">← Volver al sitio público</a>
       </div>
 
     </div>
@@ -71,38 +75,53 @@
       <div>
         <!-- Brand Header -->
         <div class="p-6 border-b border-slate-800 flex items-center justify-between">
-          <a href="index.html" target="_blank" class="flex items-center gap-2">
-            <img src="assets/logo.svg" alt="CLINIDIAB" class="h-9 w-auto brightness-200">
+          <a href="index.html" target="_blank" class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 to-teal-500 flex items-center justify-center text-white font-black text-lg shadow-md">
+              +
+            </div>
+            <div>
+              <span class="text-lg font-extrabold text-white block leading-none">CLINIDIAB</span>
+              <span class="text-[10px] text-teal-400 font-bold uppercase tracking-widest block mt-0.5">Admin Panel</span>
+            </div>
           </a>
         </div>
 
         <!-- Menu Navigation List -->
-        <nav class="p-4 space-y-1.5 text-sm font-semibold">
-          <button data-tab="dashboard" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+        <nav class="p-4 space-y-1 text-sm font-semibold overflow-y-auto max-h-[calc(100vh-160px)]">
+          <button data-tab="dashboard" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>📊</span> Dashboard
           </button>
-          <button data-tab="hero" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
-            <span>🏠</span> Página de Inicio
+          <button data-tab="hero" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>🏠</span> Inicio & Portada
           </button>
-          <button data-tab="services" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="doctor-bio" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>👨‍⚕️</span> Tu Médico (Dr. Loayza)
+          </button>
+          <button data-tab="services" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>🩺</span> Servicios Médicos
           </button>
-          <button data-tab="testimonials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="academic" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>🎓</span> Actividad Académica
+          </button>
+          <button data-tab="cases" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+            <span>📸</span> Contenido & Casos
+          </button>
+          <button data-tab="testimonials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>⭐</span> Testimonios
           </button>
-          <button data-tab="contact-hours" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="contact-hours" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>📞</span> Contactos y Horarios
           </button>
-          <button data-tab="payments" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="payments" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>💳</span> Formas de Pago
           </button>
-          <button data-tab="socials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="socials" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>🌐</span> Redes Sociales
           </button>
-          <button data-tab="location" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="location" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>📍</span> Ubicación & Mapa
           </button>
-          <button data-tab="config" class="admin-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
+          <button data-tab="config" class="admin-nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 transition-all text-left">
             <span>⚡</span> Supabase & Config
           </button>
         </nav>
@@ -134,7 +153,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Servicios Registrados</span>
-            <span id="stat-services-count" class="text-3xl font-extrabold text-sky-600 mt-2 block">0</span>
+            <span id="stat-services-count" class="text-3xl font-extrabold text-teal-600 mt-2 block">0</span>
           </div>
           <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Servicios Activos</span>
@@ -154,9 +173,10 @@
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <h3 class="font-bold text-lg text-slate-900">Acciones Rápidas</h3>
           <div class="flex flex-wrap gap-4">
-            <button onclick="window.adminApp.switchTab('services')" class="px-4 py-2.5 bg-sky-600 text-white rounded-xl text-xs font-bold hover:bg-sky-700">Gestionar Servicios</button>
-            <button onclick="window.adminApp.switchTab('hero')" class="px-4 py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900">Editar Inicio (Hero)</button>
-            <a href="index.html" target="_blank" class="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50">Ver Sitio Público ↗</a>
+            <button onclick="window.adminApp.switchTab('services')" class="px-4 py-2.5 bg-teal-600 text-white rounded-xl text-xs font-bold hover:bg-teal-700 transition-colors">Gestionar Servicios</button>
+            <button onclick="window.adminApp.switchTab('academic')" class="px-4 py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900 transition-colors">Actividad Académica</button>
+            <button onclick="window.adminApp.switchTab('doctor-bio')" class="px-4 py-2.5 bg-sky-600 text-white rounded-xl text-xs font-bold hover:bg-sky-700 transition-colors">Editar Tu Médico</button>
+            <a href="index.html" target="_blank" class="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors">Ver Sitio Público ↗</a>
           </div>
         </div>
       </div>
@@ -164,11 +184,22 @@
       <!-- TAB 2: PÁGINA DE INICIO (HERO) -->
       <div id="panel-hero" class="admin-tab-panel hidden space-y-6">
         <div>
-          <h2 class="text-2xl font-extrabold text-slate-900">Configuración de Sección Inicio (Hero)</h2>
-          <p class="text-sm text-slate-500 mt-1">Edite los textos principales, WhatsApp y las imágenes de portada.</p>
+          <h2 class="text-2xl font-extrabold text-slate-900">Configuración de Inicio (Portada)</h2>
+          <p class="text-sm text-slate-500 mt-1">Edite los textos principales, WhatsApp y suba las fotos directamente desde su dispositivo.</p>
         </div>
 
         <form id="hero-settings-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nombre del Consultorio / Clínica</label>
+              <input type="text" id="hero-field-clinic-name" placeholder="CLINIDIAB" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Número de WhatsApp (con código de país, ej: 593987654321)</label>
+              <input type="text" id="hero-field-whatsapp" placeholder="593987654321" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold">
+            </div>
+          </div>
+
           <div>
             <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título Principal (Hero Title)</label>
             <input type="text" id="hero-field-title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold">
@@ -179,60 +210,108 @@
             <textarea id="hero-field-subtitle" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm leading-relaxed"></textarea>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nombre de la Clínica</label>
-              <input type="text" id="hero-field-clinic-name" placeholder="CLINIDIAB" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <!-- DIRECT PHOTO UPLOADERS (MOBILE & PC) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100">
+            <!-- Portada Hero Photo -->
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
+              <label class="block text-xs font-bold uppercase text-slate-800">Foto de Portada</label>
+              <div class="flex items-center gap-4">
+                <div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+                  <img id="hero-image-preview" src="assets/dr-fabricio-loayza.jpg" alt="Portada" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-2 flex-1">
+                  <label class="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                    <span>📁 Seleccionar Foto</span>
+                    <input type="file" id="hero-file-input" accept="image/*" class="hidden">
+                  </label>
+                  <button type="button" id="hero-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
+                  <p class="text-[11px] text-slate-400">JPG, PNG o WEBP desde celular o PC.</p>
+                </div>
+              </div>
+              <input type="hidden" id="hero-hidden-image-url">
             </div>
-            <div>
-              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Número de WhatsApp (código sin +)</label>
-              <input type="text" id="hero-field-whatsapp" placeholder="593987654321" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL Foto Portada</label>
-              <input type="text" id="hero-field-image-url" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
-            </div>
-          </div>
 
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL Logo (opcional)</label>
-            <input type="text" id="hero-field-logo-url" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
-          </div>
-
-          <!-- Preview imagen portada -->
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Vista Previa de Imagen de Portada</label>
-            <img id="hero-image-preview" src="" alt="Vista previa" class="hidden max-h-48 rounded-xl border border-slate-200 shadow-sm object-cover">
-          </div>
-
-          <!-- File Upload for Hero Image -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-            <div>
-              <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Subir Nueva Foto de Portada (Supabase Storage)</label>
-              <input type="file" id="hero-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Subir Nuevo Logo de CLINIDIAB</label>
-              <input type="file" id="logo-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
+            <!-- Logo Photo -->
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
+              <label class="block text-xs font-bold uppercase text-slate-800">Logo de CLINIDIAB</label>
+              <div class="flex items-center gap-4">
+                <div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center p-2">
+                  <img id="logo-image-preview" src="assets/logo.svg" alt="Logo" class="max-w-full max-h-full object-contain">
+                </div>
+                <div class="space-y-2 flex-1">
+                  <label class="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                    <span>📁 Seleccionar Logo</span>
+                    <input type="file" id="logo-file-input" accept="image/*" class="hidden">
+                  </label>
+                  <button type="button" id="logo-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar logo</button>
+                  <p class="text-[11px] text-slate-400">SVG, PNG o JPG.</p>
+                </div>
+              </div>
+              <input type="hidden" id="logo-hidden-image-url">
             </div>
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Cambios de Inicio
             </button>
           </div>
         </form>
       </div>
 
-      <!-- TAB 3: SERVICIOS -->
+      <!-- TAB 3: TU MÉDICO (DR. LOAYZA BIO) -->
+      <div id="panel-doctor-bio" class="admin-tab-panel hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">Sección: Tu Médico (Dr. Fabricio Loayza)</h2>
+          <p class="text-sm text-slate-500 mt-1">Edite la biografía profesional, títulos y suba la foto oficial del Dr. Loayza.</p>
+        </div>
+
+        <form id="doctor-bio-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título / Headline</label>
+            <input type="text" id="doc-headline" required placeholder="Medicina que transforma, hábitos que liberan" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Descripción del Consultorio / Bio</label>
+            <textarea id="doc-description" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm leading-relaxed"></textarea>
+          </div>
+
+          <!-- Doctor Photo Uploader -->
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-3">
+            <label class="block text-xs font-bold uppercase text-slate-800">Fotografía Principal del Dr. Loayza</label>
+            <div class="flex items-center gap-5">
+              <div class="w-28 h-36 rounded-2xl overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0">
+                <img id="doc-photo-preview" src="assets/dr-fabricio-loayza-hq.jpg" alt="Dr. Loayza" class="w-full h-full object-cover">
+              </div>
+              <div class="space-y-2 flex-1">
+                <label class="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                  <span>📁 Subir Foto del Doctor</span>
+                  <input type="file" id="doc-file-input" accept="image/*" class="hidden">
+                </label>
+                <button type="button" id="doc-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto actual</button>
+                <p class="text-xs text-slate-400">Suba una foto vertical de alta calidad desde su celular o computador.</p>
+              </div>
+            </div>
+            <input type="hidden" id="doc-hidden-image-url">
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
+              Guardar Sección Tu Médico
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 4: SERVICIOS MÉDICOS -->
       <div id="panel-services" class="admin-tab-panel hidden space-y-6">
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-2xl font-extrabold text-slate-900">Gestión de Servicios Médicos</h2>
-            <p class="text-sm text-slate-500 mt-1">Cree, edite, ordene y active los servicios prestados.</p>
+            <p class="text-sm text-slate-500 mt-1">Cree, edite, ordene y suba fotos para los servicios médicos.</p>
           </div>
-          <button id="btn-new-service" class="px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2">
+          <button id="btn-new-service" class="px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all">
             <span>+</span> Nuevo Servicio
           </button>
         </div>
@@ -258,14 +337,80 @@
         </div>
       </div>
 
-      <!-- TAB 4: TESTIMONIOS -->
+      <!-- TAB 5: ACTIVIDAD ACADÉMICA -->
+      <div id="panel-academic" class="admin-tab-panel hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Actividad Académica y Congresos</h2>
+            <p class="text-sm text-slate-500 mt-1">Administre las ponencias, congresos médicos y certificados del Dr. Fabricio Loayza.</p>
+          </div>
+          <button id="btn-new-academic" class="px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all">
+            <span>+</span> Nuevo Evento Académico
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
+                <tr>
+                  <th class="px-4 py-3">Evento / Congreso</th>
+                  <th class="px-4 py-3">Insignia / Rol</th>
+                  <th class="px-4 py-3">Institución / Fecha</th>
+                  <th class="px-4 py-3 text-center">Estado</th>
+                  <th class="px-4 py-3 text-center">Orden</th>
+                  <th class="px-4 py-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-academic-tbody">
+                <!-- Rendered JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: CONTENIDO & CASOS (INSTAGRAM) -->
+      <div id="panel-cases" class="admin-tab-panel hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">Contenido y Casos Clínicos (Instagram)</h2>
+            <p class="text-sm text-slate-500 mt-1">Administre las transformaciones metabólicas y publicaciones educativas.</p>
+          </div>
+          <button id="btn-new-case" class="px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all">
+            <span>+</span> Nuevo Caso Clínico
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase">
+                <tr>
+                  <th class="px-4 py-3">Caso Clínico</th>
+                  <th class="px-4 py-3">Etiqueta</th>
+                  <th class="px-4 py-3">Enlace Instagram</th>
+                  <th class="px-4 py-3 text-center">Estado</th>
+                  <th class="px-4 py-3 text-center">Orden</th>
+                  <th class="px-4 py-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-cases-tbody">
+                <!-- Rendered JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 7: TESTIMONIOS -->
       <div id="panel-testimonials" class="admin-tab-panel hidden space-y-6">
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-2xl font-extrabold text-slate-900">Gestión de Testimonios</h2>
             <p class="text-sm text-slate-500 mt-1">Administre las opiniones de pacientes de CLINIDIAB.</p>
           </div>
-          <button id="btn-new-testimonial" class="px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2">
+          <button id="btn-new-testimonial" class="px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all">
             <span>+</span> Nuevo Testimonio
           </button>
         </div>
@@ -290,7 +435,7 @@
         </div>
       </div>
 
-      <!-- TAB 5: CONTACTOS Y HORARIOS -->
+      <!-- TAB 8: CONTACTOS Y HORARIOS -->
       <div id="panel-contact-hours" class="admin-tab-panel hidden space-y-6">
         <div>
           <h2 class="text-2xl font-extrabold text-slate-900">Horarios de Atención y Datos de Contacto</h2>
@@ -326,14 +471,14 @@
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Horarios y Contactos
             </button>
           </div>
         </form>
       </div>
 
-      <!-- TAB 6: FORMAS DE PAGO -->
+      <!-- TAB 9: FORMAS DE PAGO -->
       <div id="panel-payments" class="admin-tab-panel hidden space-y-6">
         <div>
           <h2 class="text-2xl font-extrabold text-slate-900">Formas de Pago Aceptadas</h2>
@@ -346,14 +491,14 @@
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Formas de Pago
             </button>
           </div>
         </form>
       </div>
 
-      <!-- TAB 7: REDES SOCIALES -->
+      <!-- TAB 10: REDES SOCIALES -->
       <div id="panel-socials" class="admin-tab-panel hidden space-y-6">
         <div>
           <h2 class="text-2xl font-extrabold text-slate-900">Redes Sociales</h2>
@@ -367,10 +512,10 @@
             <div class="flex items-center justify-between">
               <span class="font-bold text-slate-900 text-sm">Instagram</span>
               <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
-                <input type="checkbox" id="soc-ig-active" class="rounded text-sky-600"> Activo
+                <input type="checkbox" id="soc-ig-active" class="rounded text-teal-600"> Activo
               </label>
             </div>
-            <input type="url" id="soc-ig-url" placeholder="https://instagram.com/clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
+            <input type="url" id="soc-ig-url" placeholder="https://instagram.com/drfabricioloayza" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
           </div>
 
           <!-- Facebook -->
@@ -378,7 +523,7 @@
             <div class="flex items-center justify-between">
               <span class="font-bold text-slate-900 text-sm">Facebook</span>
               <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
-                <input type="checkbox" id="soc-fb-active" class="rounded text-sky-600"> Activo
+                <input type="checkbox" id="soc-fb-active" class="rounded text-teal-600"> Activo
               </label>
             </div>
             <input type="url" id="soc-fb-url" placeholder="https://facebook.com/clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
@@ -389,21 +534,21 @@
             <div class="flex items-center justify-between">
               <span class="font-bold text-slate-900 text-sm">TikTok</span>
               <label class="flex items-center gap-2 text-xs font-semibold text-slate-600">
-                <input type="checkbox" id="soc-tt-active" class="rounded text-sky-600"> Activo
+                <input type="checkbox" id="soc-tt-active" class="rounded text-teal-600"> Activo
               </label>
             </div>
             <input type="url" id="soc-tt-url" placeholder="https://tiktok.com/@clinidiab" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs">
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Redes Sociales
             </button>
           </div>
         </form>
       </div>
 
-      <!-- TAB 8: UBICACIÓN -->
+      <!-- TAB 11: UBICACIÓN -->
       <div id="panel-location" class="admin-tab-panel hidden space-y-6">
         <div>
           <h2 class="text-2xl font-extrabold text-slate-900">Ubicación y Google Maps</h2>
@@ -419,11 +564,11 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Latitud</label>
-              <input type="text" id="loc-lat" placeholder="-0.180653" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+              <input type="text" id="loc-lat" placeholder="-3.258824" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
             </div>
             <div>
               <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Longitud</label>
-              <input type="text" id="loc-lng" placeholder="-78.484252" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
+              <input type="text" id="loc-lng" placeholder="-79.955500" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm">
             </div>
           </div>
 
@@ -438,14 +583,14 @@
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Ubicación
             </button>
           </div>
         </form>
       </div>
 
-      <!-- TAB 9: SUPABASE & CONFIG -->
+      <!-- TAB 12: SUPABASE & CONFIG -->
       <div id="panel-config" class="admin-tab-panel hidden space-y-6">
         <div>
           <h2 class="text-2xl font-extrabold text-slate-900">Conexión a Supabase DB</h2>
@@ -463,15 +608,14 @@
             <input type="password" id="cfg-supabase-key" placeholder="eyJh..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-mono">
           </div>
 
-          <div class="p-4 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 space-y-2">
+          <div class="p-4 bg-teal-50 rounded-xl border border-teal-200 text-xs text-teal-900 space-y-2">
             <p class="font-bold">ℹ️ Guía de Conexión:</p>
-            <p>1. Ejecute el archivo <code class="bg-white px-1.5 py-0.5 rounded border border-sky-300 font-bold">supabase/schema.sql</code> en el Editor SQL de su proyecto en Supabase.</p>
-            <p>2. Copie la URL del Proyecto y la clave Anon pública desde la sección Project Settings → API.</p>
-            <p>3. Guarde los cambios aquí. La aplicación se sincronizará automáticamente con su base de datos.</p>
+            <p>1. Su base de datos Supabase ya se encuentra configurada y sincronizada automáticamente.</p>
+            <p>2. Todos los cambios realizados desde este panel se reflejan inmediatamente en la web pública.</p>
           </div>
 
           <div class="pt-4 flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md">
+            <button type="submit" class="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
               Guardar Credenciales Supabase
             </button>
           </div>
@@ -486,7 +630,7 @@
     <div class="modal-content p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="service-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Servicio</h3>
-        <button class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+        <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
       </div>
 
       <form id="service-form" class="space-y-4">
@@ -502,7 +646,7 @@
 
         <div class="grid grid-cols-3 gap-3">
           <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Precio</label>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Precio ($)</label>
             <input type="number" step="0.01" id="srv-price" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
           </div>
           <div>
@@ -522,20 +666,171 @@
           </div>
           <div class="flex items-center pt-6">
             <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
-              <input type="checkbox" id="srv-active" checked class="w-4 h-4 rounded text-sky-600"> Servicio Activo
+              <input type="checkbox" id="srv-active" checked class="w-4 h-4 rounded text-teal-600"> Servicio Activo
             </label>
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Fotografía del Servicio</label>
-          <input type="file" id="srv-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700">
+        <!-- Service Photo Direct Uploader -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold uppercase text-slate-700">Foto del Servicio</label>
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+              <img id="srv-image-preview" src="" alt="Vista previa" class="w-full h-full object-cover hidden">
+              <span id="srv-no-image-text" class="text-slate-400 text-xl">📷</span>
+            </div>
+            <div class="space-y-1.5 flex-1">
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                <span>📁 Subir Foto</span>
+                <input type="file" id="srv-file-input" accept="image/*" class="hidden">
+              </label>
+              <button type="button" id="srv-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
+            </div>
+          </div>
           <input type="hidden" id="srv-image-url">
         </div>
 
         <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
           <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
-          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md">Guardar Servicio</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-md transition-all">Guardar Servicio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ACADEMIC EVENT FORM -->
+  <div id="academic-modal" class="modal-overlay hidden">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <h3 id="acad-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Evento Académico</h3>
+        <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+      </div>
+
+      <form id="academic-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título del Evento / Congreso</label>
+          <input type="text" id="acad-title" required placeholder="XI Semana Ecuatoriana de Enfermedades Digestivas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Insignia / Rol</label>
+            <input type="text" id="acad-badge" placeholder="Conferencista / Congreso 2026" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Institución / Fecha</label>
+            <input type="text" id="acad-institution" placeholder="Sociedad Médica / Del 27 al 29 de Agosto" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Descripción de la Ponencia</label>
+          <textarea id="acad-description" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Orden</label>
+            <input type="number" id="acad-order" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div class="flex items-center pt-6">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
+              <input type="checkbox" id="acad-active" checked class="w-4 h-4 rounded text-teal-600"> Evento Activo
+            </label>
+          </div>
+        </div>
+
+        <!-- Academic Photo Direct Uploader -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold uppercase text-slate-700">Fotografía del Evento / Congreso</label>
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+              <img id="acad-image-preview" src="" alt="Vista previa" class="w-full h-full object-cover hidden">
+              <span id="acad-no-image-text" class="text-slate-400 text-xl">🎓</span>
+            </div>
+            <div class="space-y-1.5 flex-1">
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                <span>📁 Subir Foto</span>
+                <input type="file" id="acad-file-input" accept="image/*" class="hidden">
+              </label>
+              <button type="button" id="acad-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
+            </div>
+          </div>
+          <input type="hidden" id="acad-image-url">
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-md transition-all">Guardar Evento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CASE FORM (INSTAGRAM) -->
+  <div id="case-modal" class="modal-overlay hidden">
+    <div class="modal-content p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <h3 id="case-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Caso Clínico</h3>
+        <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+      </div>
+
+      <form id="case-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título del Caso</label>
+          <input type="text" id="case-title" required placeholder="66 Libras Menos · Vida con Propósito" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Etiqueta</label>
+            <input type="text" id="case-tag" placeholder="Transformación #4" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Enlace a Instagram</label>
+            <input type="url" id="case-ig-url" placeholder="https://www.instagram.com/drfabricioloayza/" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Descripción del Caso</label>
+          <textarea id="case-description" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Orden</label>
+            <input type="number" id="case-order" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+          </div>
+          <div class="flex items-center pt-6">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
+              <input type="checkbox" id="case-active" checked class="w-4 h-4 rounded text-teal-600"> Caso Activo
+            </label>
+          </div>
+        </div>
+
+        <!-- Case Photo Direct Uploader -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold uppercase text-slate-700">Foto de la Transformación</label>
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+              <img id="case-image-preview" src="" alt="Vista previa" class="w-full h-full object-cover hidden">
+              <span id="case-no-image-text" class="text-slate-400 text-xl">📸</span>
+            </div>
+            <div class="space-y-1.5 flex-1">
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                <span>📁 Subir Foto</span>
+                <input type="file" id="case-file-input" accept="image/*" class="hidden">
+              </label>
+              <button type="button" id="case-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
+            </div>
+          </div>
+          <input type="hidden" id="case-image-url">
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-md transition-all">Guardar Caso</button>
         </div>
       </form>
     </div>
@@ -546,7 +841,7 @@
     <div class="modal-content p-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
         <h3 id="tst-modal-title" class="font-extrabold text-lg text-slate-900">Nuevo Testimonio</h3>
-        <button class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+        <button type="button" class="btn-close-modal text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
       </div>
 
       <form id="testimonial-form" class="space-y-4">
@@ -579,19 +874,32 @@
 
         <div class="flex items-center">
           <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
-            <input type="checkbox" id="tst-active" checked class="w-4 h-4 rounded text-sky-600"> Testimonio Activo
+            <input type="checkbox" id="tst-active" checked class="w-4 h-4 rounded text-teal-600"> Testimonio Activo
           </label>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Foto del Paciente (Opcional)</label>
-          <input type="file" id="tst-file-input" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700">
+        <!-- Patient Photo Direct Uploader -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-xs font-bold uppercase text-slate-700">Foto del Paciente (Opcional)</label>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full overflow-hidden bg-slate-200 border border-slate-300 flex-shrink-0 flex items-center justify-center">
+              <img id="tst-image-preview" src="" alt="Paciente" class="w-full h-full object-cover hidden">
+              <span id="tst-no-image-text" class="text-slate-400 text-lg">👤</span>
+            </div>
+            <div class="space-y-1.5 flex-1">
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                <span>📁 Subir Foto</span>
+                <input type="file" id="tst-file-input" accept="image/*" class="hidden">
+              </label>
+              <button type="button" id="tst-remove-photo-btn" class="block text-xs text-rose-600 hover:text-rose-700 font-semibold">Eliminar foto</button>
+            </div>
+          </div>
           <input type="hidden" id="tst-avatar-url">
         </div>
 
         <div class="pt-4 flex justify-end gap-3 border-t border-slate-100">
           <button type="button" class="btn-close-modal px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl">Cancelar</button>
-          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md">Guardar Testimonio</button>
+          <button type="submit" class="px-5 py-2.5 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-md transition-all">Guardar Testimonio</button>
         </div>
       </form>
     </div>

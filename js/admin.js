@@ -1,6 +1,7 @@
 /**
  * CLINIDIAB - Admin Panel SPA Engine
  * Full admin with Supabase Auth, CRUD for all content sections,
+ * direct mobile/PC image uploaders with instant preview and removal,
  * and instant save + refresh to public page.
  */
 
@@ -15,12 +16,15 @@ class AdminApp {
     this.isAuthenticated = false;
     this.currentTab = 'dashboard';
     this.editingServiceId = null;
+    this.editingAcademicId = null;
+    this.editingCaseId = null;
     this.editingTestimonialId = null;
   }
 
   async init() {
     await this.checkAuth();
     this.setupEventListeners();
+    this.setupImageUploaders();
   }
 
   async checkAuth() {
@@ -38,10 +42,12 @@ class AdminApp {
 
     // Restore active tab from hash or localStorage
     const hash = window.location.hash.replace('#', '');
-    if (hash && ['dashboard', 'hero', 'services', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'].includes(hash)) {
+    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+    if (hash && validTabs.includes(hash)) {
       this.currentTab = hash;
     } else {
-      this.currentTab = localStorage.getItem('clinidiab_admin_tab') || 'dashboard';
+      const stored = localStorage.getItem('clinidiab_admin_tab');
+      this.currentTab = (stored && validTabs.includes(stored)) ? stored : 'dashboard';
     }
 
     this.renderAuthView();
@@ -69,6 +75,7 @@ class AdminApp {
     const logoutBtn = document.getElementById('admin-logout-btn');
     if (logoutBtn) logoutBtn.addEventListener('click', () => this.handleLogout());
 
+    // Navigation Tabs
     document.querySelectorAll('.admin-nav-item').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const tabName = e.currentTarget.getAttribute('data-tab');
@@ -76,8 +83,12 @@ class AdminApp {
       });
     });
 
+    // Form Submissions
     const heroForm = document.getElementById('hero-settings-form');
     if (heroForm) heroForm.addEventListener('submit', (e) => this.saveHeroSettings(e));
+
+    const doctorBioForm = document.getElementById('doctor-bio-form');
+    if (doctorBioForm) doctorBioForm.addEventListener('submit', (e) => this.saveDoctorBio(e));
 
     const hoursForm = document.getElementById('business-hours-form');
     if (hoursForm) hoursForm.addEventListener('submit', (e) => this.saveHoursAndContact(e));
@@ -94,38 +105,141 @@ class AdminApp {
     const configForm = document.getElementById('config-settings-form');
     if (configForm) configForm.addEventListener('submit', (e) => this.saveSupabaseConfig(e));
 
+    // Services
     const newServiceBtn = document.getElementById('btn-new-service');
     if (newServiceBtn) newServiceBtn.addEventListener('click', () => this.openServiceModal());
 
     const serviceForm = document.getElementById('service-form');
     if (serviceForm) serviceForm.addEventListener('submit', (e) => this.saveService(e));
 
+    // Academic Events
+    const newAcademicBtn = document.getElementById('btn-new-academic');
+    if (newAcademicBtn) newAcademicBtn.addEventListener('click', () => this.openAcademicModal());
+
+    const academicForm = document.getElementById('academic-form');
+    if (academicForm) academicForm.addEventListener('submit', (e) => this.saveAcademicEvent(e));
+
+    // Cases (Instagram)
+    const newCaseBtn = document.getElementById('btn-new-case');
+    if (newCaseBtn) newCaseBtn.addEventListener('click', () => this.openCaseModal());
+
+    const caseForm = document.getElementById('case-form');
+    if (caseForm) caseForm.addEventListener('submit', (e) => this.saveCase(e));
+
+    // Testimonials
     const newTestimonialBtn = document.getElementById('btn-new-testimonial');
     if (newTestimonialBtn) newTestimonialBtn.addEventListener('click', () => this.openTestimonialModal());
 
     const testimonialForm = document.getElementById('testimonial-form');
     if (testimonialForm) testimonialForm.addEventListener('submit', (e) => this.saveTestimonial(e));
 
+    // Modal Close Buttons
     document.querySelectorAll('.btn-close-modal').forEach(btn => {
       btn.addEventListener('click', () => this.closeModals());
     });
 
-    // Image preview handlers
-    const heroFileInput = document.getElementById('hero-file-input');
-    if (heroFileInput) {
-      heroFileInput.addEventListener('change', (e) => {
+    // Close modal when clicking backdrop
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) this.closeModals();
+      });
+    });
+  }
+
+  setupImageUploaders() {
+    // Hero Cover
+    this.bindImageUploader({
+      fileInputId: 'hero-file-input',
+      previewId: 'hero-image-preview',
+      hiddenInputId: 'hero-hidden-image-url',
+      removeBtnId: 'hero-remove-photo-btn'
+    });
+
+    // Logo
+    this.bindImageUploader({
+      fileInputId: 'logo-file-input',
+      previewId: 'logo-image-preview',
+      hiddenInputId: 'logo-hidden-image-url',
+      removeBtnId: 'logo-remove-photo-btn'
+    });
+
+    // Doctor Bio
+    this.bindImageUploader({
+      fileInputId: 'doc-file-input',
+      previewId: 'doc-photo-preview',
+      hiddenInputId: 'doc-hidden-image-url',
+      removeBtnId: 'doc-remove-photo-btn'
+    });
+
+    // Service Modal Image
+    this.bindImageUploader({
+      fileInputId: 'srv-file-input',
+      previewId: 'srv-image-preview',
+      hiddenInputId: 'srv-image-url',
+      removeBtnId: 'srv-remove-photo-btn',
+      placeholderId: 'srv-no-image-text'
+    });
+
+    // Academic Modal Image
+    this.bindImageUploader({
+      fileInputId: 'acad-file-input',
+      previewId: 'acad-image-preview',
+      hiddenInputId: 'acad-image-url',
+      removeBtnId: 'acad-remove-photo-btn',
+      placeholderId: 'acad-no-image-text'
+    });
+
+    // Case Modal Image
+    this.bindImageUploader({
+      fileInputId: 'case-file-input',
+      previewId: 'case-image-preview',
+      hiddenInputId: 'case-image-url',
+      removeBtnId: 'case-remove-photo-btn',
+      placeholderId: 'case-no-image-text'
+    });
+
+    // Testimonial Modal Image
+    this.bindImageUploader({
+      fileInputId: 'tst-file-input',
+      previewId: 'tst-image-preview',
+      hiddenInputId: 'tst-avatar-url',
+      removeBtnId: 'tst-remove-photo-btn',
+      placeholderId: 'tst-no-image-text'
+    });
+  }
+
+  bindImageUploader({ fileInputId, previewId, hiddenInputId, removeBtnId, placeholderId }) {
+    const fileInput = document.getElementById(fileInputId);
+    const preview = document.getElementById(previewId);
+    const hiddenInput = document.getElementById(hiddenInputId);
+    const removeBtn = document.getElementById(removeBtnId);
+    const placeholder = placeholderId ? document.getElementById(placeholderId) : null;
+
+    if (fileInput && preview) {
+      fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = (ev) => {
-            const preview = document.getElementById('hero-image-preview');
-            if (preview) {
-              preview.src = ev.target.result;
-              preview.classList.remove('hidden');
-            }
+            preview.src = ev.target.result;
+            preview.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
           };
           reader.readAsDataURL(file);
         }
+      });
+    }
+
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        if (fileInput) fileInput.value = '';
+        if (hiddenInput) hiddenInput.value = '';
+        if (preview) {
+          preview.src = '';
+          preview.classList.add('hidden');
+        }
+        if (placeholder) placeholder.classList.remove('hidden');
+        window.Utils.showToast('Foto removida. Recuerda guardar los cambios.', 'info');
       });
     }
   }
@@ -144,7 +258,7 @@ class AdminApp {
     try {
       let loggedIn = false;
 
-      // Master check for admin login (instant access, 0 console errors)
+      // Master check for admin login (instant access)
       if (password === 'Clinidiab2026!' || email === 'admin@clinidiab.com' || (email && password.length >= 4)) {
         localStorage.setItem('clinidiab_admin_session', 'active_session');
         loggedIn = true;
@@ -195,10 +309,10 @@ class AdminApp {
 
     document.querySelectorAll('.admin-nav-item').forEach(btn => {
       if (btn.getAttribute('data-tab') === tabName) {
-        btn.classList.add('bg-sky-700', 'text-white');
+        btn.classList.add('bg-teal-700', 'text-white');
         btn.classList.remove('text-slate-300', 'hover:bg-slate-800');
       } else {
-        btn.classList.remove('bg-sky-700', 'text-white');
+        btn.classList.remove('bg-teal-700', 'text-white');
         btn.classList.add('text-slate-300', 'hover:bg-slate-800');
       }
     });
@@ -215,7 +329,10 @@ class AdminApp {
     switch (tabName) {
       case 'dashboard': await this.loadDashboardStats(); break;
       case 'hero': await this.loadHeroForm(); break;
+      case 'doctor-bio': await this.loadDoctorBioForm(); break;
       case 'services': await this.loadServicesTable(); break;
+      case 'academic': await this.loadAcademicTable(); break;
+      case 'cases': await this.loadCasesTable(); break;
       case 'testimonials': await this.loadTestimonialsTable(); break;
       case 'contact-hours': await this.loadHoursAndContactForm(); break;
       case 'payments': await this.loadPaymentsForm(); break;
@@ -250,7 +367,7 @@ class AdminApp {
       if (liveBadge) {
         liveBadge.innerHTML = window.supabaseManager.hasLiveSupabase()
           ? `<span class="badge-status badge-active">✅ Conectado a Supabase DB en la nube</span>`
-          : `<span class="badge-status badge-inactive">⚡ Modo de datos locales activo</span>`;
+          : `<span class="badge-status badge-inactive">⚡ Modo de sincronización local activo</span>`;
       }
     } catch (err) {
       console.error('Error loading dashboard stats:', err);
@@ -266,14 +383,28 @@ class AdminApp {
       document.getElementById('hero-field-title').value = settings.hero_title || '';
       document.getElementById('hero-field-subtitle').value = settings.hero_subtitle || '';
       document.getElementById('hero-field-whatsapp').value = settings.whatsapp_number || '';
-      document.getElementById('hero-field-image-url').value = settings.hero_image_url || '';
-      document.getElementById('hero-field-logo-url').value = settings.logo_url || '';
       document.getElementById('hero-field-clinic-name').value = settings.clinic_name || 'CLINIDIAB';
+      document.getElementById('hero-hidden-image-url').value = settings.hero_image_url || '';
+      document.getElementById('logo-hidden-image-url').value = settings.logo_url || '';
 
-      const preview = document.getElementById('hero-image-preview');
-      if (preview && settings.hero_image_url) {
-        preview.src = settings.hero_image_url;
-        preview.classList.remove('hidden');
+      const heroPreview = document.getElementById('hero-image-preview');
+      if (heroPreview) {
+        if (settings.hero_image_url) {
+          heroPreview.src = settings.hero_image_url;
+          heroPreview.classList.remove('hidden');
+        } else {
+          heroPreview.classList.add('hidden');
+        }
+      }
+
+      const logoPreview = document.getElementById('logo-image-preview');
+      if (logoPreview) {
+        if (settings.logo_url) {
+          logoPreview.src = settings.logo_url;
+          logoPreview.classList.remove('hidden');
+        } else {
+          logoPreview.classList.add('hidden');
+        }
       }
     } catch (err) {
       console.error('Error loading hero form:', err);
@@ -288,11 +419,11 @@ class AdminApp {
       const heroImgFile = document.getElementById('hero-file-input').files[0];
       const logoImgFile = document.getElementById('logo-file-input').files[0];
 
-      let heroImageUrl = document.getElementById('hero-field-image-url').value.trim();
-      let logoUrl = document.getElementById('hero-field-logo-url').value.trim();
+      let heroImageUrl = document.getElementById('hero-hidden-image-url').value.trim();
+      let logoUrl = document.getElementById('logo-hidden-image-url').value.trim();
 
       if (heroImgFile) {
-        window.Utils.showToast('Subiendo imagen de portada...', 'info');
+        window.Utils.showToast('Subiendo foto de portada...', 'info');
         heroImageUrl = await window.Utils.uploadImage(heroImgFile, 'hero');
       }
       if (logoImgFile) {
@@ -320,7 +451,60 @@ class AdminApp {
   }
 
   // =====================
-  // SERVICIOS
+  // TU MÉDICO (DR. LOAYZA BIO)
+  // =====================
+  async loadDoctorBioForm() {
+    try {
+      const bio = await window.dataStore.getDoctorBio();
+      document.getElementById('doc-headline').value = bio?.headline || 'Medicina que transforma, hábitos que liberan';
+      document.getElementById('doc-description').value = bio?.description || '';
+      document.getElementById('doc-hidden-image-url').value = bio?.image_url || 'assets/dr-fabricio-loayza-hq.jpg';
+
+      const photoPreview = document.getElementById('doc-photo-preview');
+      if (photoPreview) {
+        if (bio?.image_url) {
+          photoPreview.src = bio.image_url;
+          photoPreview.classList.remove('hidden');
+        } else {
+          photoPreview.classList.add('hidden');
+        }
+      }
+    } catch (err) {
+      console.error('Error loading doctor bio:', err);
+    }
+  }
+
+  async saveDoctorBio(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    try {
+      const docImgFile = document.getElementById('doc-file-input').files[0];
+      let imageUrl = document.getElementById('doc-hidden-image-url').value.trim();
+
+      if (docImgFile) {
+        window.Utils.showToast('Subiendo foto del Dr. Loayza...', 'info');
+        imageUrl = await window.Utils.uploadImage(docImgFile, 'doctor');
+      }
+
+      const bioData = {
+        headline: document.getElementById('doc-headline').value.trim(),
+        description: document.getElementById('doc-description').value.trim(),
+        image_url: imageUrl
+      };
+
+      await window.dataStore.saveDoctorBio(bioData);
+      window.Utils.showToast('✅ Sección Tu Médico guardada correctamente', 'success');
+      await this.loadDoctorBioForm();
+    } catch (err) {
+      window.Utils.showToast('❌ Error al guardar: ' + err.message, 'error');
+    } finally {
+      btn.textContent = 'Guardar Sección Tu Médico'; btn.disabled = false;
+    }
+  }
+
+  // =====================
+  // SERVICIOS MÉDICOS
   // =====================
   async loadServicesTable() {
     try {
@@ -337,19 +521,22 @@ class AdminApp {
         <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
           <td class="px-4 py-3">
             <div class="flex items-center gap-3">
-              ${s.image_url ? `<img src="${window.Utils.escapeHtml(s.image_url)}" class="w-10 h-10 rounded-lg object-cover border border-slate-100">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">📷</div>`}
-              <span class="font-semibold text-slate-900 text-sm">${window.Utils.escapeHtml(s.title)}</span>
+              ${s.image_url ? `<img src="${window.Utils.escapeHtml(s.image_url)}" class="w-10 h-10 rounded-lg object-cover border border-slate-200">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">📷</div>`}
+              <div>
+                <span class="font-bold text-slate-900 text-sm block">${window.Utils.escapeHtml(s.title)}</span>
+                <span class="text-slate-400 text-[11px] truncate max-w-xs block">${window.Utils.escapeHtml(s.description || '')}</span>
+              </div>
             </div>
           </td>
-          <td class="px-4 py-3 font-bold text-sky-700">${window.Utils.formatCurrency(s.price, s.currency)}</td>
+          <td class="px-4 py-3 font-extrabold text-teal-700">${window.Utils.formatCurrency(s.price, s.currency)}</td>
           <td class="px-4 py-3 text-slate-500 text-xs">${window.Utils.escapeHtml(s.duration || '—')}</td>
           <td class="px-4 py-3 text-center">
             <span class="badge-status ${s.is_active ? 'badge-active' : 'badge-inactive'}">${s.is_active ? 'Activo' : 'Inactivo'}</span>
           </td>
           <td class="px-4 py-3 text-center text-slate-500 text-xs font-mono">${s.display_order || 0}</td>
           <td class="px-4 py-3 text-right space-x-2">
-            <button onclick="window.adminApp.editService('${s.id}')" class="px-2.5 py-1 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 rounded-md">Editar</button>
-            <button onclick="window.adminApp.deleteService('${s.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md">Eliminar</button>
+            <button onclick="window.adminApp.editService('${s.id}')" class="px-2.5 py-1 text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors">Editar</button>
+            <button onclick="window.adminApp.deleteService('${s.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md transition-colors">Eliminar</button>
           </td>
         </tr>
       `).join('');
@@ -360,7 +547,7 @@ class AdminApp {
 
   openServiceModal(service = null) {
     this.editingServiceId = service ? service.id : null;
-    document.getElementById('service-modal-title').textContent = service ? 'Editar Servicio' : 'Nuevo Servicio Médico';
+    document.getElementById('service-modal-title').textContent = service ? 'Editar Servicio Médico' : 'Nuevo Servicio Médico';
     document.getElementById('srv-title').value = service?.title || '';
     document.getElementById('srv-description').value = service?.description || '';
     document.getElementById('srv-price').value = service?.price || '';
@@ -370,6 +557,19 @@ class AdminApp {
     document.getElementById('srv-active').checked = service ? service.is_active : true;
     document.getElementById('srv-image-url').value = service?.image_url || '';
     document.getElementById('srv-file-input').value = '';
+
+    const preview = document.getElementById('srv-image-preview');
+    const placeholder = document.getElementById('srv-no-image-text');
+    if (service?.image_url) {
+      preview.src = service.image_url;
+      preview.classList.remove('hidden');
+      if (placeholder) placeholder.classList.add('hidden');
+    } else {
+      preview.src = '';
+      preview.classList.add('hidden');
+      if (placeholder) placeholder.classList.remove('hidden');
+    }
+
     document.getElementById('service-modal').classList.remove('hidden');
   }
 
@@ -383,7 +583,7 @@ class AdminApp {
     if (!confirm('¿Estás seguro de que deseas eliminar este servicio?')) return;
     try {
       await window.dataStore.deleteService(id);
-      window.Utils.showToast('Servicio eliminado', 'info');
+      window.Utils.showToast('Servicio eliminado correctamente', 'info');
       await this.loadServicesTable();
     } catch (err) {
       window.Utils.showToast('Error al eliminar: ' + err.message, 'error');
@@ -426,6 +626,258 @@ class AdminApp {
   }
 
   // =====================
+  // ACTIVIDAD ACADÉMICA
+  // =====================
+  async loadAcademicTable() {
+    try {
+      const events = await window.dataStore.getAcademicEvents();
+      const tbody = document.getElementById('admin-academic-tbody');
+      if (!tbody) return;
+
+      if (!events.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay eventos académicos registrados. Haz clic en "Nuevo Evento Académico".</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = events.map(item => `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              ${item.image_url ? `<img src="${window.Utils.escapeHtml(item.image_url)}" class="w-10 h-10 rounded-lg object-cover border border-slate-200">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">🎓</div>`}
+              <div>
+                <span class="font-bold text-slate-900 text-sm block">${window.Utils.escapeHtml(item.title)}</span>
+                <span class="text-slate-400 text-[11px] truncate max-w-xs block">${window.Utils.escapeHtml(item.description || '')}</span>
+              </div>
+            </div>
+          </td>
+          <td class="px-4 py-3">
+            <span class="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-0.5 rounded-full border border-teal-100">
+              ${window.Utils.escapeHtml(item.badge_text || 'Conferencista')}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-slate-600 text-xs">${window.Utils.escapeHtml(item.institution || '—')}</td>
+          <td class="px-4 py-3 text-center">
+            <span class="badge-status ${item.is_active ? 'badge-active' : 'badge-inactive'}">${item.is_active ? 'Activo' : 'Inactivo'}</span>
+          </td>
+          <td class="px-4 py-3 text-center text-slate-500 text-xs font-mono">${item.display_order || 0}</td>
+          <td class="px-4 py-3 text-right space-x-2">
+            <button onclick="window.adminApp.editAcademicEvent('${item.id}')" class="px-2.5 py-1 text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors">Editar</button>
+            <button onclick="window.adminApp.deleteAcademicEvent('${item.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md transition-colors">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading academic table:', err);
+    }
+  }
+
+  openAcademicModal(event = null) {
+    this.editingAcademicId = event ? event.id : null;
+    document.getElementById('acad-modal-title').textContent = event ? 'Editar Evento Académico' : 'Nuevo Evento Académico';
+    document.getElementById('acad-title').value = event?.title || '';
+    document.getElementById('acad-badge').value = event?.badge_text || 'Conferencista';
+    document.getElementById('acad-institution').value = event?.institution || '';
+    document.getElementById('acad-description').value = event?.description || '';
+    document.getElementById('acad-order').value = event?.display_order || 1;
+    document.getElementById('acad-active').checked = event ? event.is_active : true;
+    document.getElementById('acad-image-url').value = event?.image_url || '';
+    document.getElementById('acad-file-input').value = '';
+
+    const preview = document.getElementById('acad-image-preview');
+    const placeholder = document.getElementById('acad-no-image-text');
+    if (event?.image_url) {
+      preview.src = event.image_url;
+      preview.classList.remove('hidden');
+      if (placeholder) placeholder.classList.add('hidden');
+    } else {
+      preview.src = '';
+      preview.classList.add('hidden');
+      if (placeholder) placeholder.classList.remove('hidden');
+    }
+
+    document.getElementById('academic-modal').classList.remove('hidden');
+  }
+
+  async editAcademicEvent(id) {
+    const list = await window.dataStore.getAcademicEvents();
+    const item = list.find(e => e.id === id);
+    if (item) this.openAcademicModal(item);
+  }
+
+  async deleteAcademicEvent(id) {
+    if (!confirm('¿Deseas eliminar este evento académico?')) return;
+    try {
+      await window.dataStore.deleteAcademicEvent(id);
+      window.Utils.showToast('Evento académico eliminado', 'info');
+      await this.loadAcademicTable();
+    } catch (err) {
+      window.Utils.showToast('Error al eliminar: ' + err.message, 'error');
+    }
+  }
+
+  async saveAcademicEvent(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    try {
+      const file = document.getElementById('acad-file-input').files[0];
+      let imageUrl = document.getElementById('acad-image-url').value.trim();
+      if (file) {
+        window.Utils.showToast('Subiendo foto del congreso...', 'info');
+        imageUrl = await window.Utils.uploadImage(file, 'academic');
+      }
+
+      const eventData = {
+        id: this.editingAcademicId || ('acad-' + Date.now()),
+        title: document.getElementById('acad-title').value.trim(),
+        badge_text: document.getElementById('acad-badge').value.trim(),
+        institution: document.getElementById('acad-institution').value.trim(),
+        description: document.getElementById('acad-description').value.trim(),
+        display_order: parseInt(document.getElementById('acad-order').value) || 1,
+        is_active: document.getElementById('acad-active').checked,
+        image_url: imageUrl
+      };
+
+      await window.dataStore.saveAcademicEvent(eventData);
+      window.Utils.showToast('✅ Evento académico guardado exitosamente', 'success');
+      this.closeModals();
+      await this.loadAcademicTable();
+    } catch (err) {
+      window.Utils.showToast('❌ Error: ' + err.message, 'error');
+    } finally {
+      btn.textContent = 'Guardar Evento'; btn.disabled = false;
+    }
+  }
+
+  // =====================
+  // CONTENIDO & CASOS (INSTAGRAM)
+  // =====================
+  async loadCasesTable() {
+    try {
+      const list = await window.dataStore.getCases();
+      const tbody = document.getElementById('admin-cases-tbody');
+      if (!tbody) return;
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay casos clínicos registrados. Haz clic en "Nuevo Caso Clínico".</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => `
+        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              ${item.image_url ? `<img src="${window.Utils.escapeHtml(item.image_url)}" class="w-10 h-10 rounded-lg object-cover border border-slate-200">` : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">📸</div>`}
+              <div>
+                <span class="font-bold text-slate-900 text-sm block">${window.Utils.escapeHtml(item.title)}</span>
+                <span class="text-slate-400 text-[11px] truncate max-w-xs block">${window.Utils.escapeHtml(item.description || '')}</span>
+              </div>
+            </div>
+          </td>
+          <td class="px-4 py-3">
+            <span class="bg-sky-50 text-sky-700 text-xs font-bold px-2 py-0.5 rounded-full border border-sky-100">
+              ${window.Utils.escapeHtml(item.tag_text || 'Transformación')}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-sky-600 text-xs truncate max-w-[160px]">
+            <a href="${window.Utils.escapeHtml(item.instagram_url || '#')}" target="_blank" class="hover:underline">
+              ${window.Utils.escapeHtml(item.instagram_url || 'Instagram')}
+            </a>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <span class="badge-status ${item.is_active ? 'badge-active' : 'badge-inactive'}">${item.is_active ? 'Activo' : 'Inactivo'}</span>
+          </td>
+          <td class="px-4 py-3 text-center text-slate-500 text-xs font-mono">${item.display_order || 0}</td>
+          <td class="px-4 py-3 text-right space-x-2">
+            <button onclick="window.adminApp.editCase('${item.id}')" class="px-2.5 py-1 text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors">Editar</button>
+            <button onclick="window.adminApp.deleteCase('${item.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md transition-colors">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading cases table:', err);
+    }
+  }
+
+  openCaseModal(caseItem = null) {
+    this.editingCaseId = caseItem ? caseItem.id : null;
+    document.getElementById('case-modal-title').textContent = caseItem ? 'Editar Caso Clínico' : 'Nuevo Caso Clínico';
+    document.getElementById('case-title').value = caseItem?.title || '';
+    document.getElementById('case-tag').value = caseItem?.tag_text || 'Transformación';
+    document.getElementById('case-ig-url').value = caseItem?.instagram_url || 'https://www.instagram.com/drfabricioloayza/';
+    document.getElementById('case-description').value = caseItem?.description || '';
+    document.getElementById('case-order').value = caseItem?.display_order || 1;
+    document.getElementById('case-active').checked = caseItem ? caseItem.is_active : true;
+    document.getElementById('case-image-url').value = caseItem?.image_url || '';
+    document.getElementById('case-file-input').value = '';
+
+    const preview = document.getElementById('case-image-preview');
+    const placeholder = document.getElementById('case-no-image-text');
+    if (caseItem?.image_url) {
+      preview.src = caseItem.image_url;
+      preview.classList.remove('hidden');
+      if (placeholder) placeholder.classList.add('hidden');
+    } else {
+      preview.src = '';
+      preview.classList.add('hidden');
+      if (placeholder) placeholder.classList.remove('hidden');
+    }
+
+    document.getElementById('case-modal').classList.remove('hidden');
+  }
+
+  async editCase(id) {
+    const list = await window.dataStore.getCases();
+    const item = list.find(c => c.id === id);
+    if (item) this.openCaseModal(item);
+  }
+
+  async deleteCase(id) {
+    if (!confirm('¿Deseas eliminar este caso clínico?')) return;
+    try {
+      await window.dataStore.deleteCase(id);
+      window.Utils.showToast('Caso clínico eliminado', 'info');
+      await this.loadCasesTable();
+    } catch (err) {
+      window.Utils.showToast('Error al eliminar: ' + err.message, 'error');
+    }
+  }
+
+  async saveCase(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = 'Guardando...'; btn.disabled = true;
+    try {
+      const file = document.getElementById('case-file-input').files[0];
+      let imageUrl = document.getElementById('case-image-url').value.trim();
+      if (file) {
+        window.Utils.showToast('Subiendo foto del caso...', 'info');
+        imageUrl = await window.Utils.uploadImage(file, 'cases');
+      }
+
+      const caseData = {
+        id: this.editingCaseId || ('case-' + Date.now()),
+        title: document.getElementById('case-title').value.trim(),
+        tag_text: document.getElementById('case-tag').value.trim(),
+        instagram_url: document.getElementById('case-ig-url').value.trim(),
+        description: document.getElementById('case-description').value.trim(),
+        display_order: parseInt(document.getElementById('case-order').value) || 1,
+        is_active: document.getElementById('case-active').checked,
+        image_url: imageUrl
+      };
+
+      await window.dataStore.saveCase(caseData);
+      window.Utils.showToast('✅ Caso clínico guardado exitosamente', 'success');
+      this.closeModals();
+      await this.loadCasesTable();
+    } catch (err) {
+      window.Utils.showToast('❌ Error: ' + err.message, 'error');
+    } finally {
+      btn.textContent = 'Guardar Caso'; btn.disabled = false;
+    }
+  }
+
+  // =====================
   // TESTIMONIOS
   // =====================
   async loadTestimonialsTable() {
@@ -441,15 +893,20 @@ class AdminApp {
 
       tbody.innerHTML = list.map(t => `
         <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-          <td class="px-4 py-3 font-semibold text-slate-900 text-sm">${window.Utils.escapeHtml(t.patient_name)}</td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              ${t.avatar_url ? `<img src="${window.Utils.escapeHtml(t.avatar_url)}" class="w-9 h-9 rounded-full object-cover border border-slate-200">` : `<div class="w-9 h-9 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs">${(t.patient_name || 'P')[0].toUpperCase()}</div>`}
+              <span class="font-bold text-slate-900 text-sm">${window.Utils.escapeHtml(t.patient_name)}</span>
+            </div>
+          </td>
           <td class="px-4 py-3 text-slate-600 text-xs max-w-xs truncate">${window.Utils.escapeHtml(t.comment)}</td>
           <td class="px-4 py-3">${window.Utils.renderStars(t.rating)}</td>
           <td class="px-4 py-3 text-center">
             <span class="badge-status ${t.is_active ? 'badge-active' : 'badge-inactive'}">${t.is_active ? 'Activo' : 'Inactivo'}</span>
           </td>
           <td class="px-4 py-3 text-right space-x-2">
-            <button onclick="window.adminApp.editTestimonial('${t.id}')" class="px-2.5 py-1 text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 rounded-md">Editar</button>
-            <button onclick="window.adminApp.deleteTestimonial('${t.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md">Eliminar</button>
+            <button onclick="window.adminApp.editTestimonial('${t.id}')" class="px-2.5 py-1 text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-md transition-colors">Editar</button>
+            <button onclick="window.adminApp.deleteTestimonial('${t.id}')" class="px-2.5 py-1 text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-md transition-colors">Eliminar</button>
           </td>
         </tr>
       `).join('');
@@ -468,6 +925,19 @@ class AdminApp {
     document.getElementById('tst-active').checked = testimonial ? testimonial.is_active : true;
     document.getElementById('tst-avatar-url').value = testimonial?.avatar_url || '';
     document.getElementById('tst-file-input').value = '';
+
+    const preview = document.getElementById('tst-image-preview');
+    const placeholder = document.getElementById('tst-no-image-text');
+    if (testimonial?.avatar_url) {
+      preview.src = testimonial.avatar_url;
+      preview.classList.remove('hidden');
+      if (placeholder) placeholder.classList.add('hidden');
+    } else {
+      preview.src = '';
+      preview.classList.add('hidden');
+      if (placeholder) placeholder.classList.remove('hidden');
+    }
+
     document.getElementById('testimonial-modal').classList.remove('hidden');
   }
 
@@ -542,7 +1012,7 @@ class AdminApp {
       container.innerHTML = hours.map(day => `
         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-6 gap-3 items-center" data-day-id="${day.id}">
           <div class="md:col-span-1 font-bold text-slate-800 flex items-center gap-2">
-            <input type="checkbox" class="day-is-open rounded text-sky-600 focus:ring-sky-500 w-4 h-4" ${day.is_open ? 'checked' : ''}>
+            <input type="checkbox" class="day-is-open rounded text-teal-600 focus:ring-teal-500 w-4 h-4" ${day.is_open ? 'checked' : ''}>
             <span class="text-sm">${day.day_name}</span>
           </div>
           <div class="md:col-span-2 grid grid-cols-2 gap-2">
@@ -566,7 +1036,7 @@ class AdminApp {
             </div>
           </div>
           <div class="md:col-span-1 text-right">
-            <span class="text-xs px-2 py-1 rounded-full ${day.is_open ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}">${day.is_open ? 'Abierto' : 'Cerrado'}</span>
+            <span class="text-xs px-2 py-1 rounded-full ${day.is_open ? 'bg-green-50 text-green-700 font-bold' : 'bg-red-50 text-red-600 font-bold'}">${day.is_open ? 'Abierto' : 'Cerrado'}</span>
           </div>
         </div>
       `).join('');
@@ -621,7 +1091,7 @@ class AdminApp {
         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="flex items-center justify-between">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="pm-chk-${item.id}" class="pm-is-active rounded text-sky-600 w-5 h-5" ${item.is_active ? 'checked' : ''} data-pm-id="${item.id}">
+              <input type="checkbox" id="pm-chk-${item.id}" class="pm-is-active rounded text-teal-600 w-5 h-5" ${item.is_active ? 'checked' : ''} data-pm-id="${item.id}">
               <span class="font-bold text-slate-900">${window.Utils.escapeHtml(item.name)}</span>
             </label>
           </div>
@@ -775,6 +1245,9 @@ class AdminApp {
   closeModals() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
     this.editingServiceId = null;
+    this.editingAcademicId = null;
+    this.editingCaseId = null;
     this.editingTestimonialId = null;
   }
 }
+

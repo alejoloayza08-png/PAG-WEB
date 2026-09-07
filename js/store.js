@@ -1,8 +1,16 @@
 /**
  * CLINIDIAB - Data Store Layer
- * Bulletproof Supabase CRUD for site_settings, services, testimonials,
- * business_hours, payment_methods, social_links, location.
- * Real-time sync with user's Supabase DB + LocalStorage fallback.
+ * Full Supabase CRUD for all sections:
+ * - site_settings
+ * - doctor_bio
+ * - services
+ * - cases (Instagram content)
+ * - academic_events (Actividad académica)
+ * - testimonials
+ * - business_hours
+ * - payment_methods
+ * - social_links
+ * - location
  */
 
 const INITIAL_SEED_DATA = {
@@ -18,6 +26,23 @@ const INITIAL_SEED_DATA = {
     phone_number: '+593 99 876 5432',
     email_address: 'contacto@clinidiab.com',
     address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador'
+  },
+  doctor_bio: {
+    id: '00000000-0000-0000-0000-000000000003',
+    badge_text: 'Tu Médico',
+    headline: 'Medicina que transforma, hábitos que liberan',
+    description: 'CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.',
+    image_url: 'assets/dr-fabricio-loayza-hq.jpg',
+    card1_icon: '🩺',
+    card1_title: 'Especialista en Diabetología',
+    card1_subtitle: 'Diagnóstico, control glucémico y manejo de insulinas',
+    card2_icon: '🧬',
+    card2_title: 'Máster en Endocrinología',
+    card2_subtitle: 'Tiroides, hormonas y trastornos metabólicos',
+    card3_icon: '🥗',
+    card3_title: 'Máster en Nutrición',
+    card3_subtitle: 'Planes de alimentación y hábitos sostenibles',
+    tags: 'Obesidad, Sobrepeso, Alimentación saludable, Hábitos sanos, Diabetes, Prediabetes, Colesterol, Triglicéridos, Tiroides, Hormonas'
   },
   services: [
     {
@@ -63,6 +88,70 @@ const INITIAL_SEED_DATA = {
       image_url: 'assets/post-transformacion-3.jpg',
       is_active: true,
       display_order: 4
+    }
+  ],
+  academic_events: [
+    {
+      id: 'acad-1',
+      badge_text: 'Conferencista',
+      title: 'Actualización Médica Continua',
+      description: 'Participación activa en simposios clínicos nacionales e internacionales sobre avances en insulinoterapia y manejo de resistencia a la insulina.',
+      institution: 'Sociedades Médicas del Ecuador',
+      image_url: 'assets/congreso-1.jpg',
+      display_order: 1,
+      is_active: true
+    },
+    {
+      id: 'acad-2',
+      badge_text: 'Congreso 2026',
+      title: 'XI Semana Ecuatoriana de Enfermedades Digestivas',
+      description: 'Ponencia oficial del Dr. Fabricio Loayza (Diabetólogo / Nutricionista) en el encuentro de la Sociedad Ecuatoriana de Gastroenterología.',
+      institution: 'Del 27 al 29 de Agosto',
+      image_url: 'assets/congreso-2.jpg',
+      display_order: 2,
+      is_active: true
+    },
+    {
+      id: 'acad-3',
+      badge_text: 'Ponencia Magistral',
+      title: 'Congreso Internacional de Ginecología',
+      description: 'Charla magistral sobre abordaje farmacológico, actividad física y modulación metabólica integral para la salud femenina.',
+      institution: 'Dr. Fabricio Loayza · Ponente',
+      image_url: 'assets/congreso-3.jpg',
+      display_order: 3,
+      is_active: true
+    }
+  ],
+  cases: [
+    {
+      id: 'case-1',
+      tag_text: 'Transformación #6',
+      title: 'Más salud, más energía, más vida',
+      description: 'Recuperación de composición corporal, regulación del metabolismo y mayor vitalidad día a día.',
+      image_url: 'assets/post-transformacion-1.jpg',
+      instagram_url: 'https://www.instagram.com/drfabricioloayza/',
+      display_order: 1,
+      is_active: true
+    },
+    {
+      id: 'case-2',
+      tag_text: 'Transformación #4',
+      title: '66 Libras Menos y Control Glucémico Total',
+      description: 'De glucemias descontroladas a energía renovada, sin dietas restrictivas ni efecto rebote.',
+      image_url: 'assets/post-transformacion-2.jpg',
+      instagram_url: 'https://www.instagram.com/drfabricioloayza/',
+      display_order: 2,
+      is_active: true
+    },
+    {
+      id: 'case-3',
+      tag_text: 'Transformación #2',
+      title: 'Recuperando el Control Metabólico',
+      description: 'Control de glucosa, reducción de grasa visceral y disminución progresiva de fármacos.',
+      image_url: 'assets/post-transformacion-3.jpg',
+      instagram_url: 'https://www.instagram.com/drfabricioloayza/',
+      display_order: 3,
+      is_active: true
     }
   ],
   testimonials: [
@@ -125,7 +214,7 @@ const INITIAL_SEED_DATA = {
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v3';
+    this.storageKey = 'clinidiab_local_db_v4';
     this.ensureLocalStore();
   }
 
@@ -137,7 +226,8 @@ class DataStore {
 
   getLocalData() {
     try {
-      return JSON.parse(localStorage.getItem(this.storageKey)) || INITIAL_SEED_DATA;
+      const data = JSON.parse(localStorage.getItem(this.storageKey));
+      return { ...INITIAL_SEED_DATA, ...data };
     } catch {
       return INITIAL_SEED_DATA;
     }
@@ -196,6 +286,39 @@ class DataStore {
     return store.site_settings;
   }
 
+  // --- DOCTOR BIO ---
+  async getDoctorBio() {
+    if (this.hasSupabase()) {
+      try {
+        const { data, error } = await this.sb().from('doctor_bio').select('*').limit(1);
+        if (!error && data && data.length > 0) return data[0];
+      } catch (err) {
+        console.warn('Supabase getDoctorBio:', err);
+      }
+    }
+    return this.getLocalData().doctor_bio;
+  }
+
+  async saveDoctorBio(bioData) {
+    const payload = {
+      id: '00000000-0000-0000-0000-000000000003',
+      ...bioData
+    };
+
+    if (this.hasSupabase()) {
+      try {
+        await this.sb().from('doctor_bio').upsert(payload);
+      } catch (err) {
+        console.error('Error saving doctor_bio Supabase:', err);
+      }
+    }
+
+    const store = this.getLocalData();
+    store.doctor_bio = { ...store.doctor_bio, ...payload };
+    this.saveLocalData(store);
+    return store.doctor_bio;
+  }
+
   // --- SERVICES ---
   async getServices(onlyActive = false) {
     if (this.hasSupabase()) {
@@ -250,6 +373,102 @@ class DataStore {
     }
     const store = this.getLocalData();
     store.services = store.services.filter(s => s.id !== id);
+    this.saveLocalData(store);
+    return true;
+  }
+
+  // --- ACADEMIC EVENTS ---
+  async getAcademicEvents(onlyActive = false) {
+    if (this.hasSupabase()) {
+      try {
+        let query = this.sb().from('academic_events').select('*').order('display_order', { ascending: true });
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) return data;
+      } catch (err) {
+        console.warn('Supabase getAcademicEvents:', err);
+      }
+    }
+    let list = this.getLocalData().academic_events || [];
+    if (onlyActive) list = list.filter(e => e.is_active);
+    return list.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+  }
+
+  async saveAcademicEvent(event) {
+    if (!event.id) event.id = crypto.randomUUID ? crypto.randomUUID() : 'acad-' + Date.now();
+    if (this.hasSupabase()) {
+      try {
+        await this.sb().from('academic_events').upsert(event);
+      } catch (err) {
+        console.error('Error saving academic_events Supabase:', err);
+      }
+    }
+    const store = this.getLocalData();
+    const index = (store.academic_events || []).findIndex(e => e.id === event.id);
+    if (index >= 0) store.academic_events[index] = event;
+    else (store.academic_events = store.academic_events || []).push(event);
+    this.saveLocalData(store);
+    return event;
+  }
+
+  async deleteAcademicEvent(id) {
+    if (this.hasSupabase()) {
+      try {
+        await this.sb().from('academic_events').delete().eq('id', id);
+      } catch (err) {
+        console.error('Error deleting academic event Supabase:', err);
+      }
+    }
+    const store = this.getLocalData();
+    store.academic_events = (store.academic_events || []).filter(e => e.id !== id);
+    this.saveLocalData(store);
+    return true;
+  }
+
+  // --- CASES (INSTAGRAM) ---
+  async getCases(onlyActive = false) {
+    if (this.hasSupabase()) {
+      try {
+        let query = this.sb().from('cases').select('*').order('display_order', { ascending: true });
+        if (onlyActive) query = query.eq('is_active', true);
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) return data;
+      } catch (err) {
+        console.warn('Supabase getCases:', err);
+      }
+    }
+    let list = this.getLocalData().cases || [];
+    if (onlyActive) list = list.filter(c => c.is_active);
+    return list.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+  }
+
+  async saveCase(caseItem) {
+    if (!caseItem.id) caseItem.id = crypto.randomUUID ? crypto.randomUUID() : 'case-' + Date.now();
+    if (this.hasSupabase()) {
+      try {
+        await this.sb().from('cases').upsert(caseItem);
+      } catch (err) {
+        console.error('Error saving case Supabase:', err);
+      }
+    }
+    const store = this.getLocalData();
+    const index = (store.cases || []).findIndex(c => c.id === caseItem.id);
+    if (index >= 0) store.cases[index] = caseItem;
+    else (store.cases = store.cases || []).push(caseItem);
+    this.saveLocalData(store);
+    return caseItem;
+  }
+
+  async deleteCase(id) {
+    if (this.hasSupabase()) {
+      try {
+        await this.sb().from('cases').delete().eq('id', id);
+      } catch (err) {
+        console.error('Error deleting case Supabase:', err);
+      }
+    }
+    const store = this.getLocalData();
+    store.cases = (store.cases || []).filter(c => c.id !== id);
     this.saveLocalData(store);
     return true;
   }
