@@ -122,8 +122,8 @@ function renderBrandingAndHero(settings) {
   const heroImg = document.getElementById('hero-image');
   if (heroImg) {
     const targetUrl = settings?.hero_image_url || 'assets/dr-fabricio-loayza.jpg';
-    const currentSrc = heroImg.getAttribute('src');
-    if (currentSrc !== targetUrl && !heroImg.src.endsWith(targetUrl)) {
+    const currentSrc = heroImg.getAttribute('src') || '';
+    if (!currentSrc.includes(targetUrl) && !heroImg.src.endsWith(targetUrl)) {
       heroImg.src = targetUrl;
     }
   }
