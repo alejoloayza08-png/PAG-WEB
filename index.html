@@ -188,88 +188,138 @@
 
           </div>
 
-          <!-- Hero Right Column: Animated Instagram-Style Medical Profile Card -->
+          <!-- Hero Right Column: Animated Instagram-Style Medical Profile Card (High Fidelity) -->
           <div class="lg:col-span-6 flex justify-center">
-            <div class="relative w-full max-w-md animate-float-card">
+            <div class="relative w-full max-w-lg animate-float-card">
               
               <!-- Floating specialty tag on top right with float animation -->
-              <div class="absolute -top-5 -right-3 z-30 flex items-center gap-2.5 bg-white py-2.5 px-4 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
-                <div class="w-7 h-7 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  👨‍⚕️
+              <div class="absolute -top-5 -right-3 sm:-right-4 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-4 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
+                <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm font-bold flex-shrink-0 border border-teal-100/60">
+                  <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
                 </div>
                 <div>
-                  <span class="block text-[12px] font-extrabold text-slate-900 leading-tight">Especialista en Diabetología</span>
+                  <span class="block text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">Especialista en Diabetología</span>
                   <span class="block text-[11px] text-slate-500 font-medium leading-tight">Máster en Endocrinología</span>
                 </div>
               </div>
 
               <!-- Main Medical Card Container -->
-              <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200/80 relative z-10 space-y-5">
+              <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200/80 relative z-10 space-y-4">
                 
                 <!-- Instagram Story Profile Header -->
                 <div class="flex items-center gap-5">
                   <!-- Doctor Avatar with Single Authentic Instagram Story Ring -->
-                  <div class="ig-story-ring flex-shrink-0">
-                    <img id="hero-image" src="assets/dr-fabricio-loayza.jpg?v=3.2" alt="Dr. Fabricio Loayza" class="w-20 h-20 sm:w-22 sm:h-22 rounded-full object-cover border-2 border-white bg-white" loading="eager" fetchpriority="high">
+                  <div class="p-[3px] rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex-shrink-0 inline-flex shadow-sm">
+                    <div class="p-[2px] bg-white rounded-full flex items-center justify-center">
+                      <img id="hero-image" src="assets/dr-fabricio-loayza.jpg?v=3.2" alt="Dr. Fabricio Loayza" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" loading="eager" fetchpriority="high">
+                    </div>
                   </div>
-
-
 
                   <!-- Instagram Stats -->
                   <div class="flex-1 grid grid-cols-3 text-center gap-1">
                     <div>
-                      <span class="block font-extrabold text-slate-900 text-base sm:text-lg">793</span>
-                      <span class="text-[11px] text-slate-500">publicaciones</span>
+                      <span class="block font-black text-slate-900 text-lg sm:text-xl">793</span>
+                      <span class="text-[11px] text-slate-500 font-medium">publicaciones</span>
                     </div>
                     <div>
-                      <span class="block font-extrabold text-slate-900 text-base sm:text-lg">14,4 mil</span>
-                      <span class="text-[11px] text-slate-500">seguidores</span>
+                      <span class="block font-black text-slate-900 text-lg sm:text-xl">14,4 mil</span>
+                      <span class="text-[11px] text-slate-500 font-medium">seguidores</span>
                     </div>
                     <div>
-                      <span class="block font-extrabold text-slate-900 text-base sm:text-lg">2449</span>
-                      <span class="text-[11px] text-slate-500">seguidos</span>
+                      <span class="block font-black text-slate-900 text-lg sm:text-xl">2449</span>
+                      <span class="text-[11px] text-slate-500 font-medium">seguidos</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Doctor Name & Verification -->
-                <div class="space-y-1 text-left pt-1">
+                <!-- Doctor Name & Bio -->
+                <div class="space-y-1.5 text-left pt-1">
                   <div class="flex items-center gap-1.5">
                     <h3 class="font-extrabold text-slate-900 text-lg sm:text-xl">Dr. Fabricio Loayza</h3>
-                    <!-- Blue Verified Badge (Exact SVG) -->
+                    <!-- Blue Verified Badge -->
                     <svg class="w-5 h-5 text-[#38bdf8] fill-current flex-shrink-0" viewBox="0 0 24 24">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                     </svg>
                   </div>
-                  <p class="text-xs font-semibold text-sky-600">@drfabricioloayza</p>
-                  <p class="text-xs text-slate-500 font-medium">Diabetes · Tiroides · Obesidad · Endocrino</p>
-                </div>
-
-                <!-- Location & Bio Container -->
-                <div class="space-y-2 text-left text-xs text-slate-600 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
-                  <p class="flex items-center gap-1.5 font-semibold text-slate-700">
+                  <p class="text-xs sm:text-sm font-semibold text-sky-600">@drfabricioloayza</p>
+                  
+                  <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium pt-0.5">
+                    <span>👤</span>
+                    <span>Diabetes · Tiroides · Obesidad · Endocrino</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
                     <span class="text-rose-500">📍</span>
                     <span>Kleber Franco entre Juan Montalvo y Páez, Machala</span>
+                  </div>
+                </div>
+
+                <!-- Bio Description & Social Links -->
+                <div class="text-left text-xs text-slate-700 leading-relaxed font-normal space-y-2">
+                  <p>
+                    👨‍⚕️ | Obesidad, sobrepeso, alimentación saludable, hábitos sanos, Diabetes, Prediabetes, colesterol, triglicéridos, Tiroides, hormonas.<br>Hábitos sanos
                   </p>
-                  <p class="leading-relaxed text-slate-600">
-                    👨‍⚕️ | Obesidad, sobrepeso, alimentación saludable, hábitos sanos, Diabetes, Prediabetes, colesterol, triglicéridos, Tiroides, hormonas.
-                  </p>
+                  <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold pt-0.5">
+                    <a href="https://wa.me/593987654321" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1 text-slate-900 font-bold">
+                      <span>🔗</span> walink.co/4ce476
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">Clinidiab en Facebook</a>
+                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">YouTube</a>
+                  </div>
                 </div>
 
                 <!-- Action Buttons: Contactar, Servicios, Seguir -->
                 <div class="grid grid-cols-3 gap-2.5 pt-1">
-                  <a href="#" class="whatsapp-reserve-btn inline-flex items-center justify-center py-2.5 px-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+                  <a href="#" class="whatsapp-reserve-btn inline-flex items-center justify-center py-2.5 px-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm transform hover:-translate-y-0.5">
                     Contactar
                   </a>
                   <a href="#servicios" class="inline-flex items-center justify-center py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-all">
                     Servicios
                   </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="ig-gradient-btn inline-flex items-center justify-center py-2.5 px-3 rounded-xl text-xs font-bold shadow-md">
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="ig-gradient-btn inline-flex items-center justify-center py-2.5 px-3 rounded-xl text-xs font-bold shadow-md transform hover:-translate-y-0.5">
                     Seguir
                   </a>
                 </div>
 
+                <!-- Instagram Post Grid Strip (6 posts) -->
+                <div class="grid grid-cols-6 gap-1.5 sm:gap-2 pt-2 border-t border-slate-100">
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/congreso-1.jpg" alt="Congreso Digestivo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/post-transformacion-1.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/congreso-2.jpg" alt="Congreso Médico" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/post-transformacion-2.jpg" alt="Artrosis" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/congreso-3.jpg" alt="Ponencia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                    <img src="assets/post-transformacion-3.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  </a>
+                </div>
+
               </div>
+
+              <!-- Floating bottom-left badge: Control glucémico -->
+              <div class="absolute -bottom-4 -left-3 sm:-left-5 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-3.5 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
+                <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/60">
+                  <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  </svg>
+                </div>
+                <div>
+                  <span class="block text-xs font-extrabold text-slate-900 leading-tight">Control glucémico</span>
+                  <span class="block text-[11px] text-slate-500 font-medium leading-tight">integral y personalizado</span>
+                </div>
+              </div>
+
             </div>
           </div>
 
