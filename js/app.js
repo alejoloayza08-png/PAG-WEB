@@ -349,6 +349,9 @@ function setupDirectAudioButton(btnId, iframeId, getPlayerFn) {
 
     // Immediately hide button so it disappears and does not obstruct the video controls
     btn.classList.add('active', 'hidden');
+    btn.style.display = 'none';
+    btn.style.opacity = '0';
+    btn.style.pointerEvents = 'none';
     btn.setAttribute('aria-pressed', 'true');
     if (label) label.textContent = 'Audio activado';
   });
