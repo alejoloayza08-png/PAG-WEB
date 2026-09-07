@@ -53,6 +53,7 @@ async function loadPublicContent() {
 
     // 1. Branding & Hero
     renderBrandingAndHero(settings);
+    renderHeroMedia(settings);
 
     // 2. Doctor Bio / Tu Médico
     renderDoctorBio(doctorBio);
@@ -139,6 +140,198 @@ function renderBrandingAndHero(settings) {
   }
 }
 
+// =====================
+// HERO MEDIA (CARD vs YOUTUBE AUTOPLAY VIDEO WITH AUDIO TOGGLE)
+// =====================
+let isYouTubeApiLoaded = false;
+let heroYtPlayer = null;
+const heroAudioState = { isMuted: true };
+let sectionYtPlayer = null;
+const sectionAudioState = { isMuted: true };
+
+function ensureYouTubeApi(callback) {
+  if (window.YT && window.YT.Player) {
+    callback();
+    return;
+  }
+  if (!isYouTubeApiLoaded) {
+    isYouTubeApiLoaded = true;
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      document.head.appendChild(tag);
+    }
+  }
+  const prevOnReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function() {
+    if (typeof prevOnReady === 'function') prevOnReady();
+    callback();
+  };
+}
+
+function renderHeroMedia(settings) {
+  const mediaType = settings?.hero_media_type || 'card'; // 'card' or 'video'
+  const youtubeUrl = settings?.hero_youtube_url || '';
+  const autoplay = settings?.hero_video_autoplay !== false;
+
+  const cardContainer = document.getElementById('hero-card-container');
+  const videoContainer = document.getElementById('hero-video-container');
+
+  const videoId = window.Utils ? window.Utils.extractYouTubeId(youtubeUrl) : null;
+
+  if (mediaType === 'video' && videoId) {
+    if (cardContainer) cardContainer.classList.add('hidden');
+    if (videoContainer) {
+      videoContainer.classList.remove('hidden');
+      ensureYouTubeApi(() => {
+        initHeroYouTubePlayer(videoId, autoplay);
+      });
+    }
+  } else {
+    // Show Instagram Profile Card
+    if (cardContainer) cardContainer.classList.remove('hidden');
+    if (videoContainer) videoContainer.classList.add('hidden');
+  }
+
+  // Dedicated Presentation Video Section
+  const videoSection = document.getElementById('video-section');
+  const showSection = settings?.show_video_section === true;
+  const sectionVideoUrl = settings?.video_section_youtube_url || settings?.hero_youtube_url;
+  const sectionVideoId = window.Utils ? window.Utils.extractYouTubeId(sectionVideoUrl) : null;
+
+  if (videoSection) {
+    if (showSection && sectionVideoId) {
+      videoSection.classList.remove('hidden');
+      const titleEl = document.getElementById('video-section-title-el');
+      if (titleEl && settings?.video_section_title) titleEl.textContent = settings.video_section_title;
+      const subEl = document.getElementById('video-section-subtitle-el');
+      if (subEl && settings?.video_section_subtitle) subEl.textContent = settings.video_section_subtitle;
+      ensureYouTubeApi(() => {
+        initSectionYouTubePlayer(sectionVideoId);
+      });
+    } else {
+      videoSection.classList.add('hidden');
+    }
+  }
+}
+
+function initHeroYouTubePlayer(videoId, autoplay = true) {
+  if (heroYtPlayer) {
+    try { heroYtPlayer.destroy(); } catch (e) {}
+  }
+
+  const container = document.getElementById('hero-yt-player');
+  if (!container) return;
+
+  heroYtPlayer = new window.YT.Player('hero-yt-player', {
+    videoId: videoId,
+    playerVars: {
+      autoplay: autoplay ? 1 : 0,
+      mute: 1,
+      loop: 1,
+      playlist: videoId,
+      controls: 1,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+      origin: window.location.origin
+    },
+    events: {
+      onReady: (event) => {
+        if (autoplay) {
+          try {
+            event.target.mute();
+            event.target.playVideo();
+          } catch (e) {}
+        }
+      }
+    }
+  });
+
+  setupAudioButton('hero-toggle-audio-btn', 'hero-audio-icon', 'hero-audio-text', () => heroYtPlayer, heroAudioState);
+}
+
+function initSectionYouTubePlayer(videoId) {
+  if (sectionYtPlayer) {
+    try { sectionYtPlayer.destroy(); } catch (e) {}
+  }
+
+  const container = document.getElementById('section-yt-player');
+  if (!container) return;
+
+  sectionYtPlayer = new window.YT.Player('section-yt-player', {
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      loop: 1,
+      playlist: videoId,
+      controls: 1,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+      origin: window.location.origin
+    },
+    events: {
+      onReady: (event) => {
+        try {
+          event.target.mute();
+          event.target.playVideo();
+        } catch (e) {}
+      }
+    }
+  });
+
+  setupAudioButton('section-toggle-audio-btn', 'section-audio-icon', 'section-audio-text', () => sectionYtPlayer, sectionAudioState);
+}
+
+function setupAudioButton(btnId, iconId, textId, getPlayer, stateRef) {
+  const btn = document.getElementById(btnId);
+  const icon = document.getElementById(iconId);
+  const text = document.getElementById(textId);
+  if (!btn || btn.dataset.bound) return;
+  btn.dataset.bound = 'true';
+
+  btn.addEventListener('click', () => {
+    const player = getPlayer();
+    if (!player) return;
+
+    if (stateRef.isMuted) {
+      // Activar audio: Unmute and play from beginning with 100% volume
+      try {
+        if (typeof player.seekTo === 'function') player.seekTo(0, true);
+        if (typeof player.unMute === 'function') player.unMute();
+        if (typeof player.setVolume === 'function') player.setVolume(100);
+        if (typeof player.playVideo === 'function') player.playVideo();
+      } catch (err) {
+        console.warn('Error activating audio:', err);
+      }
+      stateRef.isMuted = false;
+      if (text) text.textContent = 'Silenciar audio';
+      if (icon) {
+        icon.className = 'flex items-center justify-center text-emerald-400';
+        icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+      }
+    } else {
+      // Silenciar
+      try {
+        if (typeof player.mute === 'function') player.mute();
+      } catch (err) {
+        console.warn('Error muting audio:', err);
+      }
+      stateRef.isMuted = true;
+      if (text) text.textContent = 'Activar audio';
+      if (icon) {
+        icon.className = 'flex items-center justify-center text-rose-400';
+        icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+      }
+    }
+  });
+}
+
 function renderDoctorBio(bio) {
   if (!bio) return;
 
@@ -192,36 +385,38 @@ function renderServices(services) {
     return;
   }
 
-  // Medical SVG icons dictionary for services
+  // Crisp white SVG icons matching Claude artifact
   const getServiceSvg = (title = '', index = 0) => {
     const t = title.toLowerCase();
     if (t.includes('nutrici') || t.includes('alimentac')) {
+      // 02 Water droplet
       return `
-        <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
         </svg>
       `;
     }
     if (t.includes('laboratorio') || t.includes('metab') || t.includes('perfil')) {
+      // 03 Chemistry Flask / Beaker
       return `
-        <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/>
           <path d="M5.52 16h12.96"/>
         </svg>
       `;
     }
     if (t.includes('pie') || t.includes('podolog') || t.includes('neuropat')) {
+      // 04 Foot sole / podology
       return `
-        <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <path d="m9 12 2 2 4-4"/>
+        <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 16v-2.38C4 11.5 7 11 7 11l1-7c.5-1.5 2-2 3-2s2.5.5 3 2l1 7s3 .5 3 2.62V16c0 4-3.5 6-7 6s-7-2-7-6Z"/>
+          <path d="M8 7h.01M11 5h.01M14 7h.01"/>
         </svg>
       `;
     }
-    // Default / Diabetología: Stethoscope
+    // 01 Diabetología: Stethoscope
     return `
-      <svg class="w-6 h-6 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
         <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
         <circle cx="20" cy="10" r="2"/>
@@ -230,50 +425,58 @@ function renderServices(services) {
   };
 
   grid.innerHTML = services.map((service, idx) => {
-    const formattedPrice = window.Utils.formatCurrency(service.price, service.currency || '$');
+    const rawPrice = parseFloat(service.price) || 0;
+    const whole = Math.floor(rawPrice);
+    const decimals = (rawPrice % 1).toFixed(2).substring(2);
     const waUrl = window.Utils.getWhatsAppUrl(window.currentWhatsAppNumber, 'Hola CLINIDIAB, deseo reservar una cita para: ' + service.title);
     const serviceIcon = getServiceSvg(service.title, idx);
     const numWatermark = String(idx + 1).padStart(2, '0');
     const duration = service.duration || 'Consulta';
 
     return `
-      <div class="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-        <!-- Watermark Number -->
-        <span class="text-slate-100 font-black text-6xl select-none absolute top-4 right-6 pointer-events-none group-hover:text-teal-100/70 transition-colors z-0">
+      <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+        
+        <!-- Subtle Watermark Number -->
+        <span class="text-slate-100 font-black text-6xl select-none absolute right-4 bottom-2 pointer-events-none group-hover:text-teal-50 transition-colors z-0">
           ${numWatermark}
         </span>
 
-        <div class="relative z-10 space-y-4">
-          <!-- Top Row: Icon & Duration pill -->
+        <div class="relative z-10">
+          <!-- Top Row: Squircle Solid Teal Icon & Cyan Duration Pill -->
           <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/80 shadow-xs">
+            <div class="w-12 h-12 rounded-2xl bg-[#008ba3] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
               ${serviceIcon}
             </div>
-            <span class="bg-slate-100 text-slate-600 text-xs font-bold px-3.5 py-1.5 rounded-full border border-slate-200/60">
+            <span class="bg-[#ccfbf1] text-[#0f766e] text-xs font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+              <svg class="w-3.5 h-3.5 text-[#0f766e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
               ${window.Utils.escapeHtml(duration)}
             </span>
           </div>
 
           <!-- Title & Description -->
-          <div>
-            <h3 class="text-slate-900 font-extrabold text-xl group-hover:text-teal-700 transition-colors tracking-tight">
-              ${window.Utils.escapeHtml(service.title)}
-            </h3>
-            <p class="text-slate-600 text-sm leading-relaxed mt-2">
-              ${window.Utils.escapeHtml(service.description || '')}
-            </p>
-          </div>
+          <h3 class="text-xl sm:text-[22px] font-extrabold text-slate-900 tracking-tight leading-snug mt-5 mb-2.5 group-hover:text-[#008ba3] transition-colors">
+            ${window.Utils.escapeHtml(service.title)}
+          </h3>
+          <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+            ${window.Utils.escapeHtml(service.description || '')}
+          </p>
         </div>
 
-        <!-- Bottom Row: Inversión + Reservar button -->
-        <div class="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between relative z-10">
+        <!-- Dashed Separator + Inversión + Reservar Pill -->
+        <div class="border-t border-dashed border-slate-200/90 pt-5 mt-auto flex items-end justify-between relative z-10">
           <div>
-            <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">INVERSIÓN:</span>
-            <span class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${formattedPrice}</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">INVERSIÓN</span>
+            <div class="flex items-baseline font-black leading-none">
+              <span class="text-base font-extrabold text-[#008ba3] mr-0.5">$</span>
+              <span class="text-3xl font-black text-slate-900 tracking-tight leading-none">${whole}</span>
+              <span class="text-sm font-extrabold text-slate-700">.${decimals}</span>
+            </div>
           </div>
-          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-teal-50 text-teal-700 hover:bg-teal-600 hover:text-white transition-all shadow-xs group-hover:bg-teal-600 group-hover:text-white">
+          <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="bg-[#008ba3] hover:bg-[#007a90] text-white px-7 py-2.5 rounded-full font-bold text-sm shadow-md shadow-cyan-900/10 hover:shadow-cyan-900/20 transition-all transform hover:-translate-y-0.5">
             Reservar
-            <span class="font-bold">→</span>
           </a>
         </div>
       </div>

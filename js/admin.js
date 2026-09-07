@@ -403,6 +403,56 @@ class AdminApp {
       document.getElementById('hero-hidden-image-url').value = settings?.hero_image_url || '';
       document.getElementById('logo-hidden-image-url').value = settings?.logo_url || '';
 
+      // Media Type (Card vs Video)
+      const mediaType = settings?.hero_media_type || 'card';
+      const cardRadio = document.getElementById('hero-media-type-card');
+      const videoRadio = document.getElementById('hero-media-type-video');
+      if (mediaType === 'video' && videoRadio) {
+        videoRadio.checked = true;
+      } else if (cardRadio) {
+        cardRadio.checked = true;
+      }
+
+      // YouTube Video fields
+      const ytUrlInput = document.getElementById('hero-field-youtube-url');
+      if (ytUrlInput) {
+        ytUrlInput.value = settings?.hero_youtube_url || '';
+        this.updateVideoPreview(settings?.hero_youtube_url);
+        
+        if (!ytUrlInput.dataset.listenerAttached) {
+          ytUrlInput.dataset.listenerAttached = 'true';
+          ytUrlInput.addEventListener('input', (e) => this.updateVideoPreview(e.target.value));
+        }
+      }
+
+      const autoplayCheck = document.getElementById('hero-field-video-autoplay');
+      if (autoplayCheck) autoplayCheck.checked = settings?.hero_video_autoplay !== false;
+
+      // Optional Dedicated Video Section
+      const showVideoSectionCheck = document.getElementById('field-show-video-section');
+      const videoSectionFields = document.getElementById('video-section-fields');
+      if (showVideoSectionCheck) {
+        showVideoSectionCheck.checked = settings?.show_video_section === true;
+        if (videoSectionFields) {
+          videoSectionFields.classList.toggle('hidden', !showVideoSectionCheck.checked);
+        }
+        if (!showVideoSectionCheck.dataset.listenerAttached) {
+          showVideoSectionCheck.dataset.listenerAttached = 'true';
+          showVideoSectionCheck.addEventListener('change', (e) => {
+            if (videoSectionFields) videoSectionFields.classList.toggle('hidden', !e.target.checked);
+          });
+        }
+      }
+
+      const vidTitle = document.getElementById('field-video-section-title');
+      if (vidTitle) vidTitle.value = settings?.video_section_title || 'Conoce al Dr. Fabricio Loayza y CLINIDIAB';
+
+      const vidSub = document.getElementById('field-video-section-subtitle');
+      if (vidSub) vidSub.value = settings?.video_section_subtitle || 'Atención médica integral, humana y especializada en Machala.';
+
+      const vidUrl = document.getElementById('field-video-section-url');
+      if (vidUrl) vidUrl.value = settings?.video_section_youtube_url || '';
+
       const heroPreview = document.getElementById('hero-image-preview');
       if (heroPreview) {
         heroPreview.src = settings?.hero_image_url || 'assets/dr-fabricio-loayza.jpg';
@@ -429,6 +479,21 @@ class AdminApp {
     }
   }
 
+  updateVideoPreview(url) {
+    const previewContainer = document.getElementById('hero-video-preview-container');
+    const iframe = document.getElementById('hero-video-preview-iframe');
+    if (!previewContainer || !iframe) return;
+
+    const videoId = window.Utils ? window.Utils.extractYouTubeId(url) : null;
+    if (videoId) {
+      iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&mute=1&controls=1&rel=0`;
+      previewContainer.classList.remove('hidden');
+    } else {
+      iframe.src = '';
+      previewContainer.classList.add('hidden');
+    }
+  }
+
   async saveHeroSettings(e) {
     e.preventDefault();
     const btn = e.target.querySelector('[type="submit"]');
@@ -449,17 +514,26 @@ class AdminApp {
         logoUrl = await window.Utils.uploadImage(logoImgFile, 'brand');
       }
 
+      const selectedMediaType = document.querySelector('input[name="hero-media-type"]:checked')?.value || 'card';
+
       const updated = {
         clinic_name: document.getElementById('hero-field-clinic-name').value.trim(),
         hero_title: document.getElementById('hero-field-title').value.trim(),
         hero_subtitle: document.getElementById('hero-field-subtitle').value.trim(),
         whatsapp_number: document.getElementById('hero-field-whatsapp').value.trim(),
         hero_image_url: heroImageUrl,
-        logo_url: logoUrl
+        logo_url: logoUrl,
+        hero_media_type: selectedMediaType,
+        hero_youtube_url: document.getElementById('hero-field-youtube-url')?.value.trim() || '',
+        hero_video_autoplay: document.getElementById('hero-field-video-autoplay')?.checked ?? true,
+        show_video_section: document.getElementById('field-show-video-section')?.checked ?? false,
+        video_section_title: document.getElementById('field-video-section-title')?.value.trim() || '',
+        video_section_subtitle: document.getElementById('field-video-section-subtitle')?.value.trim() || '',
+        video_section_youtube_url: document.getElementById('field-video-section-url')?.value.trim() || ''
       };
 
       await window.dataStore.updateSettings(updated);
-      window.Utils.showToast('✅ Sección Inicio guardada correctamente', 'success');
+      window.Utils.showToast('✅ Cambios de Inicio y Portada guardados correctamente', 'success');
       await this.loadHeroForm();
     } catch (err) {
       window.Utils.showToast('❌ Error al guardar: ' + err.message, 'error');

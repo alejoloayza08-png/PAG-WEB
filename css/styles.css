@@ -113,7 +113,7 @@ body {
 .animate-marquee {
   display: flex !important;
   width: max-content !important;
-  animation: marqueeScroll 25s linear infinite !important;
+  animation: marqueeScroll 42s linear infinite !important;
   will-change: transform;
 }
 

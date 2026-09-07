@@ -62,7 +62,7 @@
     .animate-marquee-track {
       display: flex !important;
       width: max-content !important;
-      animation: marqueeScroll 25s linear infinite !important;
+      animation: marqueeScroll 42s linear infinite !important;
       will-change: transform;
     }
     .animate-marquee-track:hover {
@@ -215,135 +215,169 @@
 
           </div>
 
-          <!-- Hero Right Column: Animated Instagram-Style Medical Profile Card (High Fidelity) -->
+          <!-- Hero Right Column: Card or YouTube Video Switcher -->
           <div class="lg:col-span-6 flex justify-center">
-            <div class="relative w-full max-w-lg animate-float-card">
+            <div class="relative w-full max-w-lg">
               
-              <!-- Floating specialty tag on top right with float animation -->
-              <div class="absolute -top-5 -right-3 sm:-right-4 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-4 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
-                <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm font-bold flex-shrink-0 border border-teal-100/60">
-                  <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-                <div>
-                  <span class="block text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">Especialista en Diabetología</span>
-                  <span class="block text-[11px] text-slate-500 font-medium leading-tight">Máster en Endocrinología</span>
-                </div>
-              </div>
-
-              <!-- Main Medical Card Container -->
-              <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200/80 relative z-10 space-y-4">
-                
-                <!-- Instagram Story Profile Header -->
-                <div class="flex items-center gap-5">
-                  <!-- Doctor Avatar with Single Authentic Instagram Story Ring -->
-                  <div class="p-[3px] rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex-shrink-0 inline-flex shadow-sm">
-                    <div class="p-[2px] bg-white rounded-full flex items-center justify-center">
-                      <img id="hero-image" src="assets/dr-fabricio-loayza.jpg?v=3.2" alt="Dr. Fabricio Loayza" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" loading="eager" fetchpriority="high">
-                    </div>
-                  </div>
-
-                  <!-- Instagram Stats -->
-                  <div class="flex-1 grid grid-cols-3 text-center gap-1">
-                    <div>
-                      <span class="block font-black text-slate-900 text-lg sm:text-xl">793</span>
-                      <span class="text-[11px] text-slate-500 font-medium">publicaciones</span>
-                    </div>
-                    <div>
-                      <span class="block font-black text-slate-900 text-lg sm:text-xl">14,4 mil</span>
-                      <span class="text-[11px] text-slate-500 font-medium">seguidores</span>
-                    </div>
-                    <div>
-                      <span class="block font-black text-slate-900 text-lg sm:text-xl">2449</span>
-                      <span class="text-[11px] text-slate-500 font-medium">seguidos</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Doctor Name & Bio -->
-                <div class="space-y-1.5 text-left pt-1">
-                  <div class="flex items-center gap-1.5">
-                    <h3 class="font-extrabold text-slate-900 text-lg sm:text-xl">Dr. Fabricio Loayza</h3>
-                    <!-- Blue Verified Badge -->
-                    <svg class="w-5 h-5 text-[#38bdf8] fill-current flex-shrink-0" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <!-- OPTION A: Animated Instagram-Style Medical Profile Card -->
+              <div id="hero-card-container" class="relative animate-float-card transition-all duration-300">
+                <!-- Floating specialty tag on top right with float animation -->
+                <div class="absolute -top-5 -right-3 sm:-right-4 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-4 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
+                  <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm font-bold flex-shrink-0 border border-teal-100/60">
+                    <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                   </div>
-                  <p class="text-xs sm:text-sm font-semibold text-sky-600">@drfabricioloayza</p>
+                  <div>
+                    <span class="block text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">Especialista en Diabetología</span>
+                    <span class="block text-[11px] text-slate-500 font-medium leading-tight">Máster en Endocrinología</span>
+                  </div>
+                </div>
+
+                <!-- Main Medical Card Container -->
+                <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200/80 relative z-10 space-y-4">
                   
-                  <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium pt-0.5">
-                    <span>👤</span>
-                    <span>Diabetes · Tiroides · Obesidad · Endocrino</span>
-                  </div>
-                  <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
-                    <span class="text-rose-500">📍</span>
-                    <span>Kleber Franco entre Juan Montalvo y Páez, Machala</span>
-                  </div>
-                </div>
+                  <!-- Instagram Story Profile Header -->
+                  <div class="flex items-center gap-5">
+                    <!-- Doctor Avatar with Single Authentic Instagram Story Ring -->
+                    <div class="p-[3px] rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex-shrink-0 inline-flex shadow-sm">
+                      <div class="p-[2px] bg-white rounded-full flex items-center justify-center">
+                        <img id="hero-image" src="assets/dr-fabricio-loayza.jpg?v=3.2" alt="Dr. Fabricio Loayza" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover" loading="eager" fetchpriority="high">
+                      </div>
+                    </div>
 
-                <!-- Bio Description & Social Links -->
-                <div class="text-left text-xs text-slate-700 leading-relaxed font-normal space-y-2">
-                  <p>
-                    👨‍⚕️ | Obesidad, sobrepeso, alimentación saludable, hábitos sanos, Diabetes, Prediabetes, colesterol, triglicéridos, Tiroides, hormonas.<br>Hábitos sanos
-                  </p>
-                  <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold pt-0.5">
-                    <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1 text-slate-900 font-bold">
-                      <span>🔗</span> walink.co/4ce476
+                    <!-- Instagram Stats -->
+                    <div class="flex-1 grid grid-cols-3 text-center gap-1">
+                      <div>
+                        <span class="block font-black text-slate-900 text-lg sm:text-xl">793</span>
+                        <span class="text-[11px] text-slate-500 font-medium">publicaciones</span>
+                      </div>
+                      <div>
+                        <span class="block font-black text-slate-900 text-lg sm:text-xl">14,4 mil</span>
+                        <span class="text-[11px] text-slate-500 font-medium">seguidores</span>
+                      </div>
+                      <div>
+                        <span class="block font-black text-slate-900 text-lg sm:text-xl">2449</span>
+                        <span class="text-[11px] text-slate-500 font-medium">seguidos</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Doctor Name & Bio -->
+                  <div class="space-y-1.5 text-left pt-1">
+                    <div class="flex items-center gap-1.5">
+                      <h3 class="font-extrabold text-slate-900 text-lg sm:text-xl">Dr. Fabricio Loayza</h3>
+                      <!-- Blue Verified Badge -->
+                      <svg class="w-5 h-5 text-[#38bdf8] fill-current flex-shrink-0" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      </svg>
+                    </div>
+                    <p class="text-xs sm:text-sm font-semibold text-sky-600">@drfabricioloayza</p>
+                    
+                    <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium pt-0.5">
+                      <span>👤</span>
+                      <span>Diabetes · Tiroides · Obesidad · Endocrino</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+                      <span class="text-rose-500">📍</span>
+                      <span>Kleber Franco entre Juan Montalvo y Páez, Machala</span>
+                    </div>
+                  </div>
+
+                  <!-- Bio Description & Social Links -->
+                  <div class="text-left text-xs text-slate-700 leading-relaxed font-normal space-y-2">
+                    <p>
+                      👨‍⚕️ | Obesidad, sobrepeso, alimentación saludable, hábitos sanos, Diabetes, Prediabetes, colesterol, triglicéridos, Tiroides, hormonas.<br>Hábitos sanos
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold pt-0.5">
+                      <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center gap-1 text-slate-900 font-bold">
+                        <span>🔗</span> walink.co/4ce476
+                      </a>
+                      <a href="https://www.facebook.com/119541705083687" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">Clinidiab en Facebook</a>
+                      <a href="https://youtube.com/@fabricio19212" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">YouTube</a>
+                    </div>
+                  </div>
+
+                  <!-- Action Buttons: Contactar, Servicios, Seguir -->
+                  <div class="grid grid-cols-3 gap-2.5 pt-1">
+                    <a href="#" class="whatsapp-reserve-btn inline-flex items-center justify-center py-2.5 px-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm transform hover:-translate-y-0.5">
+                      Contactar
                     </a>
-                    <a href="https://www.facebook.com/119541705083687" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">Clinidiab en Facebook</a>
-                    <a href="https://youtube.com/@fabricio19212" target="_blank" rel="noopener noreferrer" class="hover:underline text-sky-700 font-semibold">YouTube</a>
+                    <a href="#servicios" class="inline-flex items-center justify-center py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-all">
+                      Servicios
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="ig-gradient-btn inline-flex items-center justify-center py-2.5 px-3 rounded-xl text-xs font-bold shadow-md transform hover:-translate-y-0.5">
+                      Seguir
+                    </a>
+                  </div>
+
+                  <!-- Instagram Post Grid Strip (6 posts) -->
+                  <div class="grid grid-cols-6 gap-1.5 sm:gap-2 pt-2 border-t border-slate-100">
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/congreso-1.jpg" alt="Congreso Digestivo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/post-transformacion-1.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/congreso-2.jpg" alt="Congreso Médico" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/post-transformacion-2.jpg" alt="Artrosis" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/congreso-3.jpg" alt="Ponencia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                    <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
+                      <img src="assets/post-transformacion-3.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </a>
+                  </div>
+
+                </div>
+
+                <!-- Floating bottom-left badge: Control glucémico -->
+                <div class="absolute -bottom-4 -left-3 sm:-left-5 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-3.5 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
+                  <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/60">
+                    <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="block text-xs font-extrabold text-slate-900 leading-tight">Control glucémico</span>
+                    <span class="block text-[11px] text-slate-500 font-medium leading-tight">integral y personalizado</span>
                   </div>
                 </div>
-
-                <!-- Action Buttons: Contactar, Servicios, Seguir -->
-                <div class="grid grid-cols-3 gap-2.5 pt-1">
-                  <a href="#" class="whatsapp-reserve-btn inline-flex items-center justify-center py-2.5 px-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm transform hover:-translate-y-0.5">
-                    Contactar
-                  </a>
-                  <a href="#servicios" class="inline-flex items-center justify-center py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-all">
-                    Servicios
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="ig-gradient-btn inline-flex items-center justify-center py-2.5 px-3 rounded-xl text-xs font-bold shadow-md transform hover:-translate-y-0.5">
-                    Seguir
-                  </a>
-                </div>
-
-                <!-- Instagram Post Grid Strip (6 posts) -->
-                <div class="grid grid-cols-6 gap-1.5 sm:gap-2 pt-2 border-t border-slate-100">
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/congreso-1.jpg" alt="Congreso Digestivo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/post-transformacion-1.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/congreso-2.jpg" alt="Congreso Médico" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/post-transformacion-2.jpg" alt="Artrosis" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/congreso-3.jpg" alt="Ponencia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                  <a href="https://www.instagram.com/drfabricioloayza/" target="_blank" rel="noopener noreferrer" class="aspect-square rounded-lg overflow-hidden border border-slate-100 block group shadow-xs">
-                    <img src="assets/post-transformacion-3.jpg" alt="Transformación" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                  </a>
-                </div>
-
               </div>
 
-              <!-- Floating bottom-left badge: Control glucémico -->
-              <div class="absolute -bottom-4 -left-3 sm:-left-5 z-30 flex items-center gap-3 bg-white/95 backdrop-blur-md py-2.5 px-3.5 rounded-2xl border border-slate-100 shadow-xl text-left animate-badge-float">
-                <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 border border-teal-100/60">
-                  <svg class="w-5 h-5 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                  </svg>
+              <!-- OPTION B: YouTube Autoplay Video with Floating "Activar Audio" (Lafesana style) -->
+              <div id="hero-video-container" class="hidden relative rounded-[28px] overflow-hidden shadow-2xl border-4 border-white bg-slate-950 aspect-[4/3] sm:aspect-video lg:aspect-[4/3] flex items-center justify-center group">
+                <!-- Floating Activar Audio Button on Top-Left (Exact Lafesana pattern) -->
+                <button id="hero-toggle-audio-btn" type="button" class="absolute top-4 left-4 z-30 bg-slate-950/80 hover:bg-slate-900 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20 transition-all transform hover:scale-105 cursor-pointer" aria-label="Activar audio">
+                  <span id="hero-audio-icon" class="flex items-center justify-center text-rose-400">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </span>
+                  <span id="hero-audio-text">Activar audio</span>
+                </button>
+
+                <!-- YouTube Iframe Embed Container -->
+                <div id="hero-yt-player-wrapper" class="w-full h-full absolute inset-0 pointer-events-auto">
+                  <div id="hero-yt-player" class="w-full h-full"></div>
                 </div>
-                <div>
-                  <span class="block text-xs font-extrabold text-slate-900 leading-tight">Control glucémico</span>
-                  <span class="block text-[11px] text-slate-500 font-medium leading-tight">integral y personalizado</span>
+
+                <!-- Doctor Badge Bottom Overlay -->
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent p-4 pt-10 flex items-center justify-between z-20 pointer-events-none">
+                  <div>
+                    <span class="text-white text-xs font-bold block">Dr. Fabricio Loayza · CLINIDIAB</span>
+                    <span class="text-slate-300 text-[10px] block">Machala · Diabetología & Nutrición</span>
+                  </div>
+                  <a href="#servicios" class="pointer-events-auto bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-colors">
+                    Ver Servicios
+                  </a>
                 </div>
               </div>
 
@@ -393,6 +427,45 @@
         </div>
       </div>
     </div>
+
+    <!-- OPTIONAL DEDICATED VIDEO SECTION (Managed from Admin) -->
+    <section id="video-section" class="hidden py-16 bg-slate-950 text-white border-y border-slate-800 relative overflow-hidden">
+      <!-- Glow ambient light -->
+      <div class="absolute top-0 right-1/4 w-96 h-96 bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
+        <div class="max-w-2xl mx-auto space-y-3">
+          <span class="text-teal-400 text-xs font-extrabold uppercase tracking-widest bg-teal-950/80 border border-teal-800/80 px-3.5 py-1.5 rounded-full inline-block">
+            Video de Presentación
+          </span>
+          <h2 id="video-section-title-el" class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Conoce al Dr. Fabricio Loayza y CLINIDIAB
+          </h2>
+          <p id="video-section-subtitle-el" class="text-slate-400 text-sm sm:text-base leading-relaxed">
+            Atención médica integral, humana y especializada en el control de la diabetes en Machala.
+          </p>
+        </div>
+
+        <div class="relative max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-slate-700 bg-black aspect-video group">
+          <!-- Floating Activar Audio Button on Top-Left -->
+          <button id="section-toggle-audio-btn" type="button" class="absolute top-4 left-4 z-30 bg-slate-950/80 hover:bg-slate-900 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20 transition-all transform hover:scale-105 cursor-pointer" aria-label="Activar audio">
+            <span id="section-audio-icon" class="flex items-center justify-center text-rose-400">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </span>
+            <span id="section-audio-text">Activar audio</span>
+          </button>
+
+          <!-- YouTube Embed Container -->
+          <div id="section-yt-player-wrapper" class="w-full h-full absolute inset-0 pointer-events-auto">
+            <div id="section-yt-player" class="w-full h-full"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- SECTION 2: DR. LOAYZA / TU MÉDICO -->
     <section id="dr-loayza" class="bg-white py-20 md:py-24 border-y border-slate-200/70">
@@ -537,9 +610,220 @@
           </p>
         </div>
 
-        <!-- Services Dynamic Grid (Rendered by js/app.js) -->
+        <!-- Services Dynamic Grid (Pre-rendered for instant load + updated by js/app.js) -->
         <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          <div class="col-span-full text-center py-12 text-slate-400">Cargando servicios médicos...</div>
+          
+          <!-- Service 01 -->
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+            <span class="text-slate-100 font-black text-6xl select-none absolute right-4 bottom-2 pointer-events-none group-hover:text-teal-50 transition-colors z-0">
+              01
+            </span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-[#008ba3] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
+                    <circle cx="20" cy="10" r="2"/>
+                  </svg>
+                </div>
+                <span class="bg-[#ccfbf1] text-[#0f766e] text-xs font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-[#0f766e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  45 min
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-[22px] font-extrabold text-slate-900 tracking-tight leading-snug mt-5 mb-2.5 group-hover:text-[#008ba3] transition-colors">
+                Consulta Médica de Diabetología
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                Evaluación clínica especializada, control glucémico, ajuste de medicación e insulinas, y plan preventivo de complicaciones.
+              </p>
+            </div>
+            <div class="border-t border-dashed border-slate-200/90 pt-5 mt-auto flex items-end justify-between relative z-10">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">INVERSIÓN</span>
+                <div class="flex items-baseline font-black leading-none">
+                  <span class="text-base font-extrabold text-[#008ba3] mr-0.5">$</span>
+                  <span class="text-3xl font-black text-slate-900 tracking-tight leading-none">45</span>
+                  <span class="text-sm font-extrabold text-slate-700">.00</span>
+                </div>
+              </div>
+              <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="whatsapp-reserve-btn bg-[#008ba3] hover:bg-[#007a90] text-white px-7 py-2.5 rounded-full font-bold text-sm shadow-md shadow-cyan-900/10 hover:shadow-cyan-900/20 transition-all transform hover:-translate-y-0.5">
+                Reservar
+              </a>
+            </div>
+          </div>
+
+          <!-- Service 02 -->
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+            <span class="text-slate-100 font-black text-6xl select-none absolute right-4 bottom-2 pointer-events-none group-hover:text-teal-50 transition-colors z-0">
+              02
+            </span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-[#008ba3] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                  </svg>
+                </div>
+                <span class="bg-[#ccfbf1] text-[#0f766e] text-xs font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-[#0f766e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  40 min
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-[22px] font-extrabold text-slate-900 tracking-tight leading-snug mt-5 mb-2.5 group-hover:text-[#008ba3] transition-colors">
+                Nutrición Clínica para Diabéticos
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                Planes nutricionales 100% personalizados para el control del índice glucémico, reducción de peso saludable y hábitos sostenibles.
+              </p>
+            </div>
+            <div class="border-t border-dashed border-slate-200/90 pt-5 mt-auto flex items-end justify-between relative z-10">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">INVERSIÓN</span>
+                <div class="flex items-baseline font-black leading-none">
+                  <span class="text-base font-extrabold text-[#008ba3] mr-0.5">$</span>
+                  <span class="text-3xl font-black text-slate-900 tracking-tight leading-none">35</span>
+                  <span class="text-sm font-extrabold text-slate-700">.00</span>
+                </div>
+              </div>
+              <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="whatsapp-reserve-btn bg-[#008ba3] hover:bg-[#007a90] text-white px-7 py-2.5 rounded-full font-bold text-sm shadow-md shadow-cyan-900/10 hover:shadow-cyan-900/20 transition-all transform hover:-translate-y-0.5">
+                Reservar
+              </a>
+            </div>
+          </div>
+
+          <!-- Service 03 -->
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+            <span class="text-slate-100 font-black text-6xl select-none absolute right-4 bottom-2 pointer-events-none group-hover:text-teal-50 transition-colors z-0">
+              03
+            </span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-[#008ba3] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/>
+                    <path d="M5.52 16h12.96"/>
+                  </svg>
+                </div>
+                <span class="bg-[#ccfbf1] text-[#0f766e] text-xs font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-[#0f766e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  30 min
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-[22px] font-extrabold text-slate-900 tracking-tight leading-snug mt-5 mb-2.5 group-hover:text-[#008ba3] transition-colors">
+                Perfil Metabólico & Laboratorio Rápido
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                Toma de muestra y lectura de Hemoglobina Glicosilada (HbA1c), glucosa en ayunas, perfil lipídico y examen de función renal.
+              </p>
+            </div>
+            <div class="border-t border-dashed border-slate-200/90 pt-5 mt-auto flex items-end justify-between relative z-10">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">INVERSIÓN</span>
+                <div class="flex items-baseline font-black leading-none">
+                  <span class="text-base font-extrabold text-[#008ba3] mr-0.5">$</span>
+                  <span class="text-3xl font-black text-slate-900 tracking-tight leading-none">60</span>
+                  <span class="text-sm font-extrabold text-slate-700">.00</span>
+                </div>
+              </div>
+              <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="whatsapp-reserve-btn bg-[#008ba3] hover:bg-[#007a90] text-white px-7 py-2.5 rounded-full font-bold text-sm shadow-md shadow-cyan-900/10 hover:shadow-cyan-900/20 transition-all transform hover:-translate-y-0.5">
+                Reservar
+              </a>
+            </div>
+          </div>
+
+          <!-- Service 04 -->
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/70 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+            <span class="text-slate-100 font-black text-6xl select-none absolute right-4 bottom-2 pointer-events-none group-hover:text-teal-50 transition-colors z-0">
+              04
+            </span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-2xl bg-[#008ba3] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg class="w-6 h-6 text-white stroke-[2.2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 16v-2.38C4 11.5 7 11 7 11l1-7c.5-1.5 2-2 3-2s2.5.5 3 2l1 7s3 .5 3 2.62V16c0 4-3.5 6-7 6s-7-2-7-6Z"/>
+                    <path d="M8 7h.01M11 5h.01M14 7h.01"/>
+                  </svg>
+                </div>
+                <span class="bg-[#ccfbf1] text-[#0f766e] text-xs font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-[#0f766e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  Consulta
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-[22px] font-extrabold text-slate-900 tracking-tight leading-snug mt-5 mb-2.5 group-hover:text-[#008ba3] transition-colors">
+                Evaluación de Pie Diabético & Podología Médica
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                Inspección neurológica, vascular y cuidado preventivo integral para la detección temprana de neuropatías y úlceras.
+              </p>
+            </div>
+            <div class="border-t border-dashed border-slate-200/90 pt-5 mt-auto flex items-end justify-between relative z-10">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">INVERSIÓN</span>
+                <div class="flex items-baseline font-black leading-none">
+                  <span class="text-base font-extrabold text-[#008ba3] mr-0.5">$</span>
+                  <span class="text-3xl font-black text-slate-900 tracking-tight leading-none">40</span>
+                  <span class="text-sm font-extrabold text-slate-700">.00</span>
+                </div>
+              </div>
+              <a href="https://walink.co/4ce476" target="_blank" rel="noopener noreferrer" class="whatsapp-reserve-btn bg-[#008ba3] hover:bg-[#007a90] text-white px-7 py-2.5 rounded-full font-bold text-sm shadow-md shadow-cyan-900/10 hover:shadow-cyan-900/20 transition-all transform hover:-translate-y-0.5">
+                Reservar
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Formas de Pago Aceptadas (Horizontal Strip matching Claude Artifact) -->
+        <div class="max-w-5xl mx-auto mt-12 pt-6 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-slate-500 text-sm">
+          <span class="font-semibold text-slate-500 text-sm mr-1">Formas de pago:</span>
+          
+          <div class="bg-white border border-slate-200/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-xs text-sm font-semibold text-slate-700">
+            <svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="12" x="2" y="6" rx="2"/>
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M6 12h.01M18 12h.01"/>
+            </svg>
+            <span>Efectivo</span>
+          </div>
+
+          <div class="bg-white border border-slate-200/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-xs text-sm font-semibold text-slate-700">
+            <svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2 2 7h20L12 2z"/>
+            </svg>
+            <span>Transferencia bancaria</span>
+          </div>
+
+          <div class="bg-white border border-slate-200/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-xs text-sm font-semibold text-slate-700">
+            <svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="5" rx="2"/>
+              <line x1="2" x2="22" y1="10" y2="10"/>
+            </svg>
+            <span>Tarjeta de crédito (Visa, Mastercard, Amex)</span>
+          </div>
+
+          <div class="bg-white border border-slate-200/90 rounded-full px-4 py-2 flex items-center gap-2 shadow-xs text-sm font-semibold text-slate-700">
+            <svg class="w-4 h-4 text-[#008ba3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="5" rx="2"/>
+              <path d="M6 14h2"/>
+              <path d="M10 14h.01"/>
+              <path d="M14 14h.01"/>
+            </svg>
+            <span>Tarjeta de débito</span>
+          </div>
         </div>
 
       </div>
@@ -806,63 +1090,63 @@
           
           <!-- RIGHT COLUMN -->
           <div>
-            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8">
-              <div class="space-y-4" id="schedule-list">
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Lunes">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Lunes</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 sm:p-7">
+              <div class="space-y-1.5 sm:space-y-2" id="schedule-list">
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors bg-[#e0f7fa] schedule-row" data-day="Lunes">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Lunes</span>
+                    <span class="hoy-badge bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:00 – 13:00 · 15:00 – 19:00</span>
+                  <span class="text-slate-700 font-semibold text-xs sm:text-sm tabular-nums text-right">10:00 – 13:00 · 15:00 – 19:00</span>
                 </div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Martes">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Martes</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Martes">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Martes</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:00 – 13:00 · 15:00 – 19:00</span>
+                  <span class="text-slate-600 font-medium text-xs sm:text-sm tabular-nums text-right">10:00 – 13:00 · 15:00 – 19:00</span>
                 </div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Miércoles">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Miércoles</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Miércoles">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Miércoles</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:00 – 13:00 · 15:00 – 19:00</span>
+                  <span class="text-slate-600 font-medium text-xs sm:text-sm tabular-nums text-right">10:00 – 13:00 · 15:00 – 19:00</span>
                 </div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Jueves">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Jueves</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Jueves">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Jueves</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:00 – 13:00 · 15:00 – 19:00</span>
+                  <span class="text-slate-600 font-medium text-xs sm:text-sm tabular-nums text-right">10:00 – 13:00 · 15:00 – 19:00</span>
                 </div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Viernes">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Viernes</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Viernes">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Viernes</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:00 – 13:00 · 15:00 – 18:00</span>
+                  <span class="text-slate-600 font-medium text-xs sm:text-sm tabular-nums text-right">10:00 – 13:00 · 15:00 – 18:00</span>
                 </div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 schedule-row" data-day="Sábado">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Sábado</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Sábado">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Sábado</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-slate-600 text-sm font-medium">10:30 – 13:30</span>
+                  <span class="text-slate-600 font-medium text-xs sm:text-sm tabular-nums text-right">10:30 – 13:30</span>
                 </div>
-                <div class="flex items-center justify-between schedule-row" data-day="Domingo">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
-                    <span class="font-bold text-slate-900">Domingo</span>
-                    <span class="hoy-badge hidden bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>
+                <div class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl transition-colors hover:bg-slate-50/80 schedule-row" data-day="Domingo">
+                  <div class="flex items-center gap-2.5 sm:gap-3">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full flex-shrink-0"></span>
+                    <span class="font-bold text-slate-900 text-sm sm:text-base">Domingo</span>
+                    <span class="hoy-badge hidden bg-[#008ba3] text-white text-[10px] font-black px-2 py-0.5 rounded-md tracking-wider">HOY</span>
                   </div>
-                  <span class="text-rose-500 text-sm font-bold">Cerrado</span>
+                  <span class="text-rose-500 text-xs sm:text-sm font-bold tabular-nums text-right">Cerrado</span>
                 </div>
               </div>
             </div>

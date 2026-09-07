@@ -208,6 +208,86 @@
             <textarea id="hero-field-subtitle" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm leading-relaxed"></textarea>
           </div>
 
+          <!-- MEDIA TYPE SELECTOR: Card vs YouTube Video (Lafesana & Atres style) -->
+          <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 space-y-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-800">Formato Visual de la Portada Principal (Lado Derecho)</label>
+              <p class="text-xs text-slate-500 mt-0.5">Elija si desea mostrar la Tarjeta de Perfil Médico (estilo Instagram) o un Video de YouTube con autoplay y botón de activar audio (estilo Lafesana).</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <label class="relative flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all bg-white hover:border-teal-500 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50/40">
+                <input type="radio" name="hero-media-type" value="card" id="hero-media-type-card" checked class="text-teal-600 focus:ring-teal-500">
+                <div class="ml-3">
+                  <span class="block text-sm font-extrabold text-slate-900">📸 Tarjeta Perfil Instagram</span>
+                  <span class="block text-xs text-slate-500 mt-0.5">Foto con anillo, estadísticas, especialidades y publicaciones.</span>
+                </div>
+              </label>
+
+              <label class="relative flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all bg-white hover:border-teal-500 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50/40">
+                <input type="radio" name="hero-media-type" value="video" id="hero-media-type-video" class="text-teal-600 focus:ring-teal-500">
+                <div class="ml-3">
+                  <span class="block text-sm font-extrabold text-slate-900">🎥 Video YouTube (Autoplay)</span>
+                  <span class="block text-xs text-slate-500 mt-0.5">Video con botón flotante "Activar audio" desde el inicio.</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- YouTube Video Config Fields -->
+            <div id="hero-video-config-box" class="pt-4 border-t border-slate-200/70 space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL o Enlace del Video de YouTube</label>
+                <div class="flex items-center gap-2">
+                  <input type="url" id="hero-field-youtube-url" placeholder="https://www.youtube.com/watch?v=... o https://youtu.be/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium bg-white focus:ring-2 focus:ring-teal-500">
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1">Acepta enlaces completos de YouTube, enlaces cortos (youtu.be) o YouTube Shorts.</p>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="hero-field-video-autoplay" checked class="w-4 h-4 text-teal-600 rounded focus:ring-teal-500">
+                <label for="hero-field-video-autoplay" class="text-xs font-bold text-slate-700 select-none cursor-pointer">
+                  Autoplay silencioso al cargar la página (recomendado)
+                </label>
+              </div>
+
+              <!-- Live Video Preview in Admin -->
+              <div id="hero-video-preview-container" class="hidden rounded-xl overflow-hidden border border-slate-200 bg-black aspect-video max-w-md">
+                <iframe id="hero-video-preview-iframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPTIONAL DEDICATED VIDEO PRESENTATION SECTION -->
+          <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-800">Sección Adicional de Video de Presentación</label>
+                <p class="text-xs text-slate-500 mt-0.5">Active esta opción si desea incluir además una sección completa de video en la página.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="field-show-video-section" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+              </label>
+            </div>
+
+            <div id="video-section-fields" class="hidden pt-4 border-t border-slate-200/70 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Título de la Sección</label>
+                  <input type="text" id="field-video-section-title" placeholder="Conoce al Dr. Fabricio Loayza y CLINIDIAB" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL de YouTube (opcional)</label>
+                  <input type="url" id="field-video-section-url" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Subtítulo de la Sección</label>
+                <input type="text" id="field-video-section-subtitle" placeholder="Atención médica integral, humana y especializada en Machala." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              </div>
+            </div>
+          </div>
+
           <!-- DIRECT PHOTO UPLOADERS (MOBILE & PC) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-100">
             <!-- Portada Hero Photo -->

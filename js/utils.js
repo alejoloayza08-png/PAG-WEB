@@ -151,6 +151,23 @@ const Utils = {
   },
 
   /**
+   * Extracts clean 11-char YouTube video ID from various URL formats
+   */
+  extractYouTubeId(url) {
+    if (!url || typeof url !== 'string') return null;
+    const cleanUrl = url.trim();
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = cleanUrl.match(regExp);
+    if (match && match[2] && match[2].length === 11) {
+      return match[2];
+    }
+    if (/^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
+      return cleanUrl;
+    }
+    return null;
+  },
+
+  /**
    * Escapes HTML string to prevent XSS
    */
   escapeHtml(str) {
