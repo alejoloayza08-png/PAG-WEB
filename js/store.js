@@ -81,10 +81,10 @@ const INITIAL_SEED_DATA = {
     {
       id: '034ba0f5-98cf-44b4-a989-a4182b6b71d2',
       title: 'Evaluación de Pie Diabético & Podología Médica',
-      description: 'Inspección neurológica, vascular y cuidado preventivo integral para la detección temprana de neuropatías y ulceraciones.',
+      description: 'Inspección neurológica, vascular y cuidado preventivo integral para la detección temprana de neuropatías y úlceras.',
       price: 40.00,
       currency: '$',
-      duration: '45 min',
+      duration: 'Consulta',
       image_url: 'assets/post-transformacion-3.jpg',
       is_active: true,
       display_order: 4
