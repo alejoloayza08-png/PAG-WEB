@@ -15,14 +15,14 @@
 
 const INITIAL_SEED_DATA = {
   site_settings: {
-    id: '00000000-0000-0000-0000-000000000001',
+    id: '981c28c1-1312-47e3-92d3-8ff4268f53b0',
     clinic_name: 'CLINIDIAB',
     hero_title: 'Medicina que transforma, hábitos que liberan',
     hero_subtitle: 'CLINIDIAB es un consultorio médico dedicado a la prevención, diagnóstico y tratamiento integral de la diabetes y los trastornos metabólicos, con un enfoque en obesidad, tiroides, hormonas y alimentación saludable. Atención especializada, oportuna y humana en el centro de Machala.',
     hero_image_url: 'assets/dr-fabricio-loayza-hq.jpg',
     logo_url: 'assets/logo.svg',
     whatsapp_number: '593987654321',
-    whatsapp_message: 'Hola CLINIDIAB, quisiera reservar una cita médica.',
+    whatsapp_message: 'Hola CLINIDIAB, quisiera agendar una cita médica.',
     phone_number: '+593 99 876 5432',
     email_address: 'contacto@clinidiab.com',
     address_text: 'Kleber Franco entre Juan Montalvo y Páez, Machala, El Oro, Ecuador'
@@ -46,7 +46,7 @@ const INITIAL_SEED_DATA = {
   },
   services: [
     {
-      id: 'srv-1',
+      id: '4bbdf6af-3b35-4185-91fb-b882483a8cec',
       title: 'Consulta Médica de Diabetología',
       description: 'Evaluación clínica especializada, control glucémico, ajuste de medicación e insulinas, y plan preventivo de complicaciones.',
       price: 45.00,
@@ -57,7 +57,7 @@ const INITIAL_SEED_DATA = {
       display_order: 1
     },
     {
-      id: 'srv-2',
+      id: 'c7db69de-1d76-4572-b766-ee5b35a44db0',
       title: 'Nutrición Clínica para Diabéticos',
       description: 'Planes nutricionales 100% personalizados para el control del índice glucémico, reducción de peso saludable y hábitos sostenibles.',
       price: 35.00,
@@ -68,7 +68,7 @@ const INITIAL_SEED_DATA = {
       display_order: 2
     },
     {
-      id: 'srv-3',
+      id: '846a2ab9-29be-4bd1-b976-a297b401a231',
       title: 'Perfil Metabólico & Laboratorio Rápido',
       description: 'Toma de muestra y lectura de Hemoglobina Glicosilada (HbA1c), glucosa en ayunas, perfil lipídico y examen de función renal.',
       price: 60.00,
@@ -79,7 +79,7 @@ const INITIAL_SEED_DATA = {
       display_order: 3
     },
     {
-      id: 'srv-4',
+      id: '034ba0f5-98cf-44b4-a989-a4182b6b71d2',
       title: 'Evaluación de Pie Diabético & Podología Médica',
       description: 'Inspección neurológica, vascular y cuidado preventivo integral para la detección temprana de neuropatías y ulceraciones.',
       price: 40.00,
@@ -92,7 +92,7 @@ const INITIAL_SEED_DATA = {
   ],
   academic_events: [
     {
-      id: 'acad-1',
+      id: '43790ab0-efa6-468d-8eb2-f81061aa21de',
       badge_text: 'Conferencista',
       title: 'Actualización Médica Continua',
       description: 'Participación activa en simposios clínicos nacionales e internacionales sobre avances en insulinoterapia y manejo de resistencia a la insulina.',
@@ -102,7 +102,7 @@ const INITIAL_SEED_DATA = {
       is_active: true
     },
     {
-      id: 'acad-2',
+      id: '01a89238-5414-4237-85e5-d63d77170173',
       badge_text: 'Congreso 2026',
       title: 'XI Semana Ecuatoriana de Enfermedades Digestivas',
       description: 'Ponencia oficial del Dr. Fabricio Loayza (Diabetólogo / Nutricionista) en el encuentro de la Sociedad Ecuatoriana de Gastroenterología.',
@@ -112,7 +112,7 @@ const INITIAL_SEED_DATA = {
       is_active: true
     },
     {
-      id: 'acad-3',
+      id: 'c86ff572-aac8-461e-b081-3bec920ceea5',
       badge_text: 'Ponencia Magistral',
       title: 'Congreso Internacional de Ginecología',
       description: 'Charla magistral sobre abordaje farmacológico, actividad física y modulación metabólica integral para la salud femenina.',
@@ -124,7 +124,7 @@ const INITIAL_SEED_DATA = {
   ],
   cases: [
     {
-      id: 'case-1',
+      id: 'e3bcefb3-9e57-42fc-818a-7f43ed75f952',
       tag_text: 'Transformación #6',
       title: 'Más salud, más energía, más vida',
       description: 'Recuperación de composición corporal, regulación del metabolismo y mayor vitalidad día a día.',
@@ -134,7 +134,7 @@ const INITIAL_SEED_DATA = {
       is_active: true
     },
     {
-      id: 'case-2',
+      id: 'e2de6fe7-bcd8-487d-9c07-810c025b257a',
       tag_text: 'Transformación #4',
       title: '66 Libras Menos y Control Glucémico Total',
       description: 'De glucemias descontroladas a energía renovada, sin dietas restrictivas ni efecto rebote.',
@@ -144,7 +144,7 @@ const INITIAL_SEED_DATA = {
       is_active: true
     },
     {
-      id: 'case-3',
+      id: '8512a931-78dd-4abb-8713-f2038a2be5fd',
       tag_text: 'Transformación #2',
       title: 'Recuperando el Control Metabólico',
       description: 'Control de glucosa, reducción de grasa visceral y disminución progresiva de fármacos.',
@@ -156,7 +156,7 @@ const INITIAL_SEED_DATA = {
   ],
   testimonials: [
     {
-      id: 'test-1',
+      id: '8a8b139c-48c6-43f1-b844-4861616c8052',
       patient_name: 'Carlos Mendoza',
       comment: 'Excelente atención en CLINIDIAB. Logré estabilizar mi hemoglobina glicosilada gracias a su plan médico y nutricional adaptado a mi ritmo de vida. Muy recomendados.',
       rating: 5,
@@ -165,7 +165,7 @@ const INITIAL_SEED_DATA = {
       display_order: 1
     },
     {
-      id: 'test-2',
+      id: '9b8c240d-59d7-54f2-c955-5972727d9163',
       patient_name: 'María Elena Suárez',
       comment: 'La calidez humana de los médicos y la precisión en los exámenes me dieron mucha tranquilidad. Reservar por WhatsApp fue facilísimo.',
       rating: 5,
@@ -174,7 +174,7 @@ const INITIAL_SEED_DATA = {
       display_order: 2
     },
     {
-      id: 'test-3',
+      id: 'ac9d351e-6ae8-6503-da66-6083838ea274',
       patient_name: 'Roberto Gómez',
       comment: 'Llevo 2 años atendiéndome con ellos. Los controles periódicos y la orientación nutricional son impecables.',
       rating: 5,
@@ -184,23 +184,23 @@ const INITIAL_SEED_DATA = {
     }
   ],
   business_hours: [
-    { id: 'bh-1', day_name: 'Lunes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 1 },
-    { id: 'bh-2', day_name: 'Martes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 2 },
-    { id: 'bh-3', day_name: 'Miércoles', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 3 },
-    { id: 'bh-4', day_name: 'Jueves', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 4 },
-    { id: 'bh-5', day_name: 'Viernes', is_open: true, morning_open: '08:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '18:00', display_order: 5 },
-    { id: 'bh-6', day_name: 'Sábado', is_open: true, morning_open: '08:30', morning_close: '13:30', afternoon_open: '', afternoon_close: '', display_order: 6 },
-    { id: 'bh-7', day_name: 'Domingo', is_open: false, morning_open: '', morning_close: '', afternoon_open: '', afternoon_close: '', display_order: 7 }
+    { id: 'b7254b79-fbdd-4c5e-9b54-9697951325fa', day_name: 'Lunes', is_open: true, morning_open: '10:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 1 },
+    { id: 'd006acbe-907c-4f65-8a51-4b89d570641c', day_name: 'Martes', is_open: true, morning_open: '10:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 2 },
+    { id: '796039b5-5d1b-4b8c-be6c-d8c698160885', day_name: 'Miércoles', is_open: true, morning_open: '10:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 3 },
+    { id: '679c51f9-6d61-4575-86dc-5a772c4bc340', day_name: 'Jueves', is_open: true, morning_open: '10:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '19:00', display_order: 4 },
+    { id: 'e3316d49-0456-4f7b-943f-46c57df5725c', day_name: 'Viernes', is_open: true, morning_open: '10:00', morning_close: '13:00', afternoon_open: '15:00', afternoon_close: '18:00', display_order: 5 },
+    { id: '6422e259-aef0-429f-bdaa-af282ba8c4e2', day_name: 'Sábado', is_open: true, morning_open: '10:30', morning_close: '13:30', afternoon_open: '', afternoon_close: '', display_order: 6 },
+    { id: '50dce804-4e42-4111-9ba8-b2ffa70130a4', day_name: 'Domingo', is_open: false, morning_open: '', morning_close: '', afternoon_open: '', afternoon_close: '', display_order: 7 }
   ],
   payment_methods: [
-    { id: 'pm-1', name: 'Efectivo', description: 'Pago presencial en recepción del consultorio.', is_active: true, icon: 'banknotes' },
-    { id: 'pm-2', name: 'Transferencia Bancaria', description: 'Aceptamos transferencias directas a cuenta corriente.', is_active: true, icon: 'building-library' },
-    { id: 'pm-3', name: 'Tarjeta de Crédito', description: 'Visa, Mastercard, American Express.', is_active: true, icon: 'credit-card' },
-    { id: 'pm-4', name: 'Tarjeta de Débito', description: 'Todas las tarjetas de débito nacionales e internacionales.', is_active: true, icon: 'credit-card' }
+    { id: '11111111-1111-1111-1111-111111111111', name: 'Efectivo', description: 'Pago presencial en recepción del consultorio.', is_active: true, icon: 'banknotes' },
+    { id: '22222222-2222-2222-2222-222222222222', name: 'Transferencia Bancaria', description: 'Aceptamos transferencias directas a cuenta corriente.', is_active: true, icon: 'building-library' },
+    { id: '33333333-3333-3333-3333-333333333333', name: 'Tarjeta de Crédito', description: 'Visa, Mastercard, American Express.', is_active: true, icon: 'credit-card' },
+    { id: '44444444-4444-4444-4444-444444444444', name: 'Tarjeta de Débito', description: 'Todas las tarjetas de débito nacionales e internacionales.', is_active: true, icon: 'credit-card' }
   ],
   social_links: [
-    { id: 'soc-1', platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/drfabricioloayza/', is_active: true },
-    { id: 'soc-2', platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/593987654321', is_active: true }
+    { id: '55555555-5555-5555-5555-555555555555', platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/drfabricioloayza/', is_active: true },
+    { id: '66666666-6666-6666-6666-666666666666', platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/593987654321', is_active: true }
   ],
   location: {
     id: '00000000-0000-0000-0000-000000000002',
@@ -214,7 +214,7 @@ const INITIAL_SEED_DATA = {
 
 class DataStore {
   constructor() {
-    this.storageKey = 'clinidiab_local_db_v4';
+    this.storageKey = 'clinidiab_local_db_v5';
     this.ensureLocalStore();
   }
 
@@ -238,23 +238,38 @@ class DataStore {
   }
 
   hasSupabase() {
-    return window.supabaseManager && window.supabaseManager.isReady();
+    return Boolean(window.supabaseManager && window.supabaseManager.hasLiveSupabase());
   }
 
   sb() {
     return window.supabaseManager.getClient();
   }
 
+  ensureUUID(id) {
+    if (window.Utils && typeof window.Utils.ensureUUID === 'function') {
+      return window.Utils.ensureUUID(id);
+    }
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (id && regex.test(id)) return id;
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
   // --- SITE SETTINGS ---
   async getSettings() {
     if (this.hasSupabase()) {
       try {
-        let { data, error } = await this.sb().from('site_settings').select('*').limit(1);
-        if (error || !data || data.length === 0) {
-          const res = await this.sb().from('clinidiab_configuracion_sitio').select('*').limit(1);
-          data = res.data;
+        const { data, error } = await this.sb().from('site_settings').select('*').limit(1);
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.site_settings = { ...store.site_settings, ...data[0] };
+          this.saveLocalData(store);
+          return data[0];
         }
-        if (data && data.length > 0) return data[0];
       } catch (err) {
         console.warn('Supabase getSettings:', err);
       }
@@ -265,7 +280,7 @@ class DataStore {
   async updateSettings(newSettings) {
     const current = await this.getSettings();
     const payload = {
-      id: current?.id || '00000000-0000-0000-0000-000000000001',
+      id: current?.id ? this.ensureUUID(current.id) : '981c28c1-1312-47e3-92d3-8ff4268f53b0',
       clinic_name: 'CLINIDIAB',
       ...newSettings,
       updated_at: new Date().toISOString()
@@ -273,10 +288,11 @@ class DataStore {
 
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('site_settings').upsert(payload);
-        await this.sb().from('clinidiab_configuracion_sitio').upsert(payload);
+        const { error } = await this.sb().from('site_settings').upsert(payload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error updating site_settings Supabase:', err);
+        throw err;
       }
     }
 
@@ -291,7 +307,12 @@ class DataStore {
     if (this.hasSupabase()) {
       try {
         const { data, error } = await this.sb().from('doctor_bio').select('*').limit(1);
-        if (!error && data && data.length > 0) return data[0];
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.doctor_bio = { ...store.doctor_bio, ...data[0] };
+          this.saveLocalData(store);
+          return data[0];
+        }
       } catch (err) {
         console.warn('Supabase getDoctorBio:', err);
       }
@@ -307,9 +328,11 @@ class DataStore {
 
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('doctor_bio').upsert(payload);
+        const { error } = await this.sb().from('doctor_bio').upsert(payload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving doctor_bio Supabase:', err);
+        throw err;
       }
     }
 
@@ -325,14 +348,13 @@ class DataStore {
       try {
         let query = this.sb().from('services').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
-        let { data, error } = await query;
-        if (error || !data || data.length === 0) {
-          let q2 = this.sb().from('clinidiab_servicios').select('*').order('display_order', { ascending: true });
-          if (onlyActive) q2 = q2.eq('is_active', true);
-          const res = await q2;
-          data = res.data;
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.services = data;
+          this.saveLocalData(store);
+          return data;
         }
-        if (data && data.length > 0) return data;
       } catch (err) {
         console.warn('Supabase getServices:', err);
       }
@@ -343,32 +365,37 @@ class DataStore {
   }
 
   async saveService(service) {
-    if (!service.id) service.id = crypto.randomUUID ? crypto.randomUUID() : 'srv-' + Date.now();
-    
+    const servicePayload = {
+      ...service,
+      id: this.ensureUUID(service.id)
+    };
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('services').upsert(service);
-        await this.sb().from('clinidiab_servicios').upsert(service);
+        const { error } = await this.sb().from('services').upsert(servicePayload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving service Supabase:', err);
+        throw err;
       }
     }
 
     const store = this.getLocalData();
-    const index = store.services.findIndex(s => s.id === service.id);
-    if (index >= 0) store.services[index] = service;
-    else store.services.push(service);
+    const index = store.services.findIndex(s => s.id === servicePayload.id);
+    if (index >= 0) store.services[index] = servicePayload;
+    else store.services.push(servicePayload);
     this.saveLocalData(store);
-    return service;
+    return servicePayload;
   }
 
   async deleteService(id) {
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('services').delete().eq('id', id);
-        await this.sb().from('clinidiab_servicios').delete().eq('id', id);
+        const { error } = await this.sb().from('services').delete().eq('id', id);
+        if (error) throw error;
       } catch (err) {
         console.error('Error deleting service Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
@@ -384,7 +411,12 @@ class DataStore {
         let query = this.sb().from('academic_events').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
         const { data, error } = await query;
-        if (!error && data && data.length > 0) return data;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.academic_events = data;
+          this.saveLocalData(store);
+          return data;
+        }
       } catch (err) {
         console.warn('Supabase getAcademicEvents:', err);
       }
@@ -395,28 +427,37 @@ class DataStore {
   }
 
   async saveAcademicEvent(event) {
-    if (!event.id) event.id = crypto.randomUUID ? crypto.randomUUID() : 'acad-' + Date.now();
+    const eventPayload = {
+      ...event,
+      id: this.ensureUUID(event.id)
+    };
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('academic_events').upsert(event);
+        const { error } = await this.sb().from('academic_events').upsert(eventPayload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving academic_events Supabase:', err);
+        throw err;
       }
     }
+
     const store = this.getLocalData();
-    const index = (store.academic_events || []).findIndex(e => e.id === event.id);
-    if (index >= 0) store.academic_events[index] = event;
-    else (store.academic_events = store.academic_events || []).push(event);
+    const index = (store.academic_events || []).findIndex(e => e.id === eventPayload.id);
+    if (index >= 0) store.academic_events[index] = eventPayload;
+    else (store.academic_events = store.academic_events || []).push(eventPayload);
     this.saveLocalData(store);
-    return event;
+    return eventPayload;
   }
 
   async deleteAcademicEvent(id) {
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('academic_events').delete().eq('id', id);
+        const { error } = await this.sb().from('academic_events').delete().eq('id', id);
+        if (error) throw error;
       } catch (err) {
         console.error('Error deleting academic event Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
@@ -432,7 +473,12 @@ class DataStore {
         let query = this.sb().from('cases').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
         const { data, error } = await query;
-        if (!error && data && data.length > 0) return data;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.cases = data;
+          this.saveLocalData(store);
+          return data;
+        }
       } catch (err) {
         console.warn('Supabase getCases:', err);
       }
@@ -443,28 +489,37 @@ class DataStore {
   }
 
   async saveCase(caseItem) {
-    if (!caseItem.id) caseItem.id = crypto.randomUUID ? crypto.randomUUID() : 'case-' + Date.now();
+    const casePayload = {
+      ...caseItem,
+      id: this.ensureUUID(caseItem.id)
+    };
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('cases').upsert(caseItem);
+        const { error } = await this.sb().from('cases').upsert(casePayload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving case Supabase:', err);
+        throw err;
       }
     }
+
     const store = this.getLocalData();
-    const index = (store.cases || []).findIndex(c => c.id === caseItem.id);
-    if (index >= 0) store.cases[index] = caseItem;
-    else (store.cases = store.cases || []).push(caseItem);
+    const index = (store.cases || []).findIndex(c => c.id === casePayload.id);
+    if (index >= 0) store.cases[index] = casePayload;
+    else (store.cases = store.cases || []).push(casePayload);
     this.saveLocalData(store);
-    return caseItem;
+    return casePayload;
   }
 
   async deleteCase(id) {
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('cases').delete().eq('id', id);
+        const { error } = await this.sb().from('cases').delete().eq('id', id);
+        if (error) throw error;
       } catch (err) {
         console.error('Error deleting case Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
@@ -479,14 +534,13 @@ class DataStore {
       try {
         let query = this.sb().from('testimonials').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
-        let { data, error } = await query;
-        if (error || !data || data.length === 0) {
-          let q2 = this.sb().from('clinidiab_testimonios').select('*').order('display_order', { ascending: true });
-          if (onlyActive) q2 = q2.eq('is_active', true);
-          const res = await q2;
-          data = res.data;
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.testimonials = data;
+          this.saveLocalData(store);
+          return data;
         }
-        if (data && data.length > 0) return data;
       } catch (err) {
         console.warn('Supabase getTestimonials:', err);
       }
@@ -497,32 +551,37 @@ class DataStore {
   }
 
   async saveTestimonial(testimonial) {
-    if (!testimonial.id) testimonial.id = crypto.randomUUID ? crypto.randomUUID() : 'test-' + Date.now();
+    const testPayload = {
+      ...testimonial,
+      id: this.ensureUUID(testimonial.id)
+    };
 
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('testimonials').upsert(testimonial);
-        await this.sb().from('clinidiab_testimonios').upsert(testimonial);
+        const { error } = await this.sb().from('testimonials').upsert(testPayload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving testimonial Supabase:', err);
+        throw err;
       }
     }
 
     const store = this.getLocalData();
-    const index = store.testimonials.findIndex(t => t.id === testimonial.id);
-    if (index >= 0) store.testimonials[index] = testimonial;
-    else store.testimonials.push(testimonial);
+    const index = store.testimonials.findIndex(t => t.id === testPayload.id);
+    if (index >= 0) store.testimonials[index] = testPayload;
+    else store.testimonials.push(testPayload);
     this.saveLocalData(store);
-    return testimonial;
+    return testPayload;
   }
 
   async deleteTestimonial(id) {
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('testimonials').delete().eq('id', id);
-        await this.sb().from('clinidiab_testimonios').delete().eq('id', id);
+        const { error } = await this.sb().from('testimonials').delete().eq('id', id);
+        if (error) throw error;
       } catch (err) {
         console.error('Error deleting testimonial Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
@@ -535,12 +594,13 @@ class DataStore {
   async getBusinessHours() {
     if (this.hasSupabase()) {
       try {
-        let { data, error } = await this.sb().from('business_hours').select('*').order('display_order', { ascending: true });
-        if (error || !data || data.length === 0) {
-          const res = await this.sb().from('clinidiab_horarios').select('*').order('display_order', { ascending: true });
-          data = res.data;
+        const { data, error } = await this.sb().from('business_hours').select('*').order('display_order', { ascending: true });
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.business_hours = data;
+          this.saveLocalData(store);
+          return data;
         }
-        if (data && data.length > 0) return data;
       } catch (err) {
         console.warn('Supabase getBusinessHours:', err);
       }
@@ -549,34 +609,40 @@ class DataStore {
   }
 
   async saveBusinessHours(hoursList) {
+    const processedHours = hoursList.map((h, index) => ({
+      ...h,
+      id: this.ensureUUID(h.id),
+      display_order: h.display_order || (index + 1)
+    }));
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('business_hours').upsert(hoursList);
-        await this.sb().from('clinidiab_horarios').upsert(hoursList);
+        const { error } = await this.sb().from('business_hours').upsert(processedHours);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving business hours Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
-    store.business_hours = hoursList;
+    store.business_hours = processedHours;
     this.saveLocalData(store);
-    return hoursList;
+    return processedHours;
   }
 
   // --- PAYMENT METHODS ---
   async getPaymentMethods(onlyActive = false) {
     if (this.hasSupabase()) {
       try {
-        let query = this.sb().from('payment_methods').select('*');
+        let query = this.sb().from('payment_methods').select('*').order('display_order', { ascending: true });
         if (onlyActive) query = query.eq('is_active', true);
-        let { data, error } = await query;
-        if (error || !data || data.length === 0) {
-          let q2 = this.sb().from('clinidiab_formas_pago').select('*');
-          if (onlyActive) q2 = q2.eq('is_active', true);
-          const res = await q2;
-          data = res.data;
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.payment_methods = data;
+          this.saveLocalData(store);
+          return data;
         }
-        if (data && data.length > 0) return data;
       } catch (err) {
         console.warn('Supabase getPaymentMethods:', err);
       }
@@ -587,18 +653,25 @@ class DataStore {
   }
 
   async savePaymentMethods(methods) {
+    const processedMethods = methods.map((m, index) => ({
+      ...m,
+      id: this.ensureUUID(m.id),
+      display_order: m.display_order || (index + 1)
+    }));
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('payment_methods').upsert(methods);
-        await this.sb().from('clinidiab_formas_pago').upsert(methods);
+        const { error } = await this.sb().from('payment_methods').upsert(processedMethods);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving payment methods Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
-    store.payment_methods = methods;
+    store.payment_methods = processedMethods;
     this.saveLocalData(store);
-    return methods;
+    return processedMethods;
   }
 
   // --- SOCIAL LINKS ---
@@ -607,14 +680,13 @@ class DataStore {
       try {
         let query = this.sb().from('social_links').select('*');
         if (onlyActive) query = query.eq('is_active', true);
-        let { data, error } = await query;
-        if (error || !data || data.length === 0) {
-          let q2 = this.sb().from('clinidiab_redes_sociales').select('*');
-          if (onlyActive) q2 = q2.eq('is_active', true);
-          const res = await q2;
-          data = res.data;
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.social_links = data;
+          this.saveLocalData(store);
+          return data;
         }
-        if (data && data.length > 0) return data;
       } catch (err) {
         console.warn('Supabase getSocialLinks:', err);
       }
@@ -625,18 +697,24 @@ class DataStore {
   }
 
   async saveSocialLinks(links) {
+    const processedLinks = links.map(l => ({
+      ...l,
+      id: this.ensureUUID(l.id)
+    }));
+
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('social_links').upsert(links);
-        await this.sb().from('clinidiab_redes_sociales').upsert(links);
+        const { error } = await this.sb().from('social_links').upsert(processedLinks);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving social links Supabase:', err);
+        throw err;
       }
     }
     const store = this.getLocalData();
-    store.social_links = links;
+    store.social_links = processedLinks;
     this.saveLocalData(store);
-    return links;
+    return processedLinks;
   }
 
   // --- LOCATION ---
@@ -644,7 +722,12 @@ class DataStore {
     if (this.hasSupabase()) {
       try {
         const { data, error } = await this.sb().from('location').select('*').limit(1);
-        if (!error && data && data.length > 0) return data[0];
+        if (!error && data && data.length > 0) {
+          const store = this.getLocalData();
+          store.location = { ...store.location, ...data[0] };
+          this.saveLocalData(store);
+          return data[0];
+        }
       } catch (err) {
         console.warn('Supabase getLocation:', err);
       }
@@ -655,16 +738,18 @@ class DataStore {
   async saveLocation(locationData) {
     const current = await this.getLocation();
     const payload = {
-      id: current?.id || '00000000-0000-0000-0000-000000000002',
+      id: current?.id ? this.ensureUUID(current.id) : '00000000-0000-0000-0000-000000000002',
       ...locationData,
       updated_at: new Date().toISOString()
     };
 
     if (this.hasSupabase()) {
       try {
-        await this.sb().from('location').upsert(payload);
+        const { error } = await this.sb().from('location').upsert(payload);
+        if (error) throw error;
       } catch (err) {
         console.error('Error saving location Supabase:', err);
+        throw err;
       }
     }
 

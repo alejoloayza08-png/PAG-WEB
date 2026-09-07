@@ -27,16 +27,40 @@ const Utils = {
   renderStars(rating = 5) {
     const total = 5;
     const numRating = Math.min(Math.max(parseInt(rating) || 5, 1), 5);
-    let html = '<div class="star-rating" aria-label="Calificación de ' + numRating + ' de 5 estrellas">';
+    let html = '<div class="star-rating flex items-center gap-1" aria-label="Calificación de ' + numRating + ' de 5 estrellas">';
     for (let i = 1; i <= total; i++) {
       if (i <= numRating) {
-        html += `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-amber-400 stroke-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+        html += `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-amber-400 stroke-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
       } else {
-        html += `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-slate-200 stroke-slate-300" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+        html += `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-slate-200 stroke-slate-300" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
       }
     }
     html += '</div>';
     return html;
+  },
+
+  /**
+   * UUID Validation and Generation Helpers
+   */
+  isValidUUID(str) {
+    if (typeof str !== 'string') return false;
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return regex.test(str);
+  },
+
+  generateUUID() {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  },
+
+  ensureUUID(id) {
+    return (id && this.isValidUUID(id)) ? id : this.generateUUID();
   },
 
   /**
@@ -95,7 +119,7 @@ const Utils = {
     if (!validation.valid) throw new Error(validation.error);
 
     // If Supabase Storage is active
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (window.supabaseManager && window.supabaseManager.hasLiveSupabase()) {
       try {
         const fileExt = file.name.split('.').pop();
         const fileName = `${folder}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;

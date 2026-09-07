@@ -31,7 +31,7 @@ class AdminApp {
     const localSession = localStorage.getItem('clinidiab_admin_session');
     if (localSession === 'active_session') {
       this.isAuthenticated = true;
-    } else if (window.supabaseManager.hasLiveSupabase()) {
+    } else if (window.supabaseManager && window.supabaseManager.hasLiveSupabase()) {
       try {
         const { data: { session } } = await window.supabaseManager.getClient().auth.getSession();
         if (session) this.isAuthenticated = true;
@@ -40,12 +40,14 @@ class AdminApp {
       }
     }
 
-    // Restore active tab from hash or localStorage
-    const hash = window.location.hash.replace('#', '');
     const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+    
+    // Priority 1: URL Hash
+    const hash = window.location.hash.replace('#', '');
     if (hash && validTabs.includes(hash)) {
       this.currentTab = hash;
     } else {
+      // Priority 2: LocalStorage
       const stored = localStorage.getItem('clinidiab_admin_tab');
       this.currentTab = (stored && validTabs.includes(stored)) ? stored : 'dashboard';
     }
@@ -81,6 +83,15 @@ class AdminApp {
         const tabName = e.currentTarget.getAttribute('data-tab');
         if (tabName) this.switchTab(tabName);
       });
+    });
+
+    // Hash Change listener for URL back/forward or direct hash links
+    window.addEventListener('hashchange', () => {
+      const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+      const hash = window.location.hash.replace('#', '');
+      if (hash && validTabs.includes(hash) && hash !== this.currentTab) {
+        this.switchTab(hash);
+      }
     });
 
     // Form Submissions
@@ -262,7 +273,7 @@ class AdminApp {
       if (password === 'Clinidiab2026!' || email === 'admin@clinidiab.com' || (email && password.length >= 4)) {
         localStorage.setItem('clinidiab_admin_session', 'active_session');
         loggedIn = true;
-      } else if (window.supabaseManager.hasLiveSupabase()) {
+      } else if (window.supabaseManager && window.supabaseManager.hasLiveSupabase()) {
         try {
           const { data, error } = await window.supabaseManager.getClient().auth.signInWithPassword({ email, password });
           if (!error && data?.session) loggedIn = true;
@@ -289,7 +300,7 @@ class AdminApp {
 
   async handleLogout() {
     localStorage.removeItem('clinidiab_admin_session');
-    if (window.supabaseManager.hasLiveSupabase()) {
+    if (window.supabaseManager && window.supabaseManager.hasLiveSupabase()) {
       try {
         await window.supabaseManager.getClient().auth.signOut();
       } catch (e) {
@@ -302,11 +313,16 @@ class AdminApp {
   }
 
   switchTab(tabName) {
-    if (!tabName) tabName = 'dashboard';
+    const validTabs = ['dashboard', 'hero', 'doctor-bio', 'services', 'academic', 'cases', 'testimonials', 'contact-hours', 'payments', 'socials', 'location', 'config'];
+    if (!validTabs.includes(tabName)) tabName = 'dashboard';
+    
     this.currentTab = tabName;
-    window.location.hash = tabName;
+    if (window.location.hash !== '#' + tabName) {
+      window.location.hash = tabName;
+    }
     localStorage.setItem('clinidiab_admin_tab', tabName);
 
+    // Update nav items
     document.querySelectorAll('.admin-nav-item').forEach(btn => {
       if (btn.getAttribute('data-tab') === tabName) {
         btn.classList.add('bg-teal-700', 'text-white');
@@ -317,6 +333,7 @@ class AdminApp {
       }
     });
 
+    // Toggle panels
     document.querySelectorAll('.admin-tab-panel').forEach(panel => panel.classList.add('hidden'));
 
     const targetPanel = document.getElementById(`panel-${tabName}`);
@@ -365,7 +382,7 @@ class AdminApp {
 
       const liveBadge = document.getElementById('stat-supabase-status');
       if (liveBadge) {
-        liveBadge.innerHTML = window.supabaseManager.hasLiveSupabase()
+        liveBadge.innerHTML = (window.supabaseManager && window.supabaseManager.hasLiveSupabase())
           ? `<span class="badge-status badge-active">✅ Conectado a Supabase DB en la nube</span>`
           : `<span class="badge-status badge-inactive">⚡ Modo de sincronización local activo</span>`;
       }
@@ -380,16 +397,16 @@ class AdminApp {
   async loadHeroForm() {
     try {
       const settings = await window.dataStore.getSettings();
-      document.getElementById('hero-field-title').value = settings.hero_title || '';
-      document.getElementById('hero-field-subtitle').value = settings.hero_subtitle || '';
-      document.getElementById('hero-field-whatsapp').value = settings.whatsapp_number || '';
-      document.getElementById('hero-field-clinic-name').value = settings.clinic_name || 'CLINIDIAB';
-      document.getElementById('hero-hidden-image-url').value = settings.hero_image_url || '';
-      document.getElementById('logo-hidden-image-url').value = settings.logo_url || '';
+      document.getElementById('hero-field-title').value = settings?.hero_title || '';
+      document.getElementById('hero-field-subtitle').value = settings?.hero_subtitle || '';
+      document.getElementById('hero-field-whatsapp').value = settings?.whatsapp_number || '';
+      document.getElementById('hero-field-clinic-name').value = settings?.clinic_name || 'CLINIDIAB';
+      document.getElementById('hero-hidden-image-url').value = settings?.hero_image_url || '';
+      document.getElementById('logo-hidden-image-url').value = settings?.logo_url || '';
 
       const heroPreview = document.getElementById('hero-image-preview');
       if (heroPreview) {
-        if (settings.hero_image_url) {
+        if (settings?.hero_image_url) {
           heroPreview.src = settings.hero_image_url;
           heroPreview.classList.remove('hidden');
         } else {
@@ -399,7 +416,7 @@ class AdminApp {
 
       const logoPreview = document.getElementById('logo-image-preview');
       if (logoPreview) {
-        if (settings.logo_url) {
+        if (settings?.logo_url) {
           logoPreview.src = settings.logo_url;
           logoPreview.classList.remove('hidden');
         } else {
@@ -441,7 +458,7 @@ class AdminApp {
       };
 
       await window.dataStore.updateSettings(updated);
-      window.Utils.showToast('✅ Sección Inicio actualizada correctamente', 'success');
+      window.Utils.showToast('✅ Sección Inicio guardada correctamente', 'success');
       await this.loadHeroForm();
     } catch (err) {
       window.Utils.showToast('❌ Error al guardar: ' + err.message, 'error');
@@ -512,8 +529,8 @@ class AdminApp {
       const tbody = document.getElementById('admin-services-tbody');
       if (!tbody) return;
 
-      if (!services.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay servicios. Haz clic en "Nuevo Servicio".</td></tr>`;
+      if (!services || !services.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay servicios registrados. Haz clic en "Nuevo Servicio".</td></tr>`;
         return;
       }
 
@@ -550,11 +567,11 @@ class AdminApp {
     document.getElementById('service-modal-title').textContent = service ? 'Editar Servicio Médico' : 'Nuevo Servicio Médico';
     document.getElementById('srv-title').value = service?.title || '';
     document.getElementById('srv-description').value = service?.description || '';
-    document.getElementById('srv-price').value = service?.price || '';
+    document.getElementById('srv-price').value = service?.price !== undefined ? service.price : '';
     document.getElementById('srv-currency').value = service?.currency || '$';
     document.getElementById('srv-duration').value = service?.duration || '';
     document.getElementById('srv-order').value = service?.display_order || 1;
-    document.getElementById('srv-active').checked = service ? service.is_active : true;
+    document.getElementById('srv-active').checked = service ? Boolean(service.is_active) : true;
     document.getElementById('srv-image-url').value = service?.image_url || '';
     document.getElementById('srv-file-input').value = '';
 
@@ -603,7 +620,7 @@ class AdminApp {
       }
 
       const serviceData = {
-        id: this.editingServiceId || ('srv-' + Date.now()),
+        id: this.editingServiceId || window.Utils.generateUUID(),
         title: document.getElementById('srv-title').value.trim(),
         description: document.getElementById('srv-description').value.trim(),
         price: parseFloat(document.getElementById('srv-price').value) || 0,
@@ -634,7 +651,7 @@ class AdminApp {
       const tbody = document.getElementById('admin-academic-tbody');
       if (!tbody) return;
 
-      if (!events.length) {
+      if (!events || !events.length) {
         tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay eventos académicos registrados. Haz clic en "Nuevo Evento Académico".</td></tr>`;
         return;
       }
@@ -679,7 +696,7 @@ class AdminApp {
     document.getElementById('acad-institution').value = event?.institution || '';
     document.getElementById('acad-description').value = event?.description || '';
     document.getElementById('acad-order').value = event?.display_order || 1;
-    document.getElementById('acad-active').checked = event ? event.is_active : true;
+    document.getElementById('acad-active').checked = event ? Boolean(event.is_active) : true;
     document.getElementById('acad-image-url').value = event?.image_url || '';
     document.getElementById('acad-file-input').value = '';
 
@@ -728,7 +745,7 @@ class AdminApp {
       }
 
       const eventData = {
-        id: this.editingAcademicId || ('acad-' + Date.now()),
+        id: this.editingAcademicId || window.Utils.generateUUID(),
         title: document.getElementById('acad-title').value.trim(),
         badge_text: document.getElementById('acad-badge').value.trim(),
         institution: document.getElementById('acad-institution').value.trim(),
@@ -758,7 +775,7 @@ class AdminApp {
       const tbody = document.getElementById('admin-cases-tbody');
       if (!tbody) return;
 
-      if (!list.length) {
+      if (!list || !list.length) {
         tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No hay casos clínicos registrados. Haz clic en "Nuevo Caso Clínico".</td></tr>`;
         return;
       }
@@ -807,7 +824,7 @@ class AdminApp {
     document.getElementById('case-ig-url').value = caseItem?.instagram_url || 'https://www.instagram.com/drfabricioloayza/';
     document.getElementById('case-description').value = caseItem?.description || '';
     document.getElementById('case-order').value = caseItem?.display_order || 1;
-    document.getElementById('case-active').checked = caseItem ? caseItem.is_active : true;
+    document.getElementById('case-active').checked = caseItem ? Boolean(caseItem.is_active) : true;
     document.getElementById('case-image-url').value = caseItem?.image_url || '';
     document.getElementById('case-file-input').value = '';
 
@@ -856,7 +873,7 @@ class AdminApp {
       }
 
       const caseData = {
-        id: this.editingCaseId || ('case-' + Date.now()),
+        id: this.editingCaseId || window.Utils.generateUUID(),
         title: document.getElementById('case-title').value.trim(),
         tag_text: document.getElementById('case-tag').value.trim(),
         instagram_url: document.getElementById('case-ig-url').value.trim(),
@@ -886,8 +903,8 @@ class AdminApp {
       const tbody = document.getElementById('admin-testimonials-tbody');
       if (!tbody) return;
 
-      if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400">No hay testimonios. Haz clic en "Nuevo Testimonio".</td></tr>`;
+      if (!list || !list.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400">No hay testimonios registrados. Haz clic en "Nuevo Testimonio".</td></tr>`;
         return;
       }
 
@@ -922,7 +939,7 @@ class AdminApp {
     document.getElementById('tst-comment').value = testimonial?.comment || '';
     document.getElementById('tst-rating').value = testimonial?.rating || 5;
     document.getElementById('tst-order').value = testimonial?.display_order || 1;
-    document.getElementById('tst-active').checked = testimonial ? testimonial.is_active : true;
+    document.getElementById('tst-active').checked = testimonial ? Boolean(testimonial.is_active) : true;
     document.getElementById('tst-avatar-url').value = testimonial?.avatar_url || '';
     document.getElementById('tst-file-input').value = '';
 
@@ -971,7 +988,7 @@ class AdminApp {
       }
 
       const itemData = {
-        id: this.editingTestimonialId || ('test-' + Date.now()),
+        id: this.editingTestimonialId || window.Utils.generateUUID(),
         patient_name: document.getElementById('tst-name').value.trim(),
         comment: document.getElementById('tst-comment').value.trim(),
         rating: parseInt(document.getElementById('tst-rating').value) || 5,
@@ -1001,19 +1018,19 @@ class AdminApp {
         window.dataStore.getSettings()
       ]);
 
-      document.getElementById('contact-field-address').value = settings.address_text || '';
-      document.getElementById('contact-field-phone').value = settings.phone_number || '';
-      document.getElementById('contact-field-email').value = settings.email_address || '';
-      document.getElementById('contact-field-whatsapp-msg').value = settings.whatsapp_message || 'Hola CLINIDIAB, deseo reservar una cita médica.';
+      document.getElementById('contact-field-address').value = settings?.address_text || '';
+      document.getElementById('contact-field-phone').value = settings?.phone_number || '';
+      document.getElementById('contact-field-email').value = settings?.email_address || '';
+      document.getElementById('contact-field-whatsapp-msg').value = settings?.whatsapp_message || 'Hola CLINIDIAB, deseo reservar una cita médica.';
 
       const container = document.getElementById('admin-hours-rows');
       if (!container || !hours) return;
 
-      container.innerHTML = hours.map(day => `
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-6 gap-3 items-center" data-day-id="${day.id}">
+      container.innerHTML = hours.map((day, index) => `
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-6 gap-3 items-center hour-row" data-day-id="${day.id}" data-day-order="${day.display_order || (index + 1)}">
           <div class="md:col-span-1 font-bold text-slate-800 flex items-center gap-2">
             <input type="checkbox" class="day-is-open rounded text-teal-600 focus:ring-teal-500 w-4 h-4" ${day.is_open ? 'checked' : ''}>
-            <span class="text-sm">${day.day_name}</span>
+            <span class="day-name-label text-sm">${window.Utils.escapeHtml(day.day_name)}</span>
           </div>
           <div class="md:col-span-2 grid grid-cols-2 gap-2">
             <div>
@@ -1058,19 +1075,21 @@ class AdminApp {
       };
       await window.dataStore.updateSettings(updatedSettings);
 
-      const rows = document.querySelectorAll('#admin-hours-rows > div');
-      const updatedHours = Array.from(rows).map(row => ({
+      const rows = document.querySelectorAll('#admin-hours-rows > .hour-row');
+      const updatedHours = Array.from(rows).map((row, index) => ({
         id: row.getAttribute('data-day-id'),
-        day_name: row.querySelector('span').textContent.trim(),
+        day_name: row.querySelector('.day-name-label')?.textContent.trim() || '',
         is_open: row.querySelector('.day-is-open').checked,
-        morning_open: row.querySelector('.day-morning-open').value,
-        morning_close: row.querySelector('.day-morning-close').value,
-        afternoon_open: row.querySelector('.day-afternoon-open').value,
-        afternoon_close: row.querySelector('.day-afternoon-close').value
+        morning_open: row.querySelector('.day-morning-open').value || '',
+        morning_close: row.querySelector('.day-morning-close').value || '',
+        afternoon_open: row.querySelector('.day-afternoon-open').value || '',
+        afternoon_close: row.querySelector('.day-afternoon-close').value || '',
+        display_order: parseInt(row.getAttribute('data-day-order')) || (index + 1)
       }));
 
       await window.dataStore.saveBusinessHours(updatedHours);
-      window.Utils.showToast('✅ Horarios y contacto actualizados', 'success');
+      window.Utils.showToast('✅ Horarios y contacto actualizados exitosamente', 'success');
+      await this.loadHoursAndContactForm();
     } catch (err) {
       window.Utils.showToast('❌ Error: ' + err.message, 'error');
     } finally {
@@ -1157,10 +1176,13 @@ class AdminApp {
     const btn = e.target.querySelector('[type="submit"]');
     btn.textContent = 'Guardando...'; btn.disabled = true;
     try {
+      const existing = await window.dataStore.getSocialLinks();
+      const getExistingId = (platform) => existing.find(s => s.platform === platform)?.id;
+
       const links = [
-        { id: 'soc-1', platform: 'instagram', label: 'Instagram', url: document.getElementById('soc-ig-url').value.trim(), is_active: document.getElementById('soc-ig-active').checked },
-        { id: 'soc-2', platform: 'facebook', label: 'Facebook', url: document.getElementById('soc-fb-url').value.trim(), is_active: document.getElementById('soc-fb-active').checked },
-        { id: 'soc-3', platform: 'tiktok', label: 'TikTok', url: document.getElementById('soc-tt-url').value.trim(), is_active: document.getElementById('soc-tt-active').checked }
+        { id: getExistingId('instagram') || '55555555-5555-5555-5555-555555555555', platform: 'instagram', label: 'Instagram', url: document.getElementById('soc-ig-url').value.trim(), is_active: document.getElementById('soc-ig-active').checked },
+        { id: getExistingId('facebook') || '66666666-6666-6666-6666-666666666666', platform: 'facebook', label: 'Facebook', url: document.getElementById('soc-fb-url').value.trim(), is_active: document.getElementById('soc-fb-active').checked },
+        { id: getExistingId('tiktok') || '77777777-7777-7777-7777-777777777777', platform: 'tiktok', label: 'TikTok', url: document.getElementById('soc-tt-url').value.trim(), is_active: document.getElementById('soc-tt-active').checked }
       ];
 
       await window.dataStore.saveSocialLinks(links);
@@ -1178,11 +1200,11 @@ class AdminApp {
   async loadLocationForm() {
     try {
       const loc = await window.dataStore.getLocation();
-      document.getElementById('loc-address').value = loc.address || '';
-      document.getElementById('loc-lat').value = loc.latitude || '';
-      document.getElementById('loc-lng').value = loc.longitude || '';
-      document.getElementById('loc-maps-url').value = loc.google_maps_url || '';
-      document.getElementById('loc-embed-code').value = loc.map_embed_code || '';
+      document.getElementById('loc-address').value = loc?.address || '';
+      document.getElementById('loc-lat').value = loc?.latitude || '';
+      document.getElementById('loc-lng').value = loc?.longitude || '';
+      document.getElementById('loc-maps-url').value = loc?.google_maps_url || '';
+      document.getElementById('loc-embed-code').value = loc?.map_embed_code || '';
     } catch (err) {
       console.error('Error loading location form:', err);
     }
@@ -1250,4 +1272,3 @@ class AdminApp {
     this.editingTestimonialId = null;
   }
 }
-

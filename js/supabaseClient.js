@@ -41,7 +41,11 @@ class SupabaseManager {
   }
 
   hasLiveSupabase() {
-    return this.isConfigured && this.client !== null;
+    return Boolean(this.isConfigured && this.client !== null);
+  }
+
+  isReady() {
+    return this.hasLiveSupabase();
   }
 
   updateCredentials(url, key) {
@@ -60,3 +64,4 @@ class SupabaseManager {
 }
 
 window.supabaseManager = new SupabaseManager();
+

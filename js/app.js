@@ -92,10 +92,15 @@ async function loadPublicContent() {
 function renderBrandingAndHero(settings) {
   if (!settings) return;
 
-  // Clinic name
+  const clinicName = settings.clinic_name || 'CLINIDIAB';
+
+  // Clinic name in all brand placeholders
   document.querySelectorAll('.brand-name').forEach(el => {
-    el.textContent = settings.clinic_name || 'CLINIDIAB';
+    el.textContent = clinicName;
   });
+
+  // Document title
+  document.title = `${clinicName} · Dr. Fabricio Loayza — Diabetes, Tiroides y Obesidad en Machala`;
 
   // Hero Title
   const heroTitle = document.getElementById('hero-title');
@@ -117,7 +122,7 @@ function renderBrandingAndHero(settings) {
   const heroImg = document.getElementById('hero-image');
   if (heroImg && settings.hero_image_url) {
     heroImg.src = settings.hero_image_url;
-    heroImg.alt = settings.clinic_name || 'CLINIDIAB';
+    heroImg.alt = clinicName;
   }
 
   // Logo
@@ -359,7 +364,7 @@ function renderContactAndHours(settings, hours) {
     const todayName = daysInSpanish[todayIndex];
 
     scheduleContainer.innerHTML = hours.map((day, idx) => {
-      const isToday = day.day_name && day.day_name.toLowerCase() === todayName.toLowerCase();
+      const isToday = day.day_name && day.day_name.trim().toLowerCase() === todayName.toLowerCase();
       let timeText = 'Cerrado';
       if (day.is_open) {
         if (day.morning_open && day.morning_close && day.afternoon_open && day.afternoon_close) {
@@ -375,13 +380,13 @@ function renderContactAndHours(settings, hours) {
       const isLast = idx === hours.length - 1;
 
       return `
-        <div class="flex items-center justify-between ${!isLast ? 'pb-4 border-b border-slate-100' : ''} schedule-row ${isToday ? 'bg-teal-50/60 p-2.5 rounded-2xl border border-teal-100' : ''}" data-day="${window.Utils.escapeHtml(day.day_name)}">
+        <div class="flex items-center justify-between ${!isLast ? 'pb-4 border-b border-slate-100' : ''} schedule-row ${isToday ? 'bg-teal-50/70 p-2.5 rounded-2xl border border-teal-200 shadow-sm' : ''}" data-day="${window.Utils.escapeHtml(day.day_name)}">
           <div class="flex items-center gap-3">
             <span class="w-2.5 h-2.5 ${isOpen ? 'bg-emerald-500' : 'bg-rose-500'} rounded-full"></span>
             <span class="font-bold text-slate-900 text-sm sm:text-base">${window.Utils.escapeHtml(day.day_name)}</span>
             ${isToday ? `<span class="bg-teal-700 text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">HOY</span>` : ''}
           </div>
-          <span class="${isOpen ? 'text-slate-700 font-medium' : 'text-rose-500 font-bold'} text-xs sm:text-sm">${timeText}</span>
+          <span class="${isOpen ? 'text-slate-700 font-semibold' : 'text-rose-500 font-bold'} text-xs sm:text-sm">${timeText}</span>
         </div>
       `;
     }).join('');
