@@ -245,7 +245,18 @@ class DataStore {
   }
 
   saveLocalData(data) {
-    localStorage.setItem(this.storageKey, JSON.stringify(data));
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(data));
+      if (typeof BroadcastChannel !== 'undefined') {
+        if (!this.broadcastChannel) {
+          this.broadcastChannel = new BroadcastChannel('clinidiab_sync_channel');
+        }
+        this.broadcastChannel.postMessage({ type: 'DATA_UPDATED', data });
+      }
+      window.dispatchEvent(new CustomEvent('clinidiab:data-updated', { detail: data }));
+    } catch (e) {
+      console.warn('saveLocalData error:', e);
+    }
   }
 
   hasSupabase() {
@@ -291,9 +302,9 @@ class DataStore {
   async updateSettings(newSettings) {
     const current = await this.getSettings();
     const payload = {
-      id: current?.id ? this.ensureUUID(current.id) : '981c28c1-1312-47e3-92d3-8ff4268f53b0',
-      clinic_name: 'CLINIDIAB',
+      ...(current || {}),
       ...newSettings,
+      id: current?.id ? this.ensureUUID(current.id) : '981c28c1-1312-47e3-92d3-8ff4268f53b0',
       updated_at: new Date().toISOString()
     };
 

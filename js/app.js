@@ -163,6 +163,54 @@ function renderBrandingAndHero(settings) {
 // =====================
 const heroAudioState = { isMuted: true };
 const sectionAudioState = { isMuted: true };
+let heroYTPlayer = null;
+let sectionYTPlayer = null;
+
+function getOriginParam() {
+  try {
+    if (window.location && window.location.origin && window.location.origin !== 'null') {
+      return `&origin=${encodeURIComponent(window.location.origin)}`;
+    }
+  } catch (e) {}
+  return '';
+}
+
+function initYTPlayers() {
+  if (window.YT && window.YT.Player) {
+    const heroIframe = document.getElementById('hero-yt-iframe');
+    if (heroIframe && (!heroYTPlayer || (typeof heroYTPlayer.getIframe === 'function' && heroYTPlayer.getIframe() !== heroIframe))) {
+      try {
+        heroYTPlayer = new window.YT.Player('hero-yt-iframe', {
+          events: {
+            onReady: (event) => {
+              try { event.target.mute(); event.target.playVideo(); } catch (e) {}
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Hero YT.Player initialization:', err);
+      }
+    }
+    const sectionIframe = document.getElementById('section-yt-iframe');
+    if (sectionIframe && (!sectionYTPlayer || (typeof sectionYTPlayer.getIframe === 'function' && sectionYTPlayer.getIframe() !== sectionIframe))) {
+      try {
+        sectionYTPlayer = new window.YT.Player('section-yt-iframe', {
+          events: {
+            onReady: (event) => {
+              try { event.target.mute(); event.target.playVideo(); } catch (e) {}
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Section YT.Player initialization:', err);
+      }
+    }
+  }
+}
+
+window.onYouTubeIframeAPIReady = function() {
+  initYTPlayers();
+};
 
 function renderHeroMedia(settings) {
   const mediaType = settings?.hero_media_type || 'video'; // 'card' or 'video'
@@ -180,7 +228,8 @@ function renderHeroMedia(settings) {
     if (videoContainer) {
       videoContainer.classList.remove('hidden');
 
-      const targetSrc = `https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=1&autoplay=${autoplay ? 1 : 0}&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0&playsinline=1`;
+      const originParam = getOriginParam();
+      const targetSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=${autoplay ? 1 : 0}&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0&playsinline=1${originParam}`;
       
       let iframe = document.getElementById('hero-yt-iframe');
       if (!iframe && videoWrapper) {
@@ -189,15 +238,19 @@ function renderHeroMedia(settings) {
                   class="w-full h-full absolute inset-0 border-0" 
                   src="${targetSrc}" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerpolicy="strict-origin-when-cross-origin"
+                  referrerpolicy="strict-origin-when-cross-origin" 
                   allowfullscreen>
           </iframe>
         `;
+        heroYTPlayer = null;
+        setTimeout(initYTPlayers, 150);
       } else if (iframe && (!iframe.src.includes(videoId) || (autoplay && !iframe.src.includes('autoplay=1')))) {
         iframe.src = targetSrc;
+        heroYTPlayer = null;
+        setTimeout(initYTPlayers, 150);
       }
 
-      setupDirectAudioButton('hero-toggle-audio-btn', 'hero-audio-icon', 'hero-audio-text', 'hero-yt-iframe', heroAudioState);
+      setupDirectAudioButton('hero-toggle-audio-btn', 'hero-audio-icon', 'hero-audio-text', 'hero-yt-iframe', heroAudioState, () => heroYTPlayer);
     }
   } else {
     // Show Instagram Profile Card
@@ -225,7 +278,8 @@ function renderVideoSection(settings) {
     const subEl = document.getElementById('video-section-subtitle-el');
     if (subEl && settings?.video_section_subtitle) subEl.textContent = settings.video_section_subtitle;
 
-    const targetSrc = `https://www.youtube-nocookie.com/embed/${sectionVideoId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${sectionVideoId}&controls=1&rel=0&playsinline=1`;
+    const originParam = getOriginParam();
+    const targetSrc = `https://www.youtube.com/embed/${sectionVideoId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${sectionVideoId}&controls=1&rel=0&playsinline=1${originParam}`;
     let iframe = document.getElementById('section-yt-iframe');
     if (!iframe && videoWrapper) {
       videoWrapper.innerHTML = `
@@ -233,40 +287,65 @@ function renderVideoSection(settings) {
                 class="w-full h-full absolute inset-0 border-0" 
                 src="${targetSrc}" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin"
+                referrerpolicy="strict-origin-when-cross-origin" 
                 allowfullscreen>
         </iframe>
       `;
+      sectionYTPlayer = null;
+      setTimeout(initYTPlayers, 150);
     } else if (iframe && !iframe.src.includes(sectionVideoId)) {
       iframe.src = targetSrc;
+      sectionYTPlayer = null;
+      setTimeout(initYTPlayers, 150);
     }
 
-    setupDirectAudioButton('section-toggle-audio-btn', 'section-audio-icon', 'section-audio-text', 'section-yt-iframe', sectionAudioState);
+    setupDirectAudioButton('section-toggle-audio-btn', 'section-audio-icon', 'section-audio-text', 'section-yt-iframe', sectionAudioState, () => sectionYTPlayer);
   } else {
     videoSection.classList.add('hidden');
   }
 }
 
-function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef) {
+function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef, getPlayerFn) {
   const btn = document.getElementById(btnId);
   const icon = document.getElementById(iconId);
   const text = document.getElementById(textId);
   if (!btn || btn.dataset.bound) return;
   btn.dataset.bound = 'true';
 
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const iframe = document.getElementById(iframeId);
-    if (!iframe || !iframe.contentWindow) return;
+    const player = getPlayerFn ? getPlayerFn() : null;
 
     if (stateRef.isMuted) {
       // Activar audio: Unmute, set volume to 100, seek to 0 and play with sound
-      try {
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }), '*');
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
-      } catch (err) {
-        console.warn('Error activating audio via postMessage:', err);
+      if (player && typeof player.unMute === 'function') {
+        try {
+          player.seekTo(0, true);
+          player.unMute();
+          player.setVolume(100);
+          player.playVideo();
+        } catch (err) {
+          console.warn('YT.Player unMute error:', err);
+        }
+      }
+
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+          
+          iframe.contentWindow.postMessage('{"event":"command","func":"seekTo","args":[0,true]}', '*');
+          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+          iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        } catch (err) {
+          console.warn('postMessage unMute error:', err);
+        }
       }
 
       stateRef.isMuted = false;
@@ -279,10 +358,21 @@ function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef) {
       btn.classList.remove('bg-slate-950/80', 'border-white/20');
     } else {
       // Silenciar audio
-      try {
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
-      } catch (err) {
-        console.warn('Error muting audio via postMessage:', err);
+      if (player && typeof player.mute === 'function') {
+        try {
+          player.mute();
+        } catch (err) {
+          console.warn('YT.Player mute error:', err);
+        }
+      }
+
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+          iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        } catch (err) {
+          console.warn('postMessage mute error:', err);
+        }
       }
 
       stateRef.isMuted = true;
@@ -291,11 +381,6 @@ function setupDirectAudioButton(btnId, iconId, textId, iframeId, stateRef) {
         icon.className = 'flex items-center justify-center text-rose-400';
         icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
       }
-      btn.classList.remove('bg-emerald-950/90', 'border-emerald-400/40');
-      btn.classList.add('bg-slate-950/80', 'border-white/20');
-    }
-  });
-}
       btn.classList.remove('bg-emerald-950/90', 'border-emerald-400/40');
       btn.classList.add('bg-slate-950/80', 'border-white/20');
     }
@@ -710,3 +795,68 @@ function renderLocation(location) {
     directionsBtn.href = location.google_maps_url;
   }
 }
+
+// ==========================================
+// REAL-TIME CROSS-TAB SYNCHRONIZATION
+// ==========================================
+function applyLiveSettingsSync(data) {
+  if (!data) return;
+  if (data.site_settings) {
+    renderBrandingAndHero(data.site_settings);
+    renderHeroMedia(data.site_settings);
+    setupWhatsAppButtons(data.site_settings);
+    renderContactAndHours(data.site_settings, data.business_hours);
+  }
+  if (data.doctor_bio) {
+    renderDoctorBio(data.doctor_bio);
+  }
+  if (data.services) {
+    renderServices(data.services.filter(s => s.is_active));
+  }
+  if (data.cases) {
+    renderCases(data.cases.filter(c => c.is_active));
+  }
+  if (data.academic_events) {
+    renderAcademicEvents(data.academic_events.filter(a => a.is_active));
+  }
+  if (data.testimonials) {
+    renderTestimonials(data.testimonials.filter(t => t.is_active));
+  }
+  if (data.payment_methods) {
+    renderPaymentMethods(data.payment_methods.filter(p => p.is_active));
+  }
+  if (data.social_links) {
+    renderSocialLinks(data.social_links.filter(s => s.is_active));
+  }
+  if (data.location) {
+    renderLocation(data.location);
+  }
+}
+
+if (typeof BroadcastChannel !== 'undefined') {
+  try {
+    const syncChannel = new BroadcastChannel('clinidiab_sync_channel');
+    syncChannel.onmessage = (event) => {
+      if (event.data?.type === 'DATA_UPDATED' && event.data.data) {
+        applyLiveSettingsSync(event.data.data);
+      }
+    };
+  } catch (err) {
+    console.warn('Sync channel setup:', err);
+  }
+}
+
+window.addEventListener('clinidiab:data-updated', (event) => {
+  if (event.detail) {
+    applyLiveSettingsSync(event.detail);
+  }
+});
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'clinidiab_local_db_v8' && event.newValue) {
+    try {
+      const data = JSON.parse(event.newValue);
+      applyLiveSettingsSync(data);
+    } catch (e) {}
+  }
+});
